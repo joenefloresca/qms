@@ -4,7 +4,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="panel panel-primary">
+			<div class="panel panel-success">
 				<div class="panel-heading">Question List</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)

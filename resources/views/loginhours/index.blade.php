@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-success">
-				<div class="panel-heading">Column Header List</div>
+				<div class="panel-heading">Login Hours</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -25,21 +25,19 @@
 				        @endforeach
 			        </div>
 					<div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div>
-                    <table id="columnList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="LoginHourList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
-                            
                             <tr>
-                                <th>ID</th>
-                                <th>Column Header</th>
-                                <th>Database</th>
-                                <th>Method</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Login Hours</th>
                             </tr>
                         </thead>
                         <tbody>
                         
                         </tbody>
-                    </table> 
-
+                    </table>
 				</div>
 			</div>
 		</div>

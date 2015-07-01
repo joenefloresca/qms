@@ -37,6 +37,12 @@ Route::get('api/column/all', 'ColumnController@apiGetColumns');
 Route::resource('crm', 'CrmController');
 
 
+/* Login Hours Resource Controller*/
+Route::resource('loginhours', 'LoginHourController');
+
+/* Login Hours API Calls */
+Route::get('api/loginhours/all', 'LoginHourController@getLoginHoursAll');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

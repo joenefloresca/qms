@@ -7,8 +7,9 @@
 	<title>Web Tool</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('bootflat/css/bootflat.css') }}" rel="stylesheet">
-	<link href="{{ asset('bootflat/css/bootflat.css.map') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet">
+	<!-- <link href="{{ asset('bootflat/css/bootflat.css') }}" rel="stylesheet">
+	<link href="{{ asset('bootflat/css/bootflat.css.map') }}" rel="stylesheet"> -->
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -26,7 +27,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -42,17 +43,17 @@
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-book"></i> Questions <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ url('question') }}">Question List</a></li>
-							<li><a href="{{ url('question/create') }}">Add Question</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="{{ url('column') }}">Column Header List</a></li>
 							<li><a href="{{ url('column/create') }}">Add/Delete Column Header</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-book"></i> Questions <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="{{ url('question') }}">Question List</a></li>
+							<li><a href="{{ url('question/create') }}">Add Question</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -62,9 +63,17 @@
 							<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
 						</ul>
 					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
+						</ul>
+					</li>
+
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
+
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
@@ -86,9 +95,9 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ asset('bootflat/js/icheck.min.js') }}"></script>
+	<!--<script src="{{ asset('bootflat/js/icheck.min.js') }}"></script>
 	<script src="{{ asset('bootflat/js/jquery.fs.selecter.min.js') }}"></script>
-	<script src="{{ asset('bootflat/js/jquery.fs.stepper.min.js') }}"></script>
+	<script src="{{ asset('bootflat/js/jquery.fs.stepper.min.js') }}"></script>-->
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 	<script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
@@ -96,12 +105,12 @@
 	<script src="{{ asset('js/jquery.progressTimer.js') }}"></script>
 	<script src="{{ asset('js/summernote.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
+	<!--<script src="{{ asset('js/timer.jquery.js') }}"></script>-->
 	<script type="text/javascript">
+	// $('#timer').timer();
 	$('#Question').summernote();
 	
-	// $("#CRMTable").rowSorter({
 
-	// });
 	var sortSequence = [];
 	var sortSequenceId = [];
 	$("#QuestionList").rowSorter({
@@ -121,31 +130,20 @@
 		   sortSequenceId.push( $(this).text() );       
 		});
 
-		console.log(sortSequence);
-		console.log(sortSequenceId);
-
 		var cnt = 1;
 
   		$.each(sortSequence, function(key,value) { 
-  	
-  			
-
   			$.ajax({
 				url: "api/sort/questions", 
 				type: 'GET',
 				data: {"value":value, "cnt" : cnt, "id" : sortSequenceId[key]},
 				success: function(result){
 					console.log(result);
-			    	
 				}});
 				cnt++;
-
   		});
 
-
   		location.reload();
-		
-
   			
 	});
 
@@ -240,7 +238,6 @@
 			}
 		});
 
-	
 	$.ajax({
 		url: "api/question/all", 
 		type: 'GET',
@@ -286,10 +283,6 @@
   			$( "#progressbar" ).fadeOut( "slow" );
 		});
 
-	$(':checkbox').mousedown(function() {
-    	alert("Heloooo");
-	}); 	
-
 	$.ajax({
 		url: "api/column/all", 
 		type: 'GET',
@@ -317,6 +310,43 @@
   			progress.progressTimer('complete');
   			$( "#progressbar" ).fadeOut( "slow" );
 		});	
+
+		$.ajax({
+		url: "api/loginhours/all",
+		type: 'GET',
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		
+	    		if(value.status == 1)
+	    		{
+	    			var status = "Logged-In";
+	    		}
+	    		else
+	    		{
+	    			var status = "Logged-Out";
+	    		}
+	    		var t = $('#LoginHourList').DataTable();
+
+	    		t.row.add( [
+		            value.name,
+		            value.date,
+		            status,
+		            value.loginhours,
+	        	] ).draw();
+	    		
+			});
+		}}).error(function(){
+			  progress.progressTimer('error', {
+			  errorText:'ERROR!',
+			  onFinish:function(){
+			    alert('There was an error processing your information!');
+			  }
+			});
+		}).done(function(){
+  			progress.progressTimer('complete');
+  			$( "#progressbar" ).fadeOut( "slow" );
+		});
 
 
 	</script>

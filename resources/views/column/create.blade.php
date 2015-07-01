@@ -4,8 +4,8 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Question | <font class="text-danger">Column header will be added to <strong>customer</strong> and <strong>customer_history</strong> tables.</font></div>
+			<div class="panel panel-success">
+				<div class="panel-heading">Question | <font class="o">Column header will be added to <strong>customer</strong> and <strong>customer_history</strong> tables.</font></div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">

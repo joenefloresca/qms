@@ -14,5 +14,4 @@ class Question extends \Eloquent
     /* Default for Eloquent */
     protected $table = 'questions';
     protected $connection = 'mcssurvey_main';
-    
 }
