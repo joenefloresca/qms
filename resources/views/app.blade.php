@@ -251,7 +251,7 @@
 		            value.columnheader,
 		            value.costperlead,
 		            // value.isenabled,
-		            "<label class='toggle'><input type='checkbox' checked='' id='"+value.columnheader+"'><span class='handle'></span></label>",
+		            "<label class='toggle'><input type='checkbox' checked='' onclick='return changeEnable(this);' id='"+value.columnheader+"'><span class='handle'></span></label>",
 		            value.id,
 		            "<a class='btn btn-small btn-info' href='<?php echo URL::to('question').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
 		            "<form method='POST' action='<?php echo URL::to('question').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
@@ -282,6 +282,50 @@
   			progress.progressTimer('complete');
   			$( "#progressbar" ).fadeOut( "slow" );
 		});
+
+		function changeEnable(id)
+		{
+			var val 	= $(id).attr('id');
+			var ischeck = $("#"+val).is(":checked")
+			if(ischeck == true)
+			{
+				$.ajax({
+				url: "api/question/changeenable", 
+				type: 'GET',
+				data: {'id':val, 'isenabled': 'Yes'},
+				success: function(result){
+	
+					if(result > 0)
+					{
+						alert("Question has been enabled.");
+					}
+					else
+					{
+						alert("Error enabling the question. Please contact Administrator");
+					}
+				}});
+			}
+			else
+			{
+				$.ajax({
+				url: "api/question/changeenable", 
+				type: 'GET',
+				data: {'id':val, 'isenabled': 'No'},
+				success: function(result){
+	
+					if(result > 0)
+					{
+						alert("Question has been disbaled.");
+					}
+					else
+					{
+						alert("Error disabling the question. Please contact Administrator");
+					}
+				}});		
+			}
+			
+			
+		}
 
 	$.ajax({
 		url: "api/column/all", 

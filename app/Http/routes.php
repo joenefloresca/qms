@@ -27,6 +27,8 @@ Route::get('api/question/all', 'QuestionController@apiGetQuestions');
 
 Route::get('api/sort/questions', 'QuestionController@apiSortQuestions');
 
+Route::get('api/question/changeenable', 'QuestionController@apiQuestionChangeEnable');
+
 /* ColumnHeader Resource Controller*/
 Route::resource('column', 'ColumnController');
 

@@ -36,6 +36,14 @@ class QuestionController extends Controller {
         return $affectedRows;
     }
 
+    public function apiQuestionChangeEnable()
+    {
+        $affectedRows = Question::where('columnheader', '=', Input::get('id'))
+                                ->update(['isenabled' => Input::get('isenabled')]);
+
+        return $affectedRows;
+    }
+
 	public function index()
 	{
 		return view('question.index');
