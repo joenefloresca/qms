@@ -41,34 +41,44 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ url('column') }}">Column Header List</a></li>
-							<li><a href="{{ url('column/create') }}">Add/Delete Column Header</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-book"></i> Questions <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ url('question') }}">Question List</a></li>
-							<li><a href="{{ url('question/create') }}">Add Question</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
-							<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
-						</ul>
-					</li>
+					@if (Auth::check())
+						<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('column') }}">Column Header List</a></li>
+								<li><a href="{{ url('column/create') }}">Add/Delete Column Header</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-book"></i> Questions <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('question') }}">Question List</a></li>
+								<li><a href="{{ url('question/create') }}">Add Question</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
+								<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
+							</ul>
+						</li>
+					@else
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
+								<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
+							</ul>
+						</li>	
+					@endif 
 
 				</ul>
 
@@ -108,6 +118,7 @@
 	<!--<script src="{{ asset('js/timer.jquery.js') }}"></script>-->
 	<script type="text/javascript">
 	// $('#timer').timer();
+
 	$('#Question').summernote();
 	
 
@@ -212,21 +223,40 @@
 	  	
 	});
 
-	$("#TelephoneRestriction").change(function() {
+	$("#CrmShallWeStart").change(function() {
 
-		var choosen = $("#TelephoneRestriction").val();
+		var choosen = $("#CrmShallWeStart").val();
 
 		if(choosen == "Yes")
 		{
-			$("#DivTelephoneOptions").css("display","block");
+			$("#shallwestart").css("display","block");
 		}
 		else if(choosen == "No")
 		{
-			$("#DivTelephoneOptions").css("display","none");
+			$("#shallwestart").css("display","none");
 		}
 		else
 		{
-			$("#DivTelephoneOptions").css("display","none");
+			$("#shallwestart").css("display","none");
+		}
+	  	
+	});
+
+	$("#OwnHomeRestriction").change(function() {
+
+		var choosen = $("#OwnHomeRestriction").val();
+
+		if(choosen == "Yes")
+		{
+			$("#DivOwnHomeOptions").css("display","block");
+		}
+		else if(choosen == "No")
+		{
+			$("#DivOwnHomeOptions").css("display","none");
+		}
+		else
+		{
+			$("#DivOwnHomeOptions").css("display","none");
 		}
 	  	
 	});

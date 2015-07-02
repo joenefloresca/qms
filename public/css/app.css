@@ -1,4 +1,7 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+.borderless td, .borderless th {
+    border: none !important;
+}
 
   table.sorting-table {cursor: move;}
   table tr.sorting-row td {background-color: #A0D468;}
