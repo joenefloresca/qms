@@ -14,7 +14,7 @@
 					<div class="form-horizontal">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Set Disposition</label>
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
 									<option value="">Choose One</option>
 									<option value="AnsweringMachine">AnsweringMachine</option>
@@ -34,7 +34,29 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-4 control-label text-success">Gross Revenue</label>
+							<ul class="list-group">
+				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Local TZ <input type="text" class="form-control" placeholder="Select CBK Time"></li>
+            				</ul>
+            				<ul class="list-group">
+				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Customer TZ <input type="text" class="form-control" placeholder="Select CBK Time"></li>
+            				</ul>
+            				<ul class="list-group">
+				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> After 
+				              		<select class="form-control">
+				              			<option value="">Days</option>
+				              		</select>
+				              		<select class="form-control">
+				              			<option value="">Hours</option>
+				              		</select>
+				              		<select class="form-control">
+				              			<option value="">Minutes</option>
+				              		</select>
+				              </li>
+            				</ul>
+
+						</div>
+						<div class="form-group">
+							<label class="col-md-6 control-label text-success">Gross Revenue</label>
 							<div class="col-md-6">
 								<div class="input-group">
 			                      <span class="input-group-addon">£</span>
@@ -43,8 +65,11 @@
                     			</div>
 							</div>
 						</div>
-					</div>
 
+					
+
+					</div>
+					
 
 	       		</div>			
 	       </div>   
@@ -64,7 +89,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Shall we proceed?… Yes/No</label>
 							<div class="col-md-4">
-								<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#shallwestart">Yes/No</button>	
+								<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#shallwestart">Yes/No</button>	
 								<!-- <select name="CrmShallWeStart" id="CrmShallWeStart" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Yes">Yes</option>
@@ -74,16 +99,29 @@
 						</div>
 					</div>
 
-					<strong>	
+					<div class="alert alert-danger alert-dismissable">
+		              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		              <small><strong>Note:</strong>There MUST be a positive expression of interest to continue with the survey</small>
+            		</div>
+            		<div class="alert alert-info alert-dismissable">
+		              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		              <small>Before we get started, I just need to let you know that this call is being recorded for training and quality control.</small>
+            		</div>
+            		<div class="alert alert-warning alert-dismissable">
+		              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		              <small>If the customer does not want to tape/ record the conversation - “Not a problem, I will turn off the recording feature.</small>
+            		</div>
+
+					<!-- <strong><small>	
 		               <p class="text-danger">(There MUST be a positive expression of interest to continue with the survey)</p>
 		               <p class="text-danger">Before we get started, I just need to let you know that this call is being recorded for training and quality control.</p>
 		               <p class="text-danger">(If the customer does not want to tape/ record the conversation - “Not a problem, I will turn off the recording feature.)</p>
-            		</strong>
+            		</strong></small> -->
 
             		<div class="form-horizontal">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Are you a permanent resident of UK?</label>
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<select name="CrmIsUKPermanentResident" id="CrmIsUKPermanentResident" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Yes">Yes</option>
@@ -99,9 +137,9 @@
 								</tr>
 								<tr>
 									<td><strong>Postcode</strong></td>
-									<td><input type="" id="CrmNewPin" name="CrmNewPin" class="form-control"></td>
+									<td><input type="" id="CrmNewPin" name="CrmNewPin" class="form-control" placeholder="Ex. CC,DH,CL"></td>
 									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
-									<td><input type="" id="CrmPin" name="CrmPin" class="form-control"></td>
+									<td><input type="" id="CrmPin" name="CrmPin" class="form-control" placeholder="Ex. CC,DH,CL"></td>
 								</tr>
 								<tr>
 									<td colspan="2" class="text-danger">Can I confirm that your house number is ______ and it's at (street name?)</td>
@@ -189,7 +227,7 @@
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<div class="row">	
 		<div class="col-md-12">
 			<div class="panel panel-success">
@@ -294,7 +332,7 @@
                             </tbody>
                             <tfoot>
                             	<tr>
-                            		<th colspan="2" class="bg-danger">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, www.mycharitysurvey.com. Have a great day!
+                            		<th colspan="2" class="bg-danger">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in t...(line truncated)...
                             		</th>
                             	</tr>
                             </tfoot>
@@ -320,6 +358,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
+	
 </div>
 @endsection

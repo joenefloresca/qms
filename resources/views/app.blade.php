@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 	<link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/jquery.gridster.min.css') }}" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -115,9 +116,19 @@
 	<script src="{{ asset('js/jquery.progressTimer.js') }}"></script>
 	<script src="{{ asset('js/summernote.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
+	<script src="{{ asset('js/jquery.gridster.min.js') }}"></script>
 	<!--<script src="{{ asset('js/timer.jquery.js') }}"></script>-->
 	<script type="text/javascript">
 	// $('#timer').timer();
+
+	$(function(){ //DOM Ready
+ 
+    $(".gridster ul").gridster({
+        widget_margins: [10, 10],
+        widget_base_dimensions: [140, 140]
+    	});
+	});
+
 
 	$('#Question').summernote();
 	
