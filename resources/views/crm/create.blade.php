@@ -7,13 +7,18 @@
 	       <div class="panel panel-success">
 	       	<div class="panel-heading">CRM</div>
 	       		<div class="panel-body">
-	       			<center>
-		       			<div style="margin: 15px 0px 0px; display: inline-block; text-align: center;"><div style="display: inline-block; padding: 2px 4px; margin: 0px 0px 5px; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: rgb(255, 255, 255);"><a href="http://localtimes.info/difference" style="text-decoration: none; font-size: 13px; color: rgb(0, 0, 0);">World Clock</a></div><script type="text/javascript" src="http://localtimes.info/world_clock2.php?&cp1_Hex=000000&cp2_Hex=FFFFFF&cp3_Hex=000000&fwdt=88&ham=0&hbg=0&hfg=0&sid=0&mon=0&wek=0&wkf=0&sep=0&widget_number=11000"></script></div>
-					</center>
+	       			<div class="form-horizontal">
+	       				<div class="form-group">
+	       					<div class="col-md-8">
+				       			<center>
+					       			<div style="margin: 15px 0px 0px; display: inline-block; text-align: center;"><div style="display: inline-block; padding: 2px 4px; margin: 0px 0px 5px; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: rgb(255, 255, 255);"><a href="http://localtimes.info/difference" style="text-decoration: none; font-size: 13px; color: rgb(0, 0, 0);">World Clock</a></div><script type="text/javascript" src="http://localtimes.info/world_clock2.php?&cp1_Hex=000000&cp2_Hex=FFFFFF&cp3_Hex=000000&fwdt=88&ham=0&hbg=0&hfg=0&sid=0&mon=0&wek=0&wkf=0&sep=0&widget_number=11000"></script></div>
+								</center>
+							</div>
+						</div>
 
-					<div class="form-horizontal">
+					
 						<div class="form-group">
-							<label class="col-md-4 control-label">Set Disposition</label>
+							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
 							<div class="col-md-8">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
 									<option value="">Choose One</option>
@@ -42,26 +47,38 @@
             				</ul>
             				<ul class="list-group">
 				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> After 
-				              		<select class="form-control">
-				              			<option value="">Days</option>
-				              		</select>
-				              		<select class="form-control">
-				              			<option value="">Hours</option>
-				              		</select>
-				              		<select class="form-control">
-				              			<option value="">Minutes</option>
-				              		</select>
+				              		<div class="form-group">
+				              			<div class="col-md-7">
+						              		<select class="form-control">
+						              			<option value="">Days</option>
+						              		</select>
+					              		</div>
+				              		</div>
+				              		<div class="form-group">
+				              			<div class="col-md-7">
+						              		<select class="form-control">
+						              			<option value="">Hours</option>
+						              		</select>
+					              		</div>
+				              		</div>
+				              		<div class="form-group">
+				              			<div class="col-md-7">
+						              		<select class="form-control">
+						              			<option value="">Minutes</option>
+						              		</select>
+					              		</div>
+				              		</div>
 				              </li>
             				</ul>
 
 						</div>
 						<div class="form-group">
-							<label class="col-md-6 control-label text-success">Gross Revenue</label>
+							<label class="col-md-5 control-label text-success">Gross Revenue</label>
 							<div class="col-md-6">
 								<div class="input-group">
 			                      <span class="input-group-addon">£</span>
-			                      	<input type="text" class="form-control" name="CRMGross" id="CRMGross" readonly>
-			                      <span class="input-group-addon">.00</span>
+			                      	<input type="text" class="form-control" name="CRMGross" id="CRMGross" value="0.00" readonly>
+			                      <!-- <span class="input-group-addon">.00</span> -->
                     			</div>
 							</div>
 						</div>
@@ -121,7 +138,7 @@
             		<div class="form-horizontal">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Are you a permanent resident of UK?</label>
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<select name="CrmIsUKPermanentResident" id="CrmIsUKPermanentResident" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Yes">Yes</option>
@@ -137,9 +154,9 @@
 								</tr>
 								<tr>
 									<td><strong>Postcode</strong></td>
-									<td><input type="" id="CrmNewPin" name="CrmNewPin" class="form-control" placeholder="Ex. CC,DH,CL"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
 									<td><input type="" id="CrmPin" name="CrmPin" class="form-control" placeholder="Ex. CC,DH,CL"></td>
+									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="" id="CRMPostcode" name="CRMPostcode" class="form-control" placeholder="Ex. CC,DH,CL"></td>
 								</tr>
 								<tr>
 									<td colspan="2" class="text-danger">Can I confirm that your house number is ______ and it's at (street name?)</td>
@@ -255,9 +272,37 @@
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('crm') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+						<table class="table borderless">
+							<tr>
+								<td class="bg-danger" colspan="3">Alternate</td>
+							</tr>
+						</table>
+
+						<div class="form-group col-md-12">
+							<center><label class="control-label pull-left">May I have your alternate phone number?</label></center>
+						</div>
+
 						<div class="form-group">
-							<label class="col-md-4 control-label">Age</label>
-							<div class="col-md-6">
+							<label class="col-md-4 control-label">Phone Type</label>
+							<div class="col-md-4">
+								<select name="CRMTelephoneOptions" id="CRMTelephoneOptions" class="form-control">
+									<option value="">Choose One</option>
+									<option value="Landline">Landline</option>
+									<option value="Mobile">Mobile</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Phone No.</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" name="CRMTelephoneNo" id="CRMTelephoneNo" placeholder="Phone No.">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Mr...To confirm that you are over the age of 18, please indicate into which age bracket do you fall?</label>
+							<div class="col-md-4">
 								<select name="CrmAge" id="CrmAge" class="form-control">
 									<option value="">Choose One</option>
 									<option value="18-29">18-29</option>
@@ -271,7 +316,13 @@
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group col-md-12">
+							<div class="alert alert-warning alert-dismissable col-md-8">
+				              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				              <small>If customer refuse to confirm the Age Bracket, Please Probe -- “Just a wild guess, would you be…... (suggest age bracket)</small>
+	            			</div>
+            			</div>
+						<!-- <div class="form-group">
 							<label class="col-md-4 control-label">Postcode</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="CRMPostcode" id="CRMPostcode" placeholder="Ex. CC,DH,CL">
@@ -285,20 +336,50 @@
 									<option value="">Choose One</option>
 									<option value="Landline">Landline</option>
 									<option value="Mobile">Mobile</option>
-								
+								</select>
+							</div>
+						</div> -->
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Are you employed, self employed, retired or a company director?</label>
+							<div class="col-md-4">
+								<select name="CRMWorkStatus" id="CRMWorkStatus" class="form-control">
+									<option value="">Choose One</option>
+									<option value="Employed">Employed</option>
+									<option value="Self-Employed">Self-Employed</option>
+									<option value="Retired">Retired</option>
+									<option value="Company Director">Company Director</option>
+									<option value="Other">Other</option>
+									<option value="Not answered">Not answered</option>
 								</select>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Own Home Options</label>
-							<div class="col-md-6">
+							<label class="col-md-4 control-label">Currently, are you a homeowner, renting or living with family or friends?</label>
+							<div class="col-md-4">
 								<select name="CRMOwnHomeOptions" id="CRMOwnHomeOptions" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Own Home">Own Home</option>
 									<option value="Renting">Renting</option>
 									<option value="Living with Family/Friend">Living with Family/Friend</option>
 									<option value="Not Answered">Not Answered</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Would you be: Single or never Married, Married or Co-Habiting, Widowed, Divorced, or Separated?</label>
+							<div class="col-md-4">
+								<select name="CRMMaritalStatus" id="CRMMaritalStatus" class="form-control">
+								  <option value="">Choose One</option>
+								  <option value="Married or Co-Habiting">Married or Co-Habiting</option>
+					              <option value="Single or Never Married">Single or Never Married</option>
+					              <option value="Married or Co-Habiting">Married or Co-habiting</option>
+					              <option value="Widowed">Widowed</option>
+					              <option value="Divorced">Divorced</option>
+					              <option value="Separated">Separated</option>
+					              <option value="Others">Others</option>
 								</select>
 							</div>
 						</div>
@@ -317,10 +398,10 @@
                         </thead>                               
 							<tbody>
                                 @foreach($questions as $key => $value)
-                                    <tr>
+                                    <tr id="{{ $value->columnheader }}block">
                                         <td>{!! $value->question !!}</td>
                                         <td>
-                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" disabled>
+                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
                                         		<option value="">---</option>
                                         		<option value="Yes">Yes</option>
                                         		<option value="No">No</option>
@@ -332,7 +413,7 @@
                             </tbody>
                             <tfoot>
                             	<tr>
-                            		<th colspan="2" class="bg-danger">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in t...(line truncated)...
+                            		<th colspan="2" class="bg-danger">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, www.mycharitysurvey.com. Have a great day!
                             		</th>
                             	</tr>
                             </tfoot>
@@ -345,7 +426,6 @@
 								</button>
 							</div>
 						</div>
-					
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">

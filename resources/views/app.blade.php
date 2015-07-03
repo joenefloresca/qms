@@ -18,7 +18,6 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 	<link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/jquery.gridster.min.css') }}" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +27,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -90,7 +89,7 @@
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i>  {{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
@@ -116,22 +115,30 @@
 	<script src="{{ asset('js/jquery.progressTimer.js') }}"></script>
 	<script src="{{ asset('js/summernote.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
-	<script src="{{ asset('js/jquery.gridster.min.js') }}"></script>
-	<!--<script src="{{ asset('js/timer.jquery.js') }}"></script>-->
 	<script type="text/javascript">
-	// $('#timer').timer();
-
-	$(function(){ //DOM Ready
- 
-    $(".gridster ul").gridster({
-        widget_margins: [10, 10],
-        widget_base_dimensions: [140, 140]
-    	});
-	});
-
-
 	$('#Question').summernote();
+
+	 $(window).load(function(){
+        $('#myModal').modal('show');
+    });
 	
+	function get_response(id)
+	{
+		var current_gross = parseFloat($("#CRMGross").val());
+		var val 	= $(id).attr('id');
+		var cost 	= $("#"+val).attr('value');
+		var response = $("#"+val).val();
+
+
+		if(response == "Yes" || response == "Possibly")
+		{
+			current_gross = current_gross + parseFloat(cost);
+			$("#CRMGross").val(current_gross.toFixed(2));
+			$("#"+val+"block").css("display","none");
+		}
+		
+	}
+
 
 	var sortSequence = [];
 	var sortSequenceId = [];
@@ -327,7 +334,7 @@
 		function changeEnable(id)
 		{
 			var val 	= $(id).attr('id');
-			var ischeck = $("#"+val).is(":checked")
+			var ischeck = $("#"+val).is(":checked");
 			if(ischeck == true)
 			{
 				$.ajax({
@@ -338,7 +345,7 @@
 	
 					if(result > 0)
 					{
-						alert("Question has been enabled.");
+						alert("Question "+val+ " has been enabled.");
 					}
 					else
 					{
@@ -356,7 +363,7 @@
 	
 					if(result > 0)
 					{
-						alert("Question has been disbaled.");
+						alert("Question "+val+ " has been disabled.");
 					}
 					else
 					{
