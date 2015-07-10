@@ -8,6 +8,7 @@
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap-timepicker.css') }}" rel="stylesheet">
 	<!-- <link href="{{ asset('bootflat/css/bootflat.css') }}" rel="stylesheet">
 	<link href="{{ asset('bootflat/css/bootflat.css.map') }}" rel="stylesheet"> -->
 
@@ -18,6 +19,9 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 	<link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/bootstrap-datepicker.css') }}" rel="stylesheet">
+	
+
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -65,19 +69,19 @@
 							</ul>
 						</li>
 						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> Customers <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('customer') }}">Customer List</a></li>
+								<li><a href="{{ url('customer/create') }}">Add Customer</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 							</ul>
 						</li>
-					@else
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
-								<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
-							</ul>
-						</li>	
+					
 					@endif 
 
 				</ul>
@@ -115,543 +119,110 @@
 	<script src="{{ asset('js/jquery.progressTimer.js') }}"></script>
 	<script src="{{ asset('js/summernote.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-timepicker.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('js/script.js') }}"></script>
 	<script type="text/javascript">
-	$('#Question').summernote();
-
-	 $(window).load(function(){
-        $('#myModal').modal('show');
-    });
-	
-	function get_response(id)
-	{
-		var current_gross = parseFloat($("#CRMGross").val());
-		var val 	= $(id).attr('id');
-		var cost 	= $("#"+val).attr('value');
-		var response = $("#"+val).val();
-
-
-		if(response == "Yes" || response == "Possibly")
-		{
-			current_gross = current_gross + parseFloat(cost);
-			$("#CRMGross").val(current_gross.toFixed(2));
-			$("#"+val+"block").css("display","none");
-		}
-		
-	}
-
-
-	var sortSequence = [];
-	var sortSequenceId = [];
-	$("#QuestionList").rowSorter({
-		onDrop: function(tbody, row, index, oldIndex) {
-			$(tbody).parent().find("tfoot > tr > td").html((oldIndex + 1) + ". row moved to " + (index + 1));
-		}
-	});
-
-	$("#saveSort").click(function() {
-		sortSequence = [];
-  		$('#QuestionList tbody tr td:nth-child(1)').each( function(){
-		   //add item to array
-		   sortSequence.push( $(this).text() );       
-		});
-		$('#QuestionList tbody tr td:nth-child(5)').each( function(){
-		   
-		   sortSequenceId.push( $(this).text() );       
-		});
-
-		var cnt = 1;
-
-  		$.each(sortSequence, function(key,value) { 
-  			$.ajax({
-				url: "api/sort/questions", 
-				type: 'GET',
-				data: {"value":value, "cnt" : cnt, "id" : sortSequenceId[key]},
-				success: function(result){
-					console.log(result);
-				}});
-				cnt++;
-  		});
-
-  		location.reload();
-  			
-	});
-
-	$("#PostCodeRestriction").change(function() {
-
-		var choosen = $("#PostCodeRestriction").val();
-
-		if(choosen == "PostCodeInclusion")
-		{
-			$("#DivPostCodeInclusion").css("display","block");
-			$("#DivPostCodeExclusion").css("display","none");
-		}
-		else if(choosen == "PostCodeExclusion")
-		{
-			$("#DivPostCodeExclusion").css("display","block");
-			$("#DivPostCodeInclusion").css("display","none");
-		}
-		else if(choosen == "Both")
-		{
-			$("#DivPostCodeInclusion").css("display","block");
-			$("#DivPostCodeExclusion").css("display","block");
-		}
-		else
-		{
-			$("#DivPostCodeInclusion").css("display","none");
-			$("#DivPostCodeExclusion").css("display","none");
-		}
-	  	
-	});
-
-	$("#AgeRestriction").change(function() {
-
-		var choosen = $("#AgeRestriction").val();
-
-		if(choosen == "Yes")
-		{
-			$("#DivAgeBracket").css("display","block");
-		}
-		else if(choosen == "No")
-		{
-			$("#DivAgeBracket").css("display","none");
-		}
-		else
-		{
-			$("#DivAgeBracket").css("display","none");
-		}
-	  	
-	});
-
-	$("#OwnHomeRestriction").change(function() {
-
-		var choosen = $("#OwnHomeRestriction").val();
-
-		if(choosen == "Yes")
-		{
-			$("#DivOwnHomeOptions").css("display","block");
-		}
-		else if(choosen == "No")
-		{
-			$("#DivOwnHomeOptions").css("display","none");
-		}
-		else
-		{
-			$("#DivOwnHomeOptions").css("display","none");
-		}
-	  	
-	});
-
-	$("#CrmShallWeStart").change(function() {
-
-		var choosen = $("#CrmShallWeStart").val();
-
-		if(choosen == "Yes")
-		{
-			$("#shallwestart").css("display","block");
-		}
-		else if(choosen == "No")
-		{
-			$("#shallwestart").css("display","none");
-		}
-		else
-		{
-			$("#shallwestart").css("display","none");
-		}
-	  	
-	});
-
-	$("#OwnHomeRestriction").change(function() {
-
-		var choosen = $("#OwnHomeRestriction").val();
-
-		if(choosen == "Yes")
-		{
-			$("#DivOwnHomeOptions").css("display","block");
-		}
-		else if(choosen == "No")
-		{
-			$("#DivOwnHomeOptions").css("display","none");
-		}
-		else
-		{
-			$("#DivOwnHomeOptions").css("display","none");
-		}
-	  	
-	});
-
-	var progress = $(".loading-progress").progressTimer({
-			  timeLimit: 10,
-			  onFinish: function () {
-			  //alert('Data Loading Completed!');
-			}
-		});
-
+	var data = <?php if(isset($questions)) {echo $questions; } else {echo '';} ?> 
 	$.ajax({
-		url: "api/question/all", 
-		type: 'GET',
-		success: function(result){
-		var myObj = $.parseJSON(result);
-	    	$.each(myObj, function(key,value) {
-	    		var t = $('#QuestionList').DataTable();
+	url: "api/question/all", 
+	type: 'GET',
+	success: function(result){
+	var myObj = $.parseJSON(result);
+    	$.each(myObj, function(key,value) {
+    		var t = $('#QuestionList').DataTable();
+    		if(value.isenabled == "Yes")
+    		{
+    			var label = "<span class='label label-success'>Enabled</span>";
+    			
+    		}
+    		else if(value.isenabled == "No")
+    		{
+    			var label = "<span class='label label-danger'>Disabled</span>";
+    		}
 
-	    		t.row.add( [
-		            value.sortorder,	
-		            value.columnheader,
-		            value.costperlead,
-		            // value.isenabled,
-		            "<label class='toggle'><input type='checkbox' checked='' onclick='return changeEnable(this);' id='"+value.columnheader+"'><span class='handle'></span></label>",
-		            value.id,
-		            "<a class='btn btn-small btn-info' href='<?php echo URL::to('question').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
-		            "<form method='POST' action='<?php echo URL::to('question').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
-		            "<input name='_method' type='hidden' value='DELETE'>"+
-		            "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
-	        	] ).draw();
+    		t.row.add( [
+	            value.sortorder,	
+	            value.columnheader,
+	            value.costperlead,
+	            // value.isenabled,
+	            "<label class='toggle'><input type='checkbox' checked='' onclick='return changeEnable(this);' id='"+value.columnheader+"'><span class='handle'></span></label>"+label,
+	            value.id,
+	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('question').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+	            "<form method='POST' action='<?php echo URL::to('question').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
+	            "<input name='_method' type='hidden' value='DELETE'>"+
+	            "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
+        	] ).draw();
 
-	        	if(value.isenabled == "Yes")
-	    		{
-	    			$("#"+value.columnheader).prop('checked', true);
-	    			
-	    		}
-	    		else if(value.isenabled == "No")
-	    		{
-	    			$("#"+value.columnheader).prop('checked', false);
-	    			
-	    		}
-	    		
-			});
-		}}).error(function(){
-			  progress.progressTimer('error', {
-			  errorText:'ERROR!',
-			  onFinish:function(){
-			    alert('There was an error processing your information!');
-			  }
-			});
-		}).done(function(){
-  			progress.progressTimer('complete');
-  			$( "#progressbar" ).fadeOut( "slow" );
-		});
-
-		function changeEnable(id)
-		{
-			var val 	= $(id).attr('id');
-			var ischeck = $("#"+val).is(":checked");
-			if(ischeck == true)
-			{
-				$.ajax({
-				url: "api/question/changeenable", 
-				type: 'GET',
-				data: {'id':val, 'isenabled': 'Yes'},
-				success: function(result){
-	
-					if(result > 0)
-					{
-						alert("Question "+val+ " has been enabled.");
-					}
-					else
-					{
-						alert("Error enabling the question. Please contact Administrator");
-					}
-				}});
-			}
-			else
-			{
-				$.ajax({
-				url: "api/question/changeenable", 
-				type: 'GET',
-				data: {'id':val, 'isenabled': 'No'},
-				success: function(result){
-	
-					if(result > 0)
-					{
-						alert("Question "+val+ " has been disabled.");
-					}
-					else
-					{
-						alert("Error disabling the question. Please contact Administrator");
-					}
-				}});		
-			}
-			
-			
-		}
-
-	$.ajax({
-		url: "api/column/all", 
-		type: 'GET',
-		success: function(result){
-		var myObj = $.parseJSON(result);
-	    	$.each(myObj, function(key,value) {
-	    		var t = $('#columnList').DataTable();
-
-	    		t.row.add( [
-		            value.id,
-		            value.column_header,
-		            value.database,
-		            value.method,
-	        	] ).draw();
-	    		
-			});
-		}}).error(function(){
-			  progress.progressTimer('error', {
-			  errorText:'ERROR!',
-			  onFinish:function(){
-			    alert('There was an error processing your information!');
-			  }
-			});
-		}).done(function(){
-  			progress.progressTimer('complete');
-  			$( "#progressbar" ).fadeOut( "slow" );
-		});	
-
-		$.ajax({
-		url: "api/loginhours/all",
-		type: 'GET',
-		success: function(result){
-		var myObj = $.parseJSON(result);
-	    	$.each(myObj, function(key,value) {
-	    		
-	    		if(value.status == 1)
-	    		{
-	    			var status = "Logged-In";
-	    		}
-	    		else
-	    		{
-	    			var status = "Logged-Out";
-	    		}
-	    		var t = $('#LoginHourList').DataTable();
-
-	    		t.row.add( [
-		            value.name,
-		            value.date,
-		            status,
-		            value.loginhours,
-	        	] ).draw();
-	    		
-			});
-		}}).error(function(){
-			  progress.progressTimer('error', {
-			  errorText:'ERROR!',
-			  onFinish:function(){
-			    alert('There was an error processing your information!');
-			  }
-			});
-		}).done(function(){
-  			progress.progressTimer('complete');
-  			$( "#progressbar" ).fadeOut( "slow" );
-		});
-
-
-	</script>
-	<script type="text/javascript">
-	var data = <?php if(isset($questions)) {echo $questions; } ?> ;
-
-	$("#trigger").click(function() {
-		var age = $("#CrmAge").val();
-		var CRMPostcode = $("#CRMPostcode").val();
-		var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
-		var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
-		var count = 0;
-		var flag = 0; 
-		var getRestrictions = [];
-
-  		$.each(data, function(key,value) {
-
-  		// Make an array variable where you will store the Restriction Name and Loop thru it
-  			
-  			if(value.postcoderestriction == "PostCodeInclusion" || value.postcoderestriction == "PostCodeExclusion" || value.postcoderestriction == "Both")
-  			{
-  				if(value.postcoderestriction == "Both")
-  				{
-  					count += 2;
-  					getRestrictions.push("postcodeinclusion");
-  					getRestrictions.push("postcodeexclusion");
-  				}
-  				if(value.postcoderestriction == "PostCodeInclusion")
-  				{
-  					count++;
-  					getRestrictions.push("postcodeinclusion");
-  				}
-  				if(value.postcoderestriction == "PostCodeExclusion")
-  				{
-  					count++;
-  					getRestrictions.push("postcodeexclusion");
-  				}
-  			}
-  			if(value.agerestriction == "Yes")
-  			{
-  				count++;
-  				getRestrictions.push("agebracket");
-  			}
-  			if(value.ownhomerestriction == "Yes")
-  			{
-  				count++;
-  				getRestrictions.push("ownhomeoptions");
-  			}
-  			if(value.telephonerestriction == "Yes")
-  			{
-  				count++;
-  				getRestrictions.push("telephoneoptions");
-  			}
-
-  			console.log("It has "+ count + " number of restrictions.");
-
-  			if(count == 0)
-  			{
-  				$('#'+value.columnheader).prop("disabled", false);
-  			}
-
-  			$.each(getRestrictions, function(key2, value2){
-
-  				if(value2 == "agebracket")
-  				{
-  					if(value.agebracket == age)
-  					{
-  						flag++;
-  						console.log("Entered on age");
-  						if(flag == count)
-  						{
-  							$('#'+value.columnheader).prop("disabled", false);
-  						}
-  					}
-  				}
-  				if(value2 == "telephoneoptions")
-  				{
-  					if(value.telephoneoptions == CRMTelephoneOptions)
-  					{
-  						flag++;
-  						console.log("Entered on telephone");
-  						if(flag == count)
-  						{
-  							$('#'+value.columnheader).prop("disabled", false);
-  						}
-  					}
-  				}
-  				if(value2 == "ownhomeoptions")
-  				{
-  					if(value.ownhomeoptions == CRMOwnHomeOptions)
-  					{
-  						flag++;
-  						console.log("Entered on Own Home");
-  						if(flag == count)
-  						{
-  							$('#'+value.columnheader).prop("disabled", false);
-  						}
-  					}
-  				}
-  				if(getRestrictions.length == 0)
-				{
-					$('#'+value.columnheader).prop("disabled", false);
-				}
-  				if(value2 == "postcodeinclusion")
-  				{
-
-  					var postcodeinclusion = value.postcodeinclusion.split(',');
-  					var postcodes = CRMPostcode.split('/');
-  					var numMatches = 0;
-
-  					for (var i = 0; i < postcodes.length; i++) 
-  					{
-  						for(var x = 0; x < postcodeinclusion.length; x++)
-  						{
-  							var checkspace = (postcodeinclusion[x].indexOf(' ') >= 0);
-  							console.log(checkspace);
-  							if(checkspace == true)
-  							{
-  								console.log("Has space satisfied");
-  								if ($.inArray(postcodes[i], postcodeinclusion) == -1)
-  								{
-  									console.log("Postcode " + postcodes[i] + " is not allowed");
-  								}
-  								else
-  								{
-  									numMatches++;
-  								}
-  							}
-  							else
-  							{
-  								var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
-
-  								if(checkspacePostcodeIn == true)
-  								{
-  									var newpostcodein = postcodes[i].split(' ');
-  									if(newpostcodein[0] == postcodeinclusion[x])
-  									{
-										numMatches++;
-  									}
-  								}
-  							}
-  						}
-  						
-    				}
+        	if(value.isenabled == "Yes")
+    		{
+    			$("#"+value.columnheader).prop('checked', true);
+    			
+    		}
+    		else if(value.isenabled == "No")
+    		{
+    			$("#"+value.columnheader).prop('checked', false);
+    			
+    		}
     		
-  				    console.log("Number of matches is "+ numMatches);
-  				    if(numMatches > 0)
-  				    {
-  				    	$('#'+value.columnheader).prop("disabled", false);
-  				    }
-  					
-  				}
-
-  				if(value2 = "postcodeexclusion")
-  				{
-  					var postcodeexclusion = value.postcodeexclusion.split(',');
-  					var postcodes = CRMPostcode.split('/');
-  					var numMatches2 = 0;
-
-  					for (var i = 0; i < postcodes.length; i++) 
-  					{
-
-  						for(var x = 0; x < postcodeexclusion.length; x++)
-  						{
-  							var checkspace = (postcodeexclusion[x].indexOf(' ') >= 0);
-  							if(checkspace == true)
-  							{
-  								console.log("Has space satisfied");
-  								console.log(checkspace);
-  								console.log(postcodeexclusion[x]);
-
-  								if ($.inArray(postcodes[i], postcodeexclusion) == -1)
-  								{
-  									console.log("Postcode " + postcodes[i] + " is not allowed");
-  								}
-  								else
-  								{
-  									numMatches2++;
-  									console.log(numMatches2);
-  								}
-  								
-  							}
-  							else
-  							{
-  								var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
-
-  								if(checkspacePostcodeIn == true)
-  								{
-  									var newpostcodein = postcodes[i].split(' ');
-  									if(newpostcodein[0] == postcodeexclusion[x])
-  									{
-										numMatches2++;
-  									}
-  								}
-  							}
-  						}
-  						
-    				}
-
-    				if(numMatches2 > 0)
-  				    {
-  				    	$('#'+value.columnheader).prop("disabled", true);
-  				    }
-  					
-  				}
-  				
-  			});
-			
-			
 		});
+	}}).error(function(){
+		  progress.progressTimer('error', {
+		  errorText:'ERROR!',
+		  onFinish:function(){
+		    alert('There was an error processing your information!');
+		  }
+		});
+	}).done(function(){
+			progress.progressTimer('complete');
+			$( "#progressbar" ).fadeOut( "slow" );
 	});
-	
 
-</script>
+	$.ajax({
+	url: "api/customer/all", 
+	type: 'GET',
+	success: function(result){
+	var myObj = $.parseJSON(result);
+    	$.each(myObj, function(key,value) {
+    		var t = $('#CustomerList').DataTable();
+    		t.row.add( [
+	            value.id,	
+	            value.firstname,
+	            value.lastname,
+	            value.gender,
+	            value.phone_num,
+	            value.postcode,
+	            value.country,
+	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+	            "<form method='POST' action='<?php echo URL::to('customer').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
+	            "<input name='_method' type='hidden' value='DELETE'>"+
+	            "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
+        	] ).draw();
+
+        	if(value.isenabled == "Yes")
+    		{
+    			$("#"+value.columnheader).prop('checked', true);
+    			
+    		}
+    		else if(value.isenabled == "No")
+    		{
+    			$("#"+value.columnheader).prop('checked', false);
+    			
+    		}
+    		
+		});
+	}}).error(function(){
+		  progress.progressTimer('error', {
+		  errorText:'ERROR!',
+		  onFinish:function(){
+		    alert('There was an error processing your information!');
+		  }
+		});
+	}).done(function(){
+			progress.progressTimer('complete');
+			$( "#progressbar" ).fadeOut( "slow" );
+	});
+	</script>
+
 </body>
 </html>

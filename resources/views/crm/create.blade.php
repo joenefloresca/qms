@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container-fluid">
+	<form class="form-horizontal" role="form" method="POST" action="{{ url('crm') }}">
+	 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="row">
 		<div class="col-sm-3 sidebar">
 	       <div class="panel panel-success">
@@ -9,13 +11,24 @@
 	       		<div class="panel-body">
 	       			<div class="form-horizontal">
 	       				<div class="form-group">
-	       					<div class="col-md-8">
-				       			<center>
-					       			<div style="margin: 15px 0px 0px; display: inline-block; text-align: center;"><div style="display: inline-block; padding: 2px 4px; margin: 0px 0px 5px; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: rgb(255, 255, 255);"><a href="http://localtimes.info/difference" style="text-decoration: none; font-size: 13px; color: rgb(0, 0, 0);">World Clock</a></div><script type="text/javascript" src="http://localtimes.info/world_clock2.php?&cp1_Hex=000000&cp2_Hex=FFFFFF&cp3_Hex=000000&fwdt=88&ham=0&hbg=0&hfg=0&sid=0&mon=0&wek=0&wkf=0&sep=0&widget_number=11000"></script></div>
-								</center>
-							</div>
+	       					<div class="col-md-12">
+							 <div class="input-group">
+							 	
+							      <input type="text" class="form-control" id="customer_number" placeholder="Search customer number.">
+							      <span class="input-group-btn">
+							        <button class="btn btn-default" id="searchCustomer" type="button"><i class="glyphicon glyphicon-search"></i></button>
+							      </span>
+							 </div>   
+    						</div>
 						</div>
 
+	       				<div class="form-group">
+	       					<div class="col-md-8">
+				       			<!-- <center> -->
+					       			<div style="margin: 15px 0px 0px; display: inline-block; text-align: center;"><div style="display: inline-block; padding: 2px 4px; margin: 0px 0px 5px; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: rgb(255, 255, 255);"><a href="http://localtimes.info/difference" style="text-decoration: none; font-size: 13px; color: rgb(0, 0, 0);">World Clock</a></div><script type="text/javascript" src="http://localtimes.info/world_clock2.php?&cp1_Hex=000000&cp2_Hex=FFFFFF&cp3_Hex=000000&fwdt=88&ham=0&hbg=0&hfg=0&sid=0&mon=0&wek=0&wkf=0&sep=0&widget_number=11000"></script></div>
+								<!-- </center> -->
+							</div>
+						</div>
 					
 						<div class="form-group">
 							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
@@ -40,10 +53,10 @@
 						</div>
 						<div class="form-group">
 							<ul class="list-group">
-				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Local TZ <input type="text" class="form-control" placeholder="Select CBK Time"></li>
+				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Local TZ <input type="text" class="form-control timepicker" id="cbkTimeLocalTz" name="cbkTimeLocalTz" placeholder="Select CBK Time" data-default-time="false"></li>
             				</ul>
             				<ul class="list-group">
-				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Customer TZ <input type="text" class="form-control" placeholder="Select CBK Time"></li>
+				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Customer TZ <input type="text" class="form-control" id="cbkTimeCustomerTz" name="cbkTimeCustomerTz" placeholder="Select CBK Time" data-default-time="false"></li>
             				</ul>
             				<ul class="list-group">
 				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> After 
@@ -83,8 +96,6 @@
 							</div>
 						</div>
 
-					
-
 					</div>
 					
 
@@ -92,8 +103,26 @@
 	       </div>   
 	        
         </div>
-		<div class="col-md-9">
-			<div class="panel panel-success">
+			<div class="col-md-9">
+				@if (count($errors) > 0)
+							<div class="alert alert-danger">
+								<strong>Whoops!</strong> There were some problems with your input.<br><br>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+
+						<div class="flash-message">
+					        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+					          @if(Session::has('alert-' . $msg))
+					          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+					          @endif
+					        @endforeach
+				        </div>
+				<div class="panel panel-success">
 				<div class="panel-heading">CRM</div>
 				<div class="panel-body">
 					<p><strong>Introduction:</strong></p>
@@ -106,7 +135,8 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Shall we proceed?… Yes/No</label>
 							<div class="col-md-4">
-								<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#shallwestart">Yes/No</button>	
+								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#continueModal">Yes</button>
+								<!-- <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#shallwestart">Yes/No</button>	 -->
 								<!-- <select name="CrmShallWeStart" id="CrmShallWeStart" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Yes">Yes</option>
@@ -129,12 +159,6 @@
 		              <small>If the customer does not want to tape/ record the conversation - “Not a problem, I will turn off the recording feature.</small>
             		</div>
 
-					<!-- <strong><small>	
-		               <p class="text-danger">(There MUST be a positive expression of interest to continue with the survey)</p>
-		               <p class="text-danger">Before we get started, I just need to let you know that this call is being recorded for training and quality control.</p>
-		               <p class="text-danger">(If the customer does not want to tape/ record the conversation - “Not a problem, I will turn off the recording feature.)</p>
-            		</strong></small> -->
-
             		<div class="form-horizontal">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Are you a permanent resident of UK?</label>
@@ -146,16 +170,26 @@
 								 </select>
 							</div>
 						</div>
-						
-						<div id="shallwestart" class="collapse out">
-							<table class="table borderless"> 
+
+						<!-- Modal -->
+						<div id="continueModal" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Verification</h4>
+						      </div>
+						      <div class="modal-body">
+						        <div class="form-horizontal">
+						        	<table class="table borderless"> 
 								<tr>
 									<td class="text-danger">Can I confirm that your post code is</td>
 								</tr>
 								<tr>
 									<td><strong>Postcode</strong></td>
-									<td><input type="" id="CrmPin" name="CrmPin" class="form-control" placeholder="Ex. CC,DH,CL"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="" id="CRMPostcodeNew" name="CRMPostcodeNew" class="form-control" placeholder="Ex. CC,DH,CL"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CRMPostcodeBtn">-></button></center></td>
 									<td><input type="" id="CRMPostcode" name="CRMPostcode" class="form-control" placeholder="Ex. CC,DH,CL"></td>
 								</tr>
 								<tr>
@@ -163,38 +197,38 @@
 								</tr>
 								<tr>
 									<td><strong>Addr1</strong></td>
-									<td><input type="text" id="CrmNewAddr1" name="CrmNewAddr1" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmAddr1New" name="CrmAddr1New" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmAddr1Btn">-></button></center></td>
 									<td><input type="text" id="CrmAddr1" name="CrmAddr1" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Addr2</strong></td>
-									<td><input type="text" id="CrmNewAddr2" name="CrmNewAddr2" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmAddr2New" name="CrmAddr2New" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmAddr2Btn">-></button></center></td>
 									<td><input type="text" id="CrmAddr2" name="CrmAddr2" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Addr3</strong></td>
-									<td><input type="text" id="CrmNewAddr3" name="CrmNewAddr3" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmAddr3New" name="CrmAddr3New" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmAddr3Btn">-></button></center></td>
 									<td><input type="text" id="CrmAddr3" name="CrmAddr3" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Addr4</strong></td>
-									<td><input type="text" id="CrmNewAddr4" name="CrmNewAddr4" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmAddr4New" name="CrmAddr4New" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmAddr4Btn">-></button></center></td>
 									<td><input type="text" id="CrmAddr4" name="CrmAddr4" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Town</strong></td>
-									<td><input type="text" id="CrmNewTown" name="CrmNewTown" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmTownNew" name="CrmTownNew" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmTownBtn">-></button></center></td>
 									<td><input type="text" id="CrmTown" name="CrmTown" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Country</strong></td>
-									<td><input type="text" id="CrmNewCountry" name="CrmNewCountry" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmCountryNew" name="CrmCountryNew" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmCountryBtn">-></button></center></td>
 									<td><input type="text" id="CrmCountry" name="CrmCountry" class="form-control"></td>
 								</tr>
 								<tr>
@@ -225,18 +259,26 @@
 								</tr>
 								<tr>
 									<td><strong>First Name</strong></td>
-									<td><input type="text" id="CrmNewFirstName" name="CrmNewFirstName" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmFirstNameNew" name="CrmFirstNameNew" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmFirstNameBtn">-></button></center></td>
 									<td><input type="text" id="CrmFirstName" name="CrmFirstName" class="form-control"></td>
 								</tr>
 								<tr>
 									<td><strong>Surname</strong></td>
-									<td><input type="text" id="CrmNewSurname" name="CrmNewSurname" class="form-control"></td>
-									<td><center><button type="button" class="btn btn-primary">-></button></center></td>
+									<td><input type="text" id="CrmSurnameNew" name="CrmSurnameNew" class="form-control"></td>
+									<td><center><button type="button" class="btn btn-primary btn-sm" id="CrmSurnameBtn">-></button></center></td>
 									<td><input type="text" id="CrmSurname" name="CrmSurname" class="form-control"></td>
 								</tr>
 
 							</table>
+						        </div>
+						      </div>
+						      <div class="modal-footer">
+						        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+						        <button type="button" class="btn btn-success" data-dismiss="modal">Hide</button>
+						      </div>
+						    </div>
+						  </div>
 						</div>
 						
 					</div>
@@ -244,34 +286,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">	
-		<div class="col-md-12">
+		<div class="col-md-9">
 			<div class="panel panel-success">
 				<div class="panel-heading">CRM</div>
 				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
-
-					<div class="flash-message">
-				        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-				          @if(Session::has('alert-' . $msg))
-				          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
-				          @endif
-				        @endforeach
-			        </div>
-
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('crm') }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
 						<table class="table borderless">
 							<tr>
 								<td class="bg-danger" colspan="3">Alternate</td>
@@ -322,23 +340,7 @@
 				              <small>If customer refuse to confirm the Age Bracket, Please Probe -- “Just a wild guess, would you be…... (suggest age bracket)</small>
 	            			</div>
             			</div>
-						<!-- <div class="form-group">
-							<label class="col-md-4 control-label">Postcode</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="CRMPostcode" id="CRMPostcode" placeholder="Ex. CC,DH,CL">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Telephone Options</label>
-							<div class="col-md-6">
-								<select name="CRMTelephoneOptions" id="CRMTelephoneOptions" class="form-control">
-									<option value="">Choose One</option>
-									<option value="Landline">Landline</option>
-									<option value="Mobile">Mobile</option>
-								</select>
-							</div>
-						</div> -->
+						
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Are you employed, self employed, retired or a company director?</label>
@@ -434,11 +436,13 @@
 								</button>
 							</div>
 						</div>
-					</form>
 				</div>
 			</div>
 		</div>
-	</div>	
-	
+	</div>
+	<!-- <div class="row"> -->	
+		
+	<!-- </div> -->	
+	</form>
 </div>
 @endsection

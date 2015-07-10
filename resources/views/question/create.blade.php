@@ -132,7 +132,7 @@
 							<label class="col-md-4 control-label">Cost Per Lead</label>
 							<div class="col-md-6">
 								<div class="input-group">
-			                      <span class="input-group-addon">$</span>
+			                      <span class="input-group-addon">£</span>
 			                      	<input type="text" class="form-control" name="CostPerLead" id="CostPerLead">
 			                      <span class="input-group-addon">.00</span>
                     			</div>

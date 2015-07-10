@@ -3,7 +3,7 @@
 namespace App\Http\Models;
 use DB;
 
-class Question extends \Eloquent
+class Crm extends \Eloquent
 {
     /**
      * The database table used by the model.
@@ -12,6 +12,6 @@ class Question extends \Eloquent
      */
 
     /* Default for Eloquent */
-    protected $table = 'questions';
+    protected $table = 'forms';
     protected $connection = 'pgsql';
 }

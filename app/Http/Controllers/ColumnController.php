@@ -70,6 +70,14 @@ class ColumnController extends Controller {
     	{
     		array_push($selected,"HSG_Survey");
     	}
+    	if(!empty(Input::get('MCSSurvey_NTG')))
+    	{
+    		array_push($selected,"MCSSurvey_NTG");
+    	}
+    	if(!empty(Input::get('UKSurvey_Express')))
+    	{
+    		array_push($selected,"UKSurvey_Express");
+    	}
     	if(!empty(Input::get('pgsql')))
     	{
     		array_push($selected,"pgsql");

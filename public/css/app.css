@@ -1,4 +1,7 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+.modal-backdrop {
+    display:none;
+}
 .borderless td, .borderless th {
     border: none !important;
 }

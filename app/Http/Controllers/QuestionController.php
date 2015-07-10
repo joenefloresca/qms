@@ -6,7 +6,6 @@ use Redirect;
 use Session;
 use View;
 use \App\Http\Models\Question;
-use DB;
 use App;
 
 class QuestionController extends Controller {

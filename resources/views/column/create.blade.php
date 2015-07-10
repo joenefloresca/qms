@@ -69,6 +69,12 @@
 								  <label><input type="checkbox" value="HSG_Survey" name="HSG_Survey">HSG_Survey</label>
 								</div>
 								<div class="checkbox">
+								  <label><input type="checkbox" value="MCSSurvey_NTG" name="MCSSurvey_NTG">MCSSurvey_NTG</label>
+								</div>
+								<div class="checkbox">
+								  <label><input type="checkbox" value="UKSurvey_Express" name="UKSurvey_Express">UKSurvey_Express</label>
+								</div>
+								<div class="checkbox">
 								  <label><input type="checkbox" value="pgsql" name="pgsql">pgsql (Database: qms) <small class="text-danger">Test Database only. DO NOT DELETE</small> </label>
 								</div>
 								

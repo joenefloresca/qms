@@ -152,6 +152,28 @@ return [
             'schema'   => 'public',
         ],
 
+        'MCSSurvey_NTG' => [
+            'driver'   => 'pgsql',
+            'host'     => '192.168.3.9',
+            'database' => 'MCSSurvey_NTG',
+            'username' => 'postgres',
+            'password' => 'postgres',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ],
+
+        'UKSurvey_Express' => [
+            'driver'   => 'pgsql',
+            'host'     => '192.168.3.9',
+            'database' => 'UKSurvey_Express',
+            'username' => 'postgres',
+            'password' => 'postgres',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ],
+
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',

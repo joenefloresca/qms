@@ -38,12 +38,18 @@ Route::get('api/column/all', 'ColumnController@apiGetColumns');
 /* CRM Resource Controller*/
 Route::resource('crm', 'CrmController');
 
-
 /* Login Hours Resource Controller*/
 Route::resource('loginhours', 'LoginHourController');
 
 /* Login Hours API Calls */
 Route::get('api/loginhours/all', 'LoginHourController@getLoginHoursAll');
+
+/* Customers Resource Controller*/
+Route::resource('customer', 'CustomerController');
+
+/* Customer API Calls */
+Route::get('api/customer/all', 'CustomerController@apiGetCustomers');
+Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
