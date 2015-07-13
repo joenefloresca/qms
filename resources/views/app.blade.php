@@ -31,7 +31,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -73,6 +73,7 @@
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('customer') }}">Customer List</a></li>
 								<li><a href="{{ url('customer/create') }}">Add Customer</a></li>
+								<li><a href="{{ url('customer-upload') }}">Upload Customer</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">

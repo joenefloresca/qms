@@ -8,6 +8,13 @@
 				<div class="panel-heading">Customer List</div>
 				<div class="panel-body">
 					<div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div>
+                    <div class="flash-message">
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                          @if(Session::has('alert-' . $msg))
+                          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+                          @endif
+                        @endforeach
+                    </div>
                     <table id="CustomerList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>

@@ -6,6 +6,7 @@ use Redirect;
 use Session;
 use View;
 use \App\Http\Models\Customer;
+use Excel;
 
 class CustomerController extends Controller {
 
@@ -18,6 +19,61 @@ class CustomerController extends Controller {
 	{
 		$this->middleware('auth');
 	}
+
+    public function getUploadCsv()
+    {
+        return view('customer.upload');
+    }
+
+    public function postUploadCsv()
+    {
+        $rules = array(
+            'file' => 'required|mimes:xlsx,xls',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+        // process the form
+        if ($validator->fails()) 
+        {
+            return Redirect::to('customer-upload')->withErrors($validator);
+        }
+        else 
+        {
+            $file = Input::file('file');
+            Excel::load($file, function($reader) {
+                // Getting all results
+                $results = $reader->get()->toArray();
+                foreach ($results as $key => $value) {
+                    $customer = new Customer();
+                    $customer->title          =  $value['title'];
+                    $customer->gender         =  $value['gender'];
+                    $customer->gender         =  $value['gender'];
+                    $customer->firstname      =  $value['first_name'];
+                    $customer->lastname       =  $value['last_name'];
+                    $customer->postcode       =  $value['postcode'];
+                    $customer->addr1          =  $value['address_1'];
+                    $customer->addr2          =  $value['address_2'];
+                    $customer->addr3          =  $value['address_3'];
+                    $customer->addr4          =  $value['address_4'];
+                    $customer->town           =  $value['town'];
+                    $customer->country        =  $value['country'];
+                    $customer->phone_num      =  $value['phone'];
+                    $customer->phone_type     =  $value['phone_type'];
+                    $customer->birthdate      =  $value['birthdate'];
+                    $customer->work_status    =  $value['work_status'];
+                    $customer->home_status    =  $value['home_status'];
+                    $customer->marital_status =  $value['marital_status'];
+                    $customer->agebracket     =  $value['age_bracket'];
+                    $customer->save();
+                }
+
+            });
+
+            Session::flash('alert-success', 'Data Uploaded Successfully!');
+            return Redirect::to('customer-upload');
+            
+        } 
+    }
 
     public function apiGetCustomers()
     {
@@ -183,6 +239,15 @@ class CustomerController extends Controller {
             return Redirect::to('customer/'.$id.'/edit');
            
         }
+    }
+
+    public function destroy($id)
+    {
+        $customer = Customer::find($id);
+        $customer->delete();
+       
+        Session::flash('alert-success', 'Successfully deleted the customer!');
+        return Redirect::to('customer');
     }
 
 

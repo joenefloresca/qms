@@ -47,6 +47,10 @@ Route::get('api/loginhours/all', 'LoginHourController@getLoginHoursAll');
 /* Customers Resource Controller*/
 Route::resource('customer', 'CustomerController');
 
+/* Customers Upload CSV Controller*/
+Route::get('customer-upload', 'CustomerController@getUploadCsv');
+Route::post('customer-upload', 'CustomerController@postUploadCsv');
+
 /* Customer API Calls */
 Route::get('api/customer/all', 'CustomerController@apiGetCustomers');
 Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
