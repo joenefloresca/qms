@@ -13,7 +13,7 @@
 	       				<div class="form-group">
 	       					<div class="col-md-12">
 							 <div class="input-group">
-							 	
+							 	  <input type="hidden" class="form-control" id="customer_id" name="customer_id">
 							      <input type="text" class="form-control" id="customer_number" placeholder="Search customer number.">
 							      <span class="input-group-btn">
 							        <button class="btn btn-default" id="searchCustomer" type="button"><i class="glyphicon glyphicon-search"></i></button>

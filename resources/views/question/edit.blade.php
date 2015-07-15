@@ -36,70 +36,73 @@
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Postcode Restriction</label>
-							<div class="col-md-6">
-								{!! Form::select('PostCodeRestriction', ['' => 'Choose One', 'PostCodeInclusion' => 'PostCodeInclusion', 'PostCodeExclusion' => 'PostCodeExclusion', 'Both' => 'Both', 'No' => 'No'], $question->postcoderestriction, array('class' => 'form-control')) !!}
+						@if($question->is_child == 0)
+						   <div class="form-group">
+								<label class="col-md-4 control-label">Postcode Restriction</label>
+								<div class="col-md-6">
+									{!! Form::select('PostCodeRestriction', ['' => 'Choose One', 'PostCodeInclusion' => 'PostCodeInclusion', 'PostCodeExclusion' => 'PostCodeExclusion', 'Both' => 'Both', 'No' => 'No'], $question->postcoderestriction, array('class' => 'form-control')) !!}
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Postcode Inclusion</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="PostCodeInclusion" id="PostCodeInclusion" value="{!! $question->postcodeinclusion !!}">
+							<div class="form-group">
+								<label class="col-md-4 control-label">Postcode Inclusion</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="PostCodeInclusion" id="PostCodeInclusion" value="{!! $question->postcodeinclusion !!}">
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Postcode Exclusion</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="PostCodeExclusion" id="PostCodeExclusion" value="{!! $question->postcodeexclusion !!}">
+							<div class="form-group">
+								<label class="col-md-4 control-label">Postcode Exclusion</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="PostCodeExclusion" id="PostCodeExclusion" value="{!! $question->postcodeexclusion !!}">
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Age Restriction</label>
-							<div class="col-md-6">
-								{!! Form::select('AgeRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->agerestriction, array('class' => 'form-control')) !!}
+							<div class="form-group">
+								<label class="col-md-4 control-label">Age Restriction</label>
+								<div class="col-md-6">
+									{!! Form::select('AgeRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->agerestriction, array('class' => 'form-control')) !!}
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Age Bracket</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="AgeBracket" id="AgeBracket" value="{!! $question->agebracket !!}">
+							<div class="form-group">
+								<label class="col-md-4 control-label">Age Bracket</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="AgeBracket" id="AgeBracket" value="{!! $question->agebracket !!}">
+								</div>
 							</div>
-						</div>
-					
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Own Home Restriction</label>
-							<div class="col-md-6">
-								{!! Form::select('OwnHomeRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->ownhomerestriction, array('class' => 'form-control')) !!}
-							</div>
-						</div>
 						
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Own Home Options</label>
-							<div class="col-md-6">
-								{!! Form::select('OwnHomeOptions', ['' => 'Choose One', 'Own Home' => 'Own Home', 'Renting' => 'Renting', 'Living with Family/Friend' => 'Living with Family/Friend', 'Not Answered' => 'Not Answered'], $question->ownhomeoptions, array('class' => 'form-control')) !!}
+							<div class="form-group">
+								<label class="col-md-4 control-label">Own Home Restriction</label>
+								<div class="col-md-6">
+									{!! Form::select('OwnHomeRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->ownhomerestriction, array('class' => 'form-control')) !!}
+								</div>
 							</div>
-						</div>
+							
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Telephone Restriction</label>
-							<div class="col-md-6">
-								{!! Form::select('TelephoneRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->telephonerestriction, array('class' => 'form-control')) !!}
+							<div class="form-group">
+								<label class="col-md-4 control-label">Own Home Options</label>
+								<div class="col-md-6">
+									{!! Form::select('OwnHomeOptions', ['' => 'Choose One', 'Own Home' => 'Own Home', 'Renting' => 'Renting', 'Living with Family/Friend' => 'Living with Family/Friend', 'Not Answered' => 'Not Answered'], $question->ownhomeoptions, array('class' => 'form-control')) !!}
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Telephone Options</label>
-							<div class="col-md-6">
-								{!! Form::select('TelephoneOptions', ['' => 'Choose One', 'Landline' => 'Landline', 'Mobile' => 'Mobile'], $question->telephoneoptions, array('class' => 'form-control')) !!}
+							<div class="form-group">
+								<label class="col-md-4 control-label">Telephone Restriction</label>
+								<div class="col-md-6">
+									{!! Form::select('TelephoneRestriction', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->telephonerestriction, array('class' => 'form-control')) !!}
+								</div>
 							</div>
-						</div>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Telephone Options</label>
+								<div class="col-md-6">
+									{!! Form::select('TelephoneOptions', ['' => 'Choose One', 'Landline' => 'Landline', 'Mobile' => 'Mobile'], $question->telephoneoptions, array('class' => 'form-control')) !!}
+								</div>
+							</div>
+                        @endif  
+						
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Cost Per Lead</label>
@@ -107,13 +110,22 @@
 								<input type="text" class="form-control" name="CostPerLead" id="CostPerLead" value="{!! $question->costperlead !!}">
 							</div>
 						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Column Header</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}">
+						@if($question->is_child != 0)
+							<div class="form-group">
+								<label class="col-md-4 control-label">Column Header</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}" disabled>
+								</div>
 							</div>
-						</div>
+						@else 
+							<div class="form-group">
+								<label class="col-md-4 control-label">Column Header</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}">
+								</div>
+							</div>
+						@endif
+						
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Delivery Assignment</label>
@@ -129,12 +141,12 @@
 							</div>
 						</div>
 
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="col-md-4 control-label">Sort Order</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="sortorder" id="sortorder" value="{!! $question->sortorder !!}">
 							</div>
-						</div>
+						</div> -->
 
 
 						<div class="form-group">

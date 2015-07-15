@@ -55,8 +55,8 @@ class QuestionController extends Controller {
 
 	public function store()
 	{
-        $verifier = App::make('validation.presence');
-        $verifier->setConnection('mcssurvey_main');
+        // $verifier = App::make('validation.presence');
+        // $verifier->setConnection('mcssurvey_main');
 
 		$rules = array(
             'Question'  			=> 'required',
@@ -67,7 +67,7 @@ class QuestionController extends Controller {
         );
         
         $validator = Validator::make(Input::all(), $rules);
-        $validator->setPresenceVerifier($verifier);
+        // $validator->setPresenceVerifier($verifier);
         
         // Check if all fields is filled
         if ($validator->fails()) 
@@ -76,29 +76,89 @@ class QuestionController extends Controller {
         }
         else
         {
-        	$question = new Question();
-        	$question->question = Input::get('Question');
-        	$question->postcoderestriction = Input::get('PostCodeRestriction');
-        	$question->postcodeinclusion = Input::get('PostCodeInclusion');
-        	$question->postcodeexclusion = Input::get('PostCodeExclusion');
-        	$question->agerestriction = Input::get('AgeRestriction');
-        	$question->agebracket = Input::get('AgeBracket');
-        	$question->ownhomerestriction = Input::get('OwnHomeRestriction');
-        	$question->ownhomeoptions = Input::get('OwnHomeOptions');
-        	$question->telephonerestriction = Input::get('TelephoneRestriction');
-        	$question->telephoneoptions = Input::get('TelephoneOptions');
-        	$question->costperlead = Input::get('CostPerLead');
-        	$question->columnheader = Input::get('ColumnHeader');
-        	$question->deliveryassignment = Input::get('DeliveryAssignment');
-            $question->isenabled = Input::get('IsEnabled');
-            $question->sortorder = Input::get('sortorder');
-        	$question->save();
+            if(Input::get("numGenerate") == "") // For Single Questions
+            {
+                $question = new Question();
+                $question->question             = Input::get('Question');
+                $question->postcoderestriction  = Input::get('PostCodeRestriction');
+                $question->postcodeinclusion    = Input::get('PostCodeInclusion');
+                $question->postcodeexclusion    = Input::get('PostCodeExclusion');
+                $question->agerestriction       = Input::get('AgeRestriction');
+                $question->agebracket           = Input::get('AgeBracket');
+                $question->ownhomerestriction   = Input::get('OwnHomeRestriction');
+                $question->ownhomeoptions       = Input::get('OwnHomeOptions');
+                $question->telephonerestriction = Input::get('TelephoneRestriction');
+                $question->telephoneoptions     = Input::get('TelephoneOptions');
+                $question->costperlead          = Input::get('CostPerLead');
+                $question->columnheader         = Input::get('ColumnHeader');
+                $question->deliveryassignment   = Input::get('DeliveryAssignment');
+                $question->isenabled            = Input::get('IsEnabled');
+                $question->po_num               = Input::get('po_num');
+                $question->save();
 
-        	Session::flash('alert-success', 'Form Submitted Successfully.');
+                $question = Question::find($question->id);
+                $question->sortorder = $question->id;
+                $question->save();
 
-            return Redirect::to('question/create');
+                Session::flash('alert-success', 'Form Submitted Successfully.');
+
+                return Redirect::to('question/create');
+            }
+            else // For multi-part Questions
+            {
+                $numChild = intval(Input::get("numGenerate"));
+
+                // Save the main question first
+                $question = new Question();
+                $question->question              = Input::get('Question');
+                $question->postcoderestriction   = Input::get('PostCodeRestriction');
+                $question->postcodeinclusion     = Input::get('PostCodeInclusion');
+                $question->postcodeexclusion     = Input::get('PostCodeExclusion');
+                $question->agerestriction        = Input::get('AgeRestriction');
+                $question->agebracket            = Input::get('AgeBracket');
+                $question->ownhomerestriction    = Input::get('OwnHomeRestriction');
+                $question->ownhomeoptions        = Input::get('OwnHomeOptions');
+                $question->telephonerestriction  = Input::get('TelephoneRestriction');
+                $question->telephoneoptions      = Input::get('TelephoneOptions');
+                $question->costperlead           = Input::get('CostPerLead');
+                $question->columnheader          = Input::get('ColumnHeader');
+                $question->deliveryassignment    = Input::get('DeliveryAssignment');
+                $question->isenabled             = Input::get('IsEnabled');
+                $question->po_num                = Input::get('po_num');
+                $question->child_count           = $numChild;
+                $question->save();
+
+                $question = Question::find($question->id);
+                $question->sortorder = $question->id;
+                $question->save();
+
+                // Then the child questions
+                for($x = 1; $x <= $numChild; $x++)
+                {
+                    $colheader = Input::get('ColumnHeader')."_".$x;
+                    $questionChild = new Question();
+                    $questionChild->question              = Input::get($colheader);
+                    $questionChild->costperlead           = floatval(Input::get($colheader."_cost"));
+                    $questionChild->child_enable_response = Input::get($colheader."_response");
+                    $questionChild->isenabled             = Input::get('IsEnabled');
+                    $questionChild->is_child              = 1;
+                    $questionChild->columnheader          = $colheader;
+                    $questionChild->po_num                = Input::get('po_num');
+                    $questionChild->deliveryassignment    = Input::get('DeliveryAssignment');
+                    $questionChild->parent_colheader      = Input::get('ColumnHeader');
+                    $questionChild->save();
+
+                    $question_sort = Question::find($questionChild->id);
+                    $question_sort->sortorder = $questionChild->id;
+                    $question_sort->save();
+                }
+
+                Session::flash('alert-success', 'Multi Question Form Submitted Successfully.');
+
+                return Redirect::to('question/create');
+
+            }
         	
-           
         }
 	}
 
@@ -147,13 +207,12 @@ class QuestionController extends Controller {
             $question->columnheader = Input::get('ColumnHeader');
             $question->deliveryassignment = Input::get('DeliveryAssignment');
             $question->isenabled = Input::get('IsEnabled');
-            $question->sortorder = Input::get('sortorder');
+            //$question->sortorder = Input::get('sortorder');
         	$question->save();
 
         	Session::flash('alert-success', 'Question Updated Successfully.');
 
             return Redirect::to('question');
-           
         }
 	}
 

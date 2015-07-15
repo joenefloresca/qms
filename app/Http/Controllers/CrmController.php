@@ -58,6 +58,7 @@ class CrmController extends Controller {
 		$CRMWorkStatus            = Input::get("CRMWorkStatus");
 		$CRMOwnHomeOptions        = Input::get("CRMOwnHomeOptions");
 		$CRMMaritalStatus         = Input::get("CRMMaritalStatus");
+		$customer_id              = Input::get("customer_id");
 
 		$crm = new Crm();
 		$crm->disposition         = $CrmDisposition;
@@ -81,6 +82,7 @@ class CrmController extends Controller {
 		$crm->home_status         = $CRMOwnHomeOptions;
 		$crm->marital_status      = $CRMMaritalStatus;
 		$crm->agent_id      	  = Auth::user()->id;
+		$crm->customer_id      	  = $customer_id ;
 
 		if($crm->save())
 		{

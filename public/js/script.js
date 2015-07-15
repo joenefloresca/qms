@@ -16,6 +16,10 @@ function get_response(id)
 		$("#CRMGross").val(current_gross.toFixed(2));
 		$("#"+val+"block").css("display","none");
 	}
+	else
+	{
+		$("#"+val+"block").css("display","none");
+	}
 }
 
 var sortSequence = [];
@@ -285,198 +289,213 @@ var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
 var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
-var count = 0;
-var flag = 0; 
-var getRestrictions = [];	
 
+	
+    console.log(data);
 	$.each(data, function(key,value) {
 		// Make an array variable where you will store the Restriction Name and Loop thru it
-  			
-		if(value.postcoderestriction == "PostCodeInclusion" || value.postcoderestriction == "PostCodeExclusion" || value.postcoderestriction == "Both")
+		var getRestrictions = [];
+		var count = 0;
+		var flag = 0; 
+
+		if(value.is_child == 0) // Check if parent question
 		{
-			if(value.postcoderestriction == "Both")
+			console.log(value.columnheader+" is a parent question.");
+			console.log(value.agerestriction+" is agerestriction");
+
+			if(value.postcoderestriction == "PostCodeInclusion" || value.postcoderestriction == "PostCodeExclusion" || value.postcoderestriction == "Both")
 			{
-				count += 2;
-				getRestrictions.push("postcodeinclusion");
-				getRestrictions.push("postcodeexclusion");
+				if(value.postcoderestriction == "Both")
+				{
+					count += 2;
+					getRestrictions.push("postcodeinclusion");
+					getRestrictions.push("postcodeexclusion");
+				}
+				if(value.postcoderestriction == "PostCodeInclusion")
+				{
+					count++;
+					getRestrictions.push("postcodeinclusion");
+				}
+				if(value.postcoderestriction == "PostCodeExclusion")
+				{
+					count++;
+					getRestrictions.push("postcodeexclusion");
+				}
+
 			}
-			if(value.postcoderestriction == "PostCodeInclusion")
+			if(value.agerestriction == "Yes")
 			{
 				count++;
-				getRestrictions.push("postcodeinclusion");
+				getRestrictions.push("agebracket");
 			}
-			if(value.postcoderestriction == "PostCodeExclusion")
+			if(value.ownhomerestriction == "Yes")
 			{
 				count++;
-				getRestrictions.push("postcodeexclusion");
+				getRestrictions.push("ownhomeoptions");
 			}
-		}
-		if(value.agerestriction == "Yes")
-		{
-			count++;
-			getRestrictions.push("agebracket");
-		}
-		if(value.ownhomerestriction == "Yes")
-		{
-			count++;
-			getRestrictions.push("ownhomeoptions");
-		}
-		if(value.telephonerestriction == "Yes")
-		{
-			count++;
-			getRestrictions.push("telephoneoptions");
-		}
-
-		$.each(getRestrictions, function(key2, value2){
-			if(value2 == "agebracket")
+			if(value.telephonerestriction == "Yes")
 			{
-				if(value.agebracket == age)
-				{
-					flag++;
-					if(flag == count)
-					{
-						$('#'+value.columnheader).prop("disabled", false);
-					}
-				}
+				count++;
+				getRestrictions.push("telephoneoptions");
 			}
 
-			if(value2 == "telephoneoptions")
-			{
-				if(value.telephoneoptions == CRMTelephoneOptions)
-				{
-					flag++;
-					if(flag == count)
-					{
-						$('#'+value.columnheader).prop("disabled", false);
-					}
-				}
-			}
-
-			if(value2 == "ownhomeoptions")
-			{
-				if(value.ownhomeoptions == CRMOwnHomeOptions)
-				{
-					flag++;
-					if(flag == count)
-					{
-						$('#'+value.columnheader).prop("disabled", false);
-					}
-				}
-			}
-
-			if(getRestrictions.length == 0)
+			if(getRestrictions.length == 0) // If has no restriction then enable the question
 			{
 				$('#'+value.columnheader).prop("disabled", false);
 			}
-
-			if(value2 == "postcodeinclusion")
+			else
 			{
-
-				var postcodeinclusion = value.postcodeinclusion.split(',');
-				var postcodes = CRMPostcode.split('/');
-				var numMatches = 0;
-
-				for (var i = 0; i < postcodes.length; i++) 
+				// Apply restriction rule
+				$.each(getRestrictions, function(key2, value2)
 				{
-					for(var x = 0; x < postcodeinclusion.length; x++)
+					if(value2 == "agebracket")
 					{
-						var checkspace = (postcodeinclusion[x].indexOf(' ') >= 0);
-						// console.log(checkspace);
-						if(checkspace == true)
+						if(value.agebracket == age)
 						{
-							// console.log("Has space satisfied");
-							if ($.inArray(postcodes[i], postcodeinclusion) == -1)
+							console.log("Age is in.");
+							console.log("Flag is "+flag);
+							console.log("Count is "+count);
+							flag++;
+							if(flag == count)
 							{
-								// console.log("Postcode " + postcodes[i] + " is not allowed");
-							}
-							else
-							{
-								numMatches++;
-							}
-						}
-						else
-						{
-							var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
-
-							if(checkspacePostcodeIn == true)
-							{
-								var newpostcodein = postcodes[i].split(' ');
-								if(newpostcodein[0] == postcodeinclusion[x])
-								{
-								numMatches++;
-								}
+								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
 					}
-				}
-
-			    if(numMatches > 0)
-			    {
-			    	$('#'+value.columnheader).prop("disabled", false);
-			    }
-			}
-
-			if(value2 = "postcodeexclusion")
-			{
-				var postcodeexclusion = value.postcodeexclusion.split(',');
-				var postcodes = CRMPostcode.split('/');
-				var numMatches2 = 0;
-
-				for (var i = 0; i < postcodes.length; i++) 
-				{
-					for(var x = 0; x < postcodeexclusion.length; x++)
+					if(value2 == "telephoneoptions")
 					{
-						var checkspace = (postcodeexclusion[x].indexOf(' ') >= 0);
-						if(checkspace == true)
+						if(value.telephoneoptions == CRMTelephoneOptions)
 						{
-							
-							if ($.inArray(postcodes[i], postcodeexclusion) == -1)
+							flag++;
+							if(flag == count)
 							{
-								console.log("Postcode " + postcodes[i] + " is not allowed");
-							}
-							else
-							{
-								numMatches2++;
-							}
-							
-						}
-						else
-						{
-							var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
-							if(checkspacePostcodeIn == true)
-							{
-								var newpostcodein = postcodes[i].split(' ');
-								if(newpostcodein[0] == postcodeexclusion[x])
-								{
-								numMatches2++;
-								}
+								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
 					}
-				}
+					if(value2 == "ownhomeoptions")
+					{
+						if(value.ownhomeoptions == CRMOwnHomeOptions)
+						{
+							flag++;
+							if(flag == count)
+							{
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+						}
+					}
+					if(value2 == "postcodeinclusion")
+					{
 
-				if(numMatches2 > 0)
-			    {
-			    	$('#'+value.columnheader).prop("disabled", true);
-			    }
+						var postcodeinclusion = value.postcodeinclusion.split(',');
+						var postcodes = CRMPostcode.split('/');
+						var numMatches = 0;
+
+						for (var i = 0; i < postcodes.length; i++) 
+						{
+							for(var x = 0; x < postcodeinclusion.length; x++)
+							{
+								var checkspace = (postcodeinclusion[x].indexOf(' ') >= 0);
+								// console.log(checkspace);
+								if(checkspace == true)
+								{
+									// console.log("Has space satisfied");
+									if ($.inArray(postcodes[i], postcodeinclusion) == -1)
+									{
+										//console.log("Postcode " + postcodes[i] + " is not allowed");
+									}
+									else
+									{
+										numMatches++;
+									}
+								}
+								else
+								{
+									var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
+
+									if(checkspacePostcodeIn == true)
+									{
+										var newpostcodein = postcodes[i].split(' ');
+										if(newpostcodein[0] == postcodeinclusion[x])
+										{
+										numMatches++;
+										}
+									}
+								}
+							}
+						}
+
+					    if(numMatches > 0)
+					    {
+					    	$('#'+value.columnheader).prop("disabled", false);
+					    }
+					}
+					if(value2 = "postcodeexclusion")
+					{
+						var postcodeexclusion = value.postcodeexclusion.split(',');
+						var postcodes = CRMPostcode.split('/');
+						var numMatches2 = 0;
+
+						for (var i = 0; i < postcodes.length; i++) 
+						{
+							for(var x = 0; x < postcodeexclusion.length; x++)
+							{
+								var checkspace = (postcodeexclusion[x].indexOf(' ') >= 0);
+								if(checkspace == true)
+								{
+									if ($.inArray(postcodes[i], postcodeexclusion) == -1)
+									{
+										console.log("Postcode " + postcodes[i] + " is not allowed");
+									}
+									else
+									{
+										numMatches2++;
+									}
+								}
+								else
+								{
+									var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
+									if(checkspacePostcodeIn == true)
+									{
+										var newpostcodein = postcodes[i].split(' ');
+										if(newpostcodein[0] == postcodeexclusion[x])
+										{
+										numMatches2++;
+										}
+									}
+								}
+							}
+						}
+
+						if(numMatches2 > 0)
+					    {
+					    	$('#'+value.columnheader).prop("disabled", true);
+					    }
+					}
+
+				});
+
+			}
+			console.log(getRestrictions);
+
+			if(value.child_count > 0)
+			{
+               console.log("This has child questions with "+value.child_count+" child questions");
+
+      
 			}
 
-		});
-
-		// console.log(value.columnheader+" has "+ count + " number of restrictions.");
-		// console.log(value.postcoderestriction);
-		// console.log(getRestrictions);
-	
-
-		if(count == 0)
-		{
-			$('#'+value.columnheader).prop("disabled", false);
 		}
 		else
 		{
-			count = 0;
-			getRestrictions = [];
+			
+			console.log(value.columnheader+" is a child question.");
+			console.log(value.columnheader+" value is "+value.costperlead);
+			console.log(value.columnheader+" response enable is "+value.child_enable_response);
+			console.log(value.columnheader+" parent is "+value.parent_colheader);
 		}
+  			
+		
 
 	});
 });
@@ -552,6 +571,7 @@ $("#searchCustomer").click(function() {
 			$("#CRMWorkStatus").val(myObj.work_status);
 			$("#CRMOwnHomeOptions").val(myObj.home_status);
 			$("#CRMMaritalStatus").val(myObj.marital_status);
+			$("#customer_id").val(myObj.id);
 
 			alert("Record found for "+myObj.title+" "+myObj.firstname+" "+myObj.lastname);
 		}
@@ -562,4 +582,25 @@ $("#searchCustomer").click(function() {
 		
 	}});
 	
+});
+
+$("#btnGenerate").click(function() {
+	     var num = parseInt($("#numGenerate").val());
+	     var html = '';
+	     var columnheader = $("#ColumnHeader").val();
+
+	     for(var i = 1; i <= num ; i++)
+	     {
+	     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><select class="form-control" name="'+columnheader+'_'+i+'_response'+'"><option value="">Response</option><option value="Yes">Yes</option><option value="Possibly">Possibly</option></select></td></tr>';
+	     	$('#scripts').append(html);
+	     }
+
+	     for(var x = 1; x <= num ; x++)
+	     {
+	     	$('#'+columnheader+'_'+x).summernote();
+	     	console.log("in");
+	     }
+	     
+	    $('#NumberOfScripts').val(num);
+ 		
 });																		

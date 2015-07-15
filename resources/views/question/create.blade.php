@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-12">
 			<div class="panel panel-success">
 				<div class="panel-heading">Question</div>
 				<div class="panel-body">
@@ -31,7 +31,7 @@
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Question</label>
-							<div class="col-md-8">
+							<div class="col-md-6">
 								<textarea name="Question" id="Question" class="form-control" row="7">Content here..</textarea>
 							</div>
 						</div>
@@ -171,11 +171,40 @@
 						</div>
 
 						<div class="form-group">
+							<label class="col-md-4 control-label">P.O #</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="po_num" id="po_num" value="">
+							</div>
+						</div>
+
+						<!-- <div class="form-group">
 							<label class="col-md-4 control-label">Sort Order</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="sortorder" id="sortorder" value="">
 							</div>
-						</div>
+						</div> -->
+
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Number of Child Questions</label>
+								<div class="col-md-4">
+									<input type="text" class="form-control" name="numGenerate" id="numGenerate" value="{{ old('numGenerate') }}" placeholder=""> 
+								</div>
+							</div> 
+
+							<div class="form-group">
+								<div class="col-md-4 control-label"></div>
+								<div class="col-md-4">
+									<button type="button" class="btn btn-default" id="btnGenerate" name="btnGenerate">Go</button>
+								</div>
+							</div>
+
+							
+
+							<input type="hidden" class="form-control" name="NumberOfScripts" id="NumberOfScripts" value="{{ old('NumberOfScripts') }}" placeholder="" > 
+
+							<table class="table" id="scripts"></table>
+					
 
 						<!-- <input type="text" name="restrictioncount" id="restrictioncount" /> -->
 
