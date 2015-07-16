@@ -64,12 +64,23 @@ return [
             'strict'    => false,
         ],
 
+        // 'pgsql' => [
+        //     'driver'   => 'pgsql',
+        //     'host'     => '192.168.3.9',
+        //     'database' => 'qms',
+        //     'username' => 'postgres',
+        //     'password' => 'postgres',
+        //     'charset'  => 'utf8',
+        //     'prefix'   => '',
+        //     'schema'   => 'public',
+        // ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => '192.168.3.9',
+            'host'     => 'j-floresca.cloudapp.net',
             'database' => 'qms',
             'username' => 'postgres',
-            'password' => 'postgres',
+            'password' => 'password',
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
