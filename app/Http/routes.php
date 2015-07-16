@@ -29,6 +29,14 @@ Route::get('api/sort/questions', 'QuestionController@apiSortQuestions');
 
 Route::get('api/question/changeenable', 'QuestionController@apiQuestionChangeEnable');
 
+Route::get('crm/api/questions/childcount', 'QuestionController@apiQuestionChildCount');
+
+Route::get('crm/api/questions/childresponse', 'QuestionController@apiQuestionChildResponse');
+
+Route::get('crm/api/questions/childsort', 'QuestionController@apiQuestionChildSort');
+
+Route::get('crm/api/questions/checkchild', 'QuestionController@apiQuestionChildCheck');
+
 /* ColumnHeader Resource Controller*/
 Route::resource('column', 'ColumnController');
 

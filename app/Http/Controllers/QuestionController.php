@@ -20,6 +20,32 @@ class QuestionController extends Controller {
 		$this->middleware('auth');
 	}
 
+    public function apiQuestionChildCheck()
+    {
+        return Question::where('parent_colheader', '=', Input::get('parent'))
+            ->where('columnheader', '=', Input::get('colheader'))
+            ->count();
+    }
+
+    public function apiQuestionChildSort()
+    {
+       $query = Question::where('columnheader', '=', Input::get('childheader'))->get();
+       return json_encode(array('child_sort_num'=>$query[0]->child_sort_num, 'parent_colheader' => $query[0]->parent_colheader)); 
+    }
+
+    public function apiQuestionChildCount()
+    {
+       
+       $query = Question::where('columnheader', '=', Input::get('colheader'))->get();
+       return $query[0]->child_count;
+    }
+
+    public function apiQuestionChildResponse()
+    {
+        $query = Question::where('columnheader', '=', Input::get('childheader'))->get();
+        return $query[0]->child_enable_response;
+    }
+
 	public function apiGetQuestions()
 	{
 		$questions = Question::orderBy('sortorder', 'asc')->get();
@@ -146,6 +172,7 @@ class QuestionController extends Controller {
                     $questionChild->po_num                = Input::get('po_num');
                     $questionChild->deliveryassignment    = Input::get('DeliveryAssignment');
                     $questionChild->parent_colheader      = Input::get('ColumnHeader');
+                    $questionChild->child_sort_num        = $x;
                     $questionChild->save();
 
                     $question_sort = Question::find($questionChild->id);
