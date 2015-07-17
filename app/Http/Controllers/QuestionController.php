@@ -20,11 +20,27 @@ class QuestionController extends Controller {
 		$this->middleware('auth');
 	}
 
+    // public function apiQuestionChildCheck()
+    // {
+    //     return Question::where('parent_colheader', '=', Input::get('parent'))
+    //                     ->where('columnheader', '=', Input::get('colheader'))
+    //                     ->count();
+    // }
+
     public function apiQuestionChildCheck()
     {
-        return Question::where('parent_colheader', '=', Input::get('parent'))
+        $response = "";
+        $count = Question::where('parent_colheader', '=', Input::get('parent'))
             ->where('columnheader', '=', Input::get('colheader'))
             ->count();
+
+        if($count > 0)
+        {
+            $query = Question::where('columnheader', '=', Input::get('colheader'))->get();
+            $response = $query[0]->child_enable_response;
+        }
+         
+        return json_encode(array("count" => $count, "response" => $response));            
     }
 
     public function apiQuestionChildSort()

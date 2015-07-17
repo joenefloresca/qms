@@ -54,14 +54,25 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'forge'),
-            'username'  => env('DB_USERNAME', 'forge'),
-            'password'  => env('DB_PASSWORD', ''),
+            'host'      => 'localhost',
+            'database'  => 'qms',
+            'username'  => 'root',
+            'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             'strict'    => false,
+        ],
+
+        'pgsql' => [
+            'driver'   => 'pgsql',
+            'host'     => 'localhost',
+            'database' => 'qms',
+            'username' => 'postgres',
+            'password' => '',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
         ],
 
         // 'pgsql' => [
@@ -75,16 +86,16 @@ return [
         //     'schema'   => 'public',
         // ],
 
-        'pgsql' => [
-            'driver'   => 'pgsql',
-            'host'     => 'j-floresca.cloudapp.net',
-            'database' => 'qms',
-            'username' => 'postgres',
-            'password' => 'password',
-            'charset'  => 'utf8',
-            'prefix'   => '',
-            'schema'   => 'public',
-        ],
+        // 'pgsql' => [
+        //     'driver'   => 'pgsql',
+        //     'host'     => 'j-floresca.cloudapp.net',
+        //     'database' => 'qms',
+        //     'username' => 'postgres',
+        //     'password' => 'password',
+        //     'charset'  => 'utf8',
+        //     'prefix'   => '',
+        //     'schema'   => 'public',
+        // ],
 
         'mcssurvey_main' => [
             'driver'   => 'pgsql',

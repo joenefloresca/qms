@@ -77,56 +77,44 @@ function get_response(id)
 						var parent = myObj.parent_colheader;
 						var nextcolheader = parent+"_"+nextChildSort;
 
-						// Check if there's another child
-						//console.log("Parent of current is "+parent);
-						//console.log("Next colheader is "+nextcolheader);
-
 						$.ajax({
 							url: "api/questions/checkchild", 
 							type: 'GET',
 							data: {"parent":parent, "colheader" : nextcolheader},
 							success: function(result){
-							if(parseInt(result) > 0)
+							var myObjResult = $.parseJSON(result);
+							if(myObjResult.count > 0)
 							{
-								// Enable response for the next child
-								$.ajax({
-									url: "api/questions/childresponse", 
-									type: 'GET',
-									data: {"childheader":nextcolheader},
-									success: function(child_response){
-										
-										if($("#"+currentheader).val() == child_response)
-										{
-											$('#'+nextcolheader).prop("disabled", false);
+								if($("#"+currentheader).val() == myObjResult.response)
+								{
+									$('#'+nextcolheader).prop("disabled", false);
 
-											if(response == "Yes" || response == "Possibly")
-											{
-												current_gross = current_gross + parseFloat(cost);
-												$("#CRMGross").val(current_gross.toFixed(2));
-												$("#"+currentheader+"block").css("display","none");
-											}
-											else
-											{
-												$("#"+currentheader+"block").css("display","none");
-											}
-										}
-										else
-										{
-											$('#'+nextcolheader).prop("disabled", true);
-
-											if(response == "Yes" || response == "Possibly")
-											{
-												current_gross = current_gross + parseFloat(cost);
-												$("#CRMGross").val(current_gross.toFixed(2));
-												$("#"+currentheader+"block").css("display","none");
-											}
-											else
-											{
-												$("#"+currentheader+"block").css("display","none");
-											}
-										}
+									if(response == "Yes" || response == "Possibly")
+									{
+										current_gross = current_gross + parseFloat(cost);
+										$("#CRMGross").val(current_gross.toFixed(2));
+										$("#"+currentheader+"block").css("display","none");
 									}
-								});
+									else
+									{
+										$("#"+currentheader+"block").css("display","none");
+									}
+								}
+								else
+								{
+									$('#'+nextcolheader).prop("disabled", true);
+
+									if(response == "Yes" || response == "Possibly")
+									{
+										current_gross = current_gross + parseFloat(cost);
+										$("#CRMGross").val(current_gross.toFixed(2));
+										$("#"+currentheader+"block").css("display","none");
+									}
+									else
+									{
+										$("#"+currentheader+"block").css("display","none");
+									}
+								}
 							}
 							else
 							{
@@ -140,9 +128,76 @@ function get_response(id)
 								{
 									$("#"+currentheader+"block").css("display","none");
 								}
-							}	
+							}
 							
 						}});
+
+						// Check if there's another child
+						//console.log("Parent of current is "+parent);
+						//console.log("Next colheader is "+nextcolheader);
+
+						// $.ajax({
+						// 	url: "api/questions/checkchild", 
+						// 	type: 'GET',
+						// 	data: {"parent":parent, "colheader" : nextcolheader},
+						// 	success: function(result){
+						// 	if(parseInt(result) > 0)
+						// 	{
+						// 		// Enable response for the next child
+						// 		$.ajax({
+						// 			url: "api/questions/childresponse", 
+						// 			type: 'GET',
+						// 			data: {"childheader":nextcolheader},
+						// 			success: function(child_response){
+										
+						// 				if($("#"+currentheader).val() == child_response)
+						// 				{
+						// 					$('#'+nextcolheader).prop("disabled", false);
+
+						// 					if(response == "Yes" || response == "Possibly")
+						// 					{
+						// 						current_gross = current_gross + parseFloat(cost);
+						// 						$("#CRMGross").val(current_gross.toFixed(2));
+						// 						$("#"+currentheader+"block").css("display","none");
+						// 					}
+						// 					else
+						// 					{
+						// 						$("#"+currentheader+"block").css("display","none");
+						// 					}
+						// 				}
+						// 				else
+						// 				{
+						// 					$('#'+nextcolheader).prop("disabled", true);
+
+						// 					if(response == "Yes" || response == "Possibly")
+						// 					{
+						// 						current_gross = current_gross + parseFloat(cost);
+						// 						$("#CRMGross").val(current_gross.toFixed(2));
+						// 						$("#"+currentheader+"block").css("display","none");
+						// 					}
+						// 					else
+						// 					{
+						// 						$("#"+currentheader+"block").css("display","none");
+						// 					}
+						// 				}
+						// 			}
+						// 		});
+						// 	}
+						// 	else
+						// 	{
+						// 		if(response == "Yes" || response == "Possibly")
+						// 		{
+						// 			current_gross = current_gross + parseFloat(cost);
+						// 			$("#CRMGross").val(current_gross.toFixed(2));
+						// 			$("#"+currentheader+"block").css("display","none");
+						// 		}
+						// 		else
+						// 		{
+						// 			$("#"+currentheader+"block").css("display","none");
+						// 		}
+						// 	}	
+							
+						// }});
 
 					}
 				});	
