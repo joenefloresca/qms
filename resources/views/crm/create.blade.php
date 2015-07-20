@@ -404,7 +404,7 @@
                                         <td>{!! $value->question !!}</td>
                                         <td>
                                         	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
-                                        		<option value="">---</option>
+                                        		<option value=""></option>
                                         		<option value="Yes">Yes</option>
                                         		<option value="No">No</option>
                                         		<option value="Possibly">Possibly</option>

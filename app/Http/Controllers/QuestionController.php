@@ -17,7 +17,7 @@ class QuestionController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+        $this->middleware('auth');
 	}
 
     // public function apiQuestionChildCheck()
@@ -87,11 +87,13 @@ class QuestionController extends Controller {
 
 	public function index()
 	{
+        $this->middleware('admin');
 		return view('question.index');
 	}
 
 	public function create()
 	{
+        $this->middleware('admin');
 		return view('question.create');
 	}
 
@@ -207,6 +209,7 @@ class QuestionController extends Controller {
 
 	public function edit($id)
 	{
+        $this->middleware('admin');
 		$question = Question::find($id);
 		return View::make('question.edit')->with('question', $question);
 	}

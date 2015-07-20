@@ -30,11 +30,13 @@ class ColumnController extends Controller {
 
 	public function index()
 	{
+		$this->middleware('admin');
 		return view('column.index');
 	}
 
 	public function create()
 	{
+		$this->middleware('admin');
 		return view('column.create');
 	}
 

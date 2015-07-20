@@ -1,6 +1,205 @@
 $('#Question').summernote();
 $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
+$( document ).ready(function() {
+
+	var data = {labels: [], datasets: []};
+	var label = {};
+	var fillColor = {};
+	var strokeColor = {};
+	var highlightFill = {};
+	var highlightStroke = {};
+	var data = {};
+
+	$.ajax({
+		url: "api/crm/charityresponsesall", 
+		success: function(result){
+			var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		data.labels.push(value.columnheader);
+	    		
+	    		var label = "label";
+	    		data.datasets.push();
+
+
+	    		console.log(value.columnheader);
+	    		console.log(value.revenue);
+	    		
+			});
+	    	console.log(data);
+			
+			// var data = {
+			//     labels: ["January", "February", "March", "April", "May", "June", "July"],
+			//     datasets: [
+			//         {
+			//             label: "My First dataset",
+			//             fillColor: "rgba(220,220,220,0.5)",
+			//             strokeColor: "rgba(220,220,220,0.8)",
+			//             highlightFill: "rgba(220,220,220,0.75)",
+			//             highlightStroke: "rgba(220,220,220,1)",
+			//             data: [65, 59, 80, 81, 56, 55, 40]
+			//         },
+			//         {
+			//             label: "My Second dataset",
+			//             fillColor: "rgba(151,187,205,0.5)",
+			//             strokeColor: "rgba(151,187,205,0.8)",
+			//             highlightFill: "rgba(151,187,205,0.75)",
+			//             highlightStroke: "rgba(151,187,205,1)",
+			//             data: [28, 48, 40, 19, 86, 27, 90]
+			//         }
+			//     ]
+			// };
+
+			
+			
+			var ctx = document.getElementById("canvas").getContext("2d");
+			myBar = new Chart(ctx).Bar(data, {
+				responsive : true
+			});
+		}	
+	});
+
+});
+
+$('#fromDateAgentPer').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+$('#toDateAgentPer').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#fromDateCharityRes').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+$('#toDateCharityRes').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$("#btnDateCharityRes").click(function() {
+	if ($.fn.dataTable.isDataTable('#CharityResponses') ) 
+	{	
+    	table.destroy();
+    	table = $('#CharityResponses').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	    $.ajax({
+		url: "api/crm/charityresponses", 
+		type: 'GET',
+		data: {"from" : $("#fromDateCharityRes").val(), "to" :  $("#toDateCharityRes").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		
+	    		table.row.add( [
+		            value.question_id,	
+		            value.columnheader,
+		            value.ct_yes,
+		            value.ct_no,
+		            value.ct_maybe,
+		            value.costperlead,
+		            value.revenue,
+	        	] ).draw();
+	    		
+			});
+		}});
+
+	}
+    else 
+    {
+	    table = $('#CharityResponses').DataTable();
+	    $.ajax({
+		url: "api/crm/charityresponses", 
+		type: 'GET',
+		data: {"from" : $("#fromDateCharityRes").val(), "to" :  $("#toDateCharityRes").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		
+	    		table.row.add( [
+		            value.question_id,	
+		            value.columnheader,
+		            value.ct_yes,
+		            value.ct_no,
+		            value.ct_maybe,
+		            value.costperlead,
+		            value.revenue,
+	        	] ).draw();
+	    		
+			});
+		}});
+
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+	}
+	
+});
+
+$("#btnDateAgentPer").click(function() {
+	if ($.fn.dataTable.isDataTable('#AgentPerformance') ) 
+	{
+    	table.destroy();
+    	table = $('#AgentPerformance').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	    $.ajax({
+		url: "api/crm/agentperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		
+	    		table.row.add( [
+		            value.name,	
+		            value.totalloginhours,
+		            value.totalapplication,
+		            value.applicationperhour,
+		            value.rph,
+	        	] ).draw();
+	    		
+			});
+		}});
+
+	}
+    else 
+    {
+	    table = $('#AgentPerformance').DataTable();
+	    $.ajax({
+		url: "api/crm/agentperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		
+	    		table.row.add( [
+		            value.name,	
+		            value.totalloginhours,
+		            value.totalapplication,
+		            value.applicationperhour,
+		            value.rph,
+	        	] ).draw();
+	    		
+			});
+		}});
+
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+	}
+	
+});
+
+
+
+
 
 function get_response(id)
 {

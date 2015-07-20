@@ -63,6 +63,17 @@ Route::post('customer-upload', 'CustomerController@postUploadCsv');
 Route::get('api/customer/all', 'CustomerController@apiGetCustomers');
 Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
 
+
+/* Reports Rooutes */
+Route::get('reports/agentperformance', 'ReportController@agentperformance');
+Route::get('reports/charityresponses', 'ReportController@charityresponses');
+
+/* Reports API Calls */
+Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperformance');
+Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
+Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
+
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

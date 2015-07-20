@@ -8,7 +8,13 @@
 				<div class="panel-heading">Home</div>
 
 				<div class="panel-body">
-					You are logged in!
+					
+					<div class="col-md-12">
+						<div style="">
+							Responses Per Charity
+							<canvas id="canvas" height="450" width="600"></canvas>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

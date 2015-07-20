@@ -17,7 +17,7 @@ class CustomerController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+        $this->middleware('auth');
 	}
 
     public function getUploadCsv()
@@ -89,11 +89,13 @@ class CustomerController extends Controller {
 
 	public function index()
 	{
+        $this->middleware('auth');
 		return view('customer.index');
 	}
 
 	public function create()
 	{
+        $this->middleware('admin');
 		return view('customer.create');
 	}
 
@@ -168,6 +170,7 @@ class CustomerController extends Controller {
 
     public function edit($id)
     {
+        $this->middleware('admin');
         $customer = Customer::find($id);
         return View::make('customer.edit')->with('customer', $customer);
     }

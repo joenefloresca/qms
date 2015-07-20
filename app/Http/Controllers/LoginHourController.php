@@ -16,7 +16,8 @@ class LoginHourController extends Controller {
 
 
 	public function index()
-	{
+	{	
+		$this->middleware('admin');
 		return view('loginhours.index');
 	}
 
