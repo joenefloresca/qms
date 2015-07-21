@@ -3,52 +3,52 @@ $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
 $( document ).ready(function() {
 
-	var data = {labels: [], datasets: []};
-	var label = {};
-	var fillColor = {};
-	var strokeColor = {};
-	var highlightFill = {};
-	var highlightStroke = {};
-	var data = {};
+	// var data = {labels: [], datasets: []};
+	// var label = {};
+	// var fillColor = {};
+	// var strokeColor = {};
+	// var highlightFill = {};
+	// var highlightStroke = {};
+	// var data = {};
 
 	$.ajax({
 		url: "api/crm/charityresponsesall", 
 		success: function(result){
 			var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		data.labels.push(value.columnheader);
+	    		// data.labels.push(value.columnheader);
 	    		
-	    		var label = "label";
-	    		data.datasets.push();
+	    		// var label = "label";
+	    		// data.datasets.push();
 
 
-	    		console.log(value.columnheader);
-	    		console.log(value.revenue);
+	    		// console.log(value.columnheader);
+	    		// console.log(value.revenue);
 	    		
 			});
 	    	console.log(data);
 			
-			// var data = {
-			//     labels: ["January", "February", "March", "April", "May", "June", "July"],
-			//     datasets: [
-			//         {
-			//             label: "My First dataset",
-			//             fillColor: "rgba(220,220,220,0.5)",
-			//             strokeColor: "rgba(220,220,220,0.8)",
-			//             highlightFill: "rgba(220,220,220,0.75)",
-			//             highlightStroke: "rgba(220,220,220,1)",
-			//             data: [65, 59, 80, 81, 56, 55, 40]
-			//         },
-			//         {
-			//             label: "My Second dataset",
-			//             fillColor: "rgba(151,187,205,0.5)",
-			//             strokeColor: "rgba(151,187,205,0.8)",
-			//             highlightFill: "rgba(151,187,205,0.75)",
-			//             highlightStroke: "rgba(151,187,205,1)",
-			//             data: [28, 48, 40, 19, 86, 27, 90]
-			//         }
-			//     ]
-			// };
+			var data = {
+			    labels: ["January", "February", "March", "April", "May", "June", "July"],
+			    datasets: [
+			        {
+			            label: "My First dataset",
+			            fillColor: "rgba(220,220,220,0.5)",
+			            strokeColor: "rgba(220,220,220,0.8)",
+			            highlightFill: "rgba(220,220,220,0.75)",
+			            highlightStroke: "rgba(220,220,220,1)",
+			            data: [65, 59, 80, 81, 56, 55, 40]
+			        },
+			        {
+			            label: "My Second dataset",
+			            fillColor: "rgba(151,187,205,0.5)",
+			            strokeColor: "rgba(151,187,205,0.8)",
+			            highlightFill: "rgba(151,187,205,0.75)",
+			            highlightStroke: "rgba(151,187,205,1)",
+			            data: [28, 48, 40, 19, 86, 27, 90]
+			        }
+			    ]
+			};
 
 			
 			

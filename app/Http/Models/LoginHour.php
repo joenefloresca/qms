@@ -22,5 +22,27 @@ class LoginHour extends \Eloquent
 		          
 		return $data;
     }
+
+    public function checkLoginHours()
+    {
+        $query = "SELECT * FROM loginhours 
+                WHERE user_id = 2 AND date = '2015-07-21' 
+                AND status = 0 
+                AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'";
+        $data = DB::connection('pgsql')->select($query);
+                  
+        return $data;        
+    }
+
+    public function checkLoginHoursOut()
+    {
+        $query = "SELECT * FROM loginhours 
+                WHERE user_id = 2 AND date = '2015-07-21' 
+                AND status = 1 
+                AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'";
+        $data = DB::connection('pgsql')->select($query);
+                  
+        return $data;        
+    }
     
 }

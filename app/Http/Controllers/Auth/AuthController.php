@@ -75,6 +75,11 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         date_default_timezone_set('Asia/Taipei');
+        // $today = date('Y-m-d');
+        // $yesterday =  date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $today) ) ));
+        // $endshift =  date('Y-m-d h:i:s',(strtotime ( '+6 hour' , strtotime ( $today) ) ));
+        // dd($endshift);
+        // exit();
 
         $this->validate($request, [
             'email' => 'required|email', 'password' => 'required',
@@ -88,8 +93,10 @@ class AuthController extends Controller
             $userid = Auth::user()->id;
             $today = date('Y-m-d');
             $timestamp = date('Y-m-d h:i:s');
-            $checkLogin = LoginHour::where('date', '=', $today)->
-                                     where('user_id', '=', $userid)->first();
+            $logHour = new LoginHour();
+            $checkLogin = $logHour->checkLoginHours();
+
+
             if($checkLogin == null)
             {
                 $insertLoginHours = new LoginHour();
@@ -130,17 +137,16 @@ class AuthController extends Controller
 
         $userid = Auth::user()->id;
         $today = date('Y-m-d');
-        $checkLogin = LoginHour::where('date', '=', $today)->
-                                 where('user_id', '=', $userid)->
-                                 where('status', '=', 1)->
-                                 first();
+        $logHour = new LoginHour();
+        $checkLogin = $logHour->checkLoginHoursOut();
+
         if($checkLogin != null)
         {
             $loginhours = '';
             $timestamp = date('Y-m-d h:i:s');
             $timestamp2 = strtotime($timestamp);
 
-            $userLastLogin = $checkLogin->timestamp;
+            $userLastLogin = $checkLogin[0]->timestamp;
             $userLastLogin2 = strtotime($userLastLogin);
            
             // Get difference in hours
@@ -149,9 +155,9 @@ class AuthController extends Controller
 
             LoginHour::where('date', '=', $today)->
                         where('user_id', '=', $userid)->
-                        update(['loginhours' => $checkLogin->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
+                        update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
         }                         
-
+       
                                
 
         Auth::logout();

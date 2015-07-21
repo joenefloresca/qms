@@ -19,10 +19,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
-/* Questions Resource Controller*/
+/* Questions Resource Route*/
 Route::resource('question', 'QuestionController');
 
-/* Questions API Calls */
+/* Questions Ajax Calls */
 Route::get('api/question/all', 'QuestionController@apiGetQuestions');
 
 Route::get('api/sort/questions', 'QuestionController@apiSortQuestions');
@@ -37,38 +37,38 @@ Route::get('crm/api/questions/childsort', 'QuestionController@apiQuestionChildSo
 
 Route::get('crm/api/questions/checkchild', 'QuestionController@apiQuestionChildCheck');
 
-/* ColumnHeader Resource Controller*/
+/* ColumnHeader Resource Route*/
 Route::resource('column', 'ColumnController');
 
-/* ColumnHeader API Calls */
+/* ColumnHeader Ajax Calls */
 Route::get('api/column/all', 'ColumnController@apiGetColumns');
 
-/* CRM Resource Controller*/
+/* CRM Resource Route*/
 Route::resource('crm', 'CrmController');
 
-/* Login Hours Resource Controller*/
+/* Login Hours Resource Route*/
 Route::resource('loginhours', 'LoginHourController');
 
-/* Login Hours API Calls */
+/* Login Hours Ajax Calls */
 Route::get('api/loginhours/all', 'LoginHourController@getLoginHoursAll');
 
-/* Customers Resource Controller*/
+/* Customers Resource Route*/
 Route::resource('customer', 'CustomerController');
 
-/* Customers Upload CSV Controller*/
+/* Customers Upload CSV Route*/
 Route::get('customer-upload', 'CustomerController@getUploadCsv');
 Route::post('customer-upload', 'CustomerController@postUploadCsv');
 
-/* Customer API Calls */
+/* Customer Ajax Calls */
 Route::get('api/customer/all', 'CustomerController@apiGetCustomers');
 Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
 
 
-/* Reports Rooutes */
+/* Reports Routes */
 Route::get('reports/agentperformance', 'ReportController@agentperformance');
 Route::get('reports/charityresponses', 'ReportController@charityresponses');
 
-/* Reports API Calls */
+/* Reports Ajax Calls */
 Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperformance');
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
