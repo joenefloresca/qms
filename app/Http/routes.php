@@ -37,6 +37,8 @@ Route::get('crm/api/questions/childsort', 'QuestionController@apiQuestionChildSo
 
 Route::get('crm/api/questions/checkchild', 'QuestionController@apiQuestionChildCheck');
 
+Route::get('crm/api/questions/getallactive', 'QuestionController@apiQuestionGetActive');
+
 /* ColumnHeader Resource Route*/
 Route::resource('column', 'ColumnController');
 

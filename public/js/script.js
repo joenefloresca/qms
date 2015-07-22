@@ -1,6 +1,49 @@
 $('#Question').summernote();
 $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
+var records = [];
+$(document).ready(function() {
+/* Load the active questions to be used to check details and logic */
+		$.ajax({
+		url: "api/questions/getallactive", 
+		type: 'GET',
+		success: function(result){
+			
+			var myObj = $.parseJSON(result);
+			console.log(myObj);
+			$.each(myObj, function(key,value) {
+				records.push({
+	                agebracket: value.agebracket,
+	                agerestriction: value.agerestriction,
+	                child_count: value.child_count,
+	                child_enable_response: value.child_enable_response,
+	                child_sort_num: value.child_sort_num,
+	                columnheader: value.columnheader,
+	                costperlead: value.costperlead,
+	                created_at: value.created_at,
+	                deliveryassignment: value.deliveryassignment,
+	                id: value.id,
+	                is_child: value.is_child,
+	                isenabled: value.isenabled,
+	                ownhomeoptions: value.ownhomeoptions,
+	                ownhomerestriction: value.ownhomerestriction,
+	                parent_colheader: value.parent_colheader,
+	                po_num: value.po_num,
+	                postcodeexclusion: value.postcodeexclusion,
+	                postcodeinclusion: value.postcodeinclusion,
+	                postcoderestriction: value.postcoderestriction,
+	                question: value.question,
+	                sortorder: value.sortorder,
+	                telephoneoptions: value.telephoneoptions,
+	                telephonerestriction: value.telephonerestriction,
+	                updated_at: value.updated_at,
+				});
+			});
+			
+		}});
+
+
+});
 $( document ).ready(function() {
 
 	// var data = {labels: [], datasets: []};
@@ -198,38 +241,80 @@ $("#btnDateAgentPer").click(function() {
 });
 
 
-
-
-
 function get_response(id)
 {
+	console.log(records);
 	var currentheader = $(id).attr('id');
 	var current_gross = parseFloat($("#CRMGross").val());
 	var cost 	= $("#"+currentheader).attr('value');
 	var response = $("#"+currentheader).val();
 	var counter = 1;
-	// Check if has child questions
-	$.ajax({
-		url: "api/questions/childcount", 
-		type: 'GET',
-		data: {"colheader":currentheader},
-		success: function(result){
-			if(result > 0) 
-			{
-				/*
-				 Get the first child question and enable it
-				 if the enable response if met				
-				*/
-				//console.log("First child is "+currentheader+"_1");
-				$.ajax({
-					url: "api/questions/childresponse", 
+
+    var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
+    console.log(result);
+    console.log(currentheader);
+
+    if (result.length == 1)
+    {
+    	console.log("Child count is "+result[0].child_count)
+    	if(result[0].child_count > 0)
+    	{
+    		 console.log("Has child questions.");
+    		 var childresponse = $.grep(records, function(e){ return e.columnheader == currentheader+"_1"; });
+    		 if(childresponse.length == 1)
+    		 {
+	 			if($("#"+currentheader).val() == childresponse[0].child_enable_response)
+				{
+					$('#'+currentheader+"_1").prop("disabled", false);
+
+					if(response == "Yes" || response == "Possibly")
+					{
+						current_gross = current_gross + parseFloat(cost);
+						$("#CRMGross").val(current_gross.toFixed(2));
+						$("#"+currentheader+"block").css("display","none");
+					}
+					else
+					{
+						$("#"+currentheader+"block").css("display","none");
+					}
+				}
+				else
+				{
+					$('#'+currentheader+"_1").prop("disabled", true);
+
+					if(response == "Yes" || response == "Possibly")
+					{
+						current_gross = current_gross + parseFloat(cost);
+						$("#CRMGross").val(current_gross.toFixed(2));
+						$("#"+currentheader+"block").css("display","none");
+					}
+					else
+					{
+						$("#"+currentheader+"block").css("display","none");
+					}
+				}
+    		 }
+    	}
+    	else
+    	{
+    		var childsort = $.grep(records, function(e){ return e.columnheader == currentheader; });
+    		if(childsort.length == 1)
+    		{
+    			var nextChildSort = parseInt(childsort[0].child_sort_num)+1;
+    			var parent = childsort[0].parent_colheader;
+    			var nextcolheader = parent+"_"+nextChildSort;
+
+    			$.ajax({
+					url: "api/questions/checkchild", 
 					type: 'GET',
-					data: {"childheader":currentheader+"_1"},
-					success: function(child_response){
-						//console.log("First child response is "+child_response);
-						if($("#"+currentheader).val() == child_response)
+					data: {"parent":parent, "colheader" : nextcolheader},
+					success: function(result){
+					var myObjResult = $.parseJSON(result);
+					if(myObjResult.count > 0)
+					{
+						if($("#"+currentheader).val() == myObjResult.response)
 						{
-							$('#'+currentheader+"_1").prop("disabled", false);
+							$('#'+nextcolheader).prop("disabled", false);
 
 							if(response == "Yes" || response == "Possibly")
 							{
@@ -244,7 +329,7 @@ function get_response(id)
 						}
 						else
 						{
-							$('#'+currentheader+"_1").prop("disabled", true);
+							$('#'+nextcolheader).prop("disabled", true);
 
 							if(response == "Yes" || response == "Possibly")
 							{
@@ -258,157 +343,156 @@ function get_response(id)
 							}
 						}
 					}
-				});			
-			}
-			else
-			{
-				// Handle the first child to the last
-				//console.log("Has no child");	 
-				//console.log(currentheader);
-				// Get current child sort number
-				$.ajax({
-					url: "api/questions/childsort", 
-					type: 'GET',
-					data: {"childheader":currentheader},
-					success: function(childsort){
-						var myObj = $.parseJSON(childsort);
-						var nextChildSort = parseInt(myObj.child_sort_num)+1;
-						var parent = myObj.parent_colheader;
-						var nextcolheader = parent+"_"+nextChildSort;
+					else
+					{
+						if(response == "Yes" || response == "Possibly")
+						{
+							current_gross = current_gross + parseFloat(cost);
+							$("#CRMGross").val(current_gross.toFixed(2));
+							$("#"+currentheader+"block").css("display","none");
+						}
+						else
+						{
+							$("#"+currentheader+"block").css("display","none");
+						}
+					}
+					
+				}});
 
-						$.ajax({
-							url: "api/questions/checkchild", 
-							type: 'GET',
-							data: {"parent":parent, "colheader" : nextcolheader},
-							success: function(result){
-							var myObjResult = $.parseJSON(result);
-							if(myObjResult.count > 0)
-							{
-								if($("#"+currentheader).val() == myObjResult.response)
-								{
-									$('#'+nextcolheader).prop("disabled", false);
+    		}
+    	}
+    }
+//-----------------------------------------------------------------------------------------------------------------	
+	// Check if has child questions
+	// $.ajax({
+	// 	url: "api/questions/childcount", 
+	// 	type: 'GET',
+	// 	data: {"colheader":currentheader},
+	// 	success: function(result){
+	// 		if(result > 0) 
+	// 		{
+	// 			/*
+	// 			 Get the first child question and enable it
+	// 			 if the enable response if met				
+	// 			*/
+	// 			//console.log("First child is "+currentheader+"_1");
+	// 			$.ajax({
+	// 				url: "api/questions/childresponse", 
+	// 				type: 'GET',
+	// 				data: {"childheader":currentheader+"_1"},
+	// 				success: function(child_response){
+	// 					//console.log("First child response is "+child_response);
+						// if($("#"+currentheader).val() == child_response)
+						// {
+						// 	$('#'+currentheader+"_1").prop("disabled", false);
 
-									if(response == "Yes" || response == "Possibly")
-									{
-										current_gross = current_gross + parseFloat(cost);
-										$("#CRMGross").val(current_gross.toFixed(2));
-										$("#"+currentheader+"block").css("display","none");
-									}
-									else
-									{
-										$("#"+currentheader+"block").css("display","none");
-									}
-								}
-								else
-								{
-									$('#'+nextcolheader).prop("disabled", true);
-
-									if(response == "Yes" || response == "Possibly")
-									{
-										current_gross = current_gross + parseFloat(cost);
-										$("#CRMGross").val(current_gross.toFixed(2));
-										$("#"+currentheader+"block").css("display","none");
-									}
-									else
-									{
-										$("#"+currentheader+"block").css("display","none");
-									}
-								}
-							}
-							else
-							{
-								if(response == "Yes" || response == "Possibly")
-								{
-									current_gross = current_gross + parseFloat(cost);
-									$("#CRMGross").val(current_gross.toFixed(2));
-									$("#"+currentheader+"block").css("display","none");
-								}
-								else
-								{
-									$("#"+currentheader+"block").css("display","none");
-								}
-							}
-							
-						}});
-
-						// Check if there's another child
-						//console.log("Parent of current is "+parent);
-						//console.log("Next colheader is "+nextcolheader);
-
-						// $.ajax({
-						// 	url: "api/questions/checkchild", 
-						// 	type: 'GET',
-						// 	data: {"parent":parent, "colheader" : nextcolheader},
-						// 	success: function(result){
-						// 	if(parseInt(result) > 0)
+						// 	if(response == "Yes" || response == "Possibly")
 						// 	{
-						// 		// Enable response for the next child
-						// 		$.ajax({
-						// 			url: "api/questions/childresponse", 
-						// 			type: 'GET',
-						// 			data: {"childheader":nextcolheader},
-						// 			success: function(child_response){
-										
-						// 				if($("#"+currentheader).val() == child_response)
-						// 				{
-						// 					$('#'+nextcolheader).prop("disabled", false);
-
-						// 					if(response == "Yes" || response == "Possibly")
-						// 					{
-						// 						current_gross = current_gross + parseFloat(cost);
-						// 						$("#CRMGross").val(current_gross.toFixed(2));
-						// 						$("#"+currentheader+"block").css("display","none");
-						// 					}
-						// 					else
-						// 					{
-						// 						$("#"+currentheader+"block").css("display","none");
-						// 					}
-						// 				}
-						// 				else
-						// 				{
-						// 					$('#'+nextcolheader).prop("disabled", true);
-
-						// 					if(response == "Yes" || response == "Possibly")
-						// 					{
-						// 						current_gross = current_gross + parseFloat(cost);
-						// 						$("#CRMGross").val(current_gross.toFixed(2));
-						// 						$("#"+currentheader+"block").css("display","none");
-						// 					}
-						// 					else
-						// 					{
-						// 						$("#"+currentheader+"block").css("display","none");
-						// 					}
-						// 				}
-						// 			}
-						// 		});
+						// 		current_gross = current_gross + parseFloat(cost);
+						// 		$("#CRMGross").val(current_gross.toFixed(2));
+						// 		$("#"+currentheader+"block").css("display","none");
 						// 	}
 						// 	else
 						// 	{
-						// 		if(response == "Yes" || response == "Possibly")
-						// 		{
-						// 			current_gross = current_gross + parseFloat(cost);
-						// 			$("#CRMGross").val(current_gross.toFixed(2));
-						// 			$("#"+currentheader+"block").css("display","none");
-						// 		}
-						// 		else
-						// 		{
-						// 			$("#"+currentheader+"block").css("display","none");
-						// 		}
-						// 	}	
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// }
+						// else
+						// {
+						// 	$('#'+currentheader+"_1").prop("disabled", true);
+
+						// 	if(response == "Yes" || response == "Possibly")
+						// 	{
+						// 		current_gross = current_gross + parseFloat(cost);
+						// 		$("#CRMGross").val(current_gross.toFixed(2));
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// 	else
+						// 	{
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// }
+	// 				}
+	// 			});			
+	// 		}
+	// 		else
+	// 		{
+	// 			// Handle the first child to the last
+	// 			//console.log("Has no child");	 
+	// 			//console.log(currentheader);
+	// 			// Get current child sort number
+	// 			$.ajax({
+	// 				url: "api/questions/childsort", 
+	// 				type: 'GET',
+	// 				data: {"childheader":currentheader},
+	// 				success: function(childsort){
+	// 					var myObj = $.parseJSON(childsort);
+	// 					var nextChildSort = parseInt(myObj.child_sort_num)+1;
+	// 					var parent = myObj.parent_colheader;
+	// 					var nextcolheader = parent+"_"+nextChildSort;
+
+	// 					$.ajax({
+	// 						url: "api/questions/checkchild", 
+	// 						type: 'GET',
+	// 						data: {"parent":parent, "colheader" : nextcolheader},
+	// 						success: function(result){
+	// 						var myObjResult = $.parseJSON(result);
+	// 						if(myObjResult.count > 0)
+	// 						{
+	// 							if($("#"+currentheader).val() == myObjResult.response)
+	// 							{
+	// 								$('#'+nextcolheader).prop("disabled", false);
+
+	// 								if(response == "Yes" || response == "Possibly")
+	// 								{
+	// 									current_gross = current_gross + parseFloat(cost);
+	// 									$("#CRMGross").val(current_gross.toFixed(2));
+	// 									$("#"+currentheader+"block").css("display","none");
+	// 								}
+	// 								else
+	// 								{
+	// 									$("#"+currentheader+"block").css("display","none");
+	// 								}
+	// 							}
+	// 							else
+	// 							{
+	// 								$('#'+nextcolheader).prop("disabled", true);
+
+	// 								if(response == "Yes" || response == "Possibly")
+	// 								{
+	// 									current_gross = current_gross + parseFloat(cost);
+	// 									$("#CRMGross").val(current_gross.toFixed(2));
+	// 									$("#"+currentheader+"block").css("display","none");
+	// 								}
+	// 								else
+	// 								{
+	// 									$("#"+currentheader+"block").css("display","none");
+	// 								}
+	// 							}
+	// 						}
+	// 						else
+	// 						{
+	// 							if(response == "Yes" || response == "Possibly")
+	// 							{
+	// 								current_gross = current_gross + parseFloat(cost);
+	// 								$("#CRMGross").val(current_gross.toFixed(2));
+	// 								$("#"+currentheader+"block").css("display","none");
+	// 							}
+	// 							else
+	// 							{
+	// 								$("#"+currentheader+"block").css("display","none");
+	// 							}
+	// 						}
 							
-						// }});
+	// 					}});
 
-					}
-				});	
+	// 				}
+	// 			});	
 
-			}
+	// 		}
 
-		}
-	});
-			
-
-
-	
+	// 	}
+	// });
 
 }
 

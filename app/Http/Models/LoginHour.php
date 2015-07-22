@@ -23,10 +23,10 @@ class LoginHour extends \Eloquent
 		return $data;
     }
 
-    public function checkLoginHours()
+    public function checkLoginHours($user_id, $today)
     {
         $query = "SELECT * FROM loginhours 
-                WHERE user_id = 2 AND date = '2015-07-21' 
+                WHERE user_id = '$user_id' AND date = '$today' 
                 AND status = 0 
                 AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'";
         $data = DB::connection('pgsql')->select($query);
@@ -34,10 +34,10 @@ class LoginHour extends \Eloquent
         return $data;        
     }
 
-    public function checkLoginHoursOut()
+    public function checkLoginHoursOut($user_id, $today)
     {
         $query = "SELECT * FROM loginhours 
-                WHERE user_id = 2 AND date = '2015-07-21' 
+                WHERE user_id = '$user_id' AND date = '$today' 
                 AND status = 1 
                 AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'";
         $data = DB::connection('pgsql')->select($query);

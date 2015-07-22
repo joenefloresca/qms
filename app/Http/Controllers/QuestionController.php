@@ -27,6 +27,11 @@ class QuestionController extends Controller {
     //                     ->count();
     // }
 
+    public function apiQuestionGetActive()
+    {
+        return json_encode(Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get());
+    }
+
     public function apiQuestionChildCheck()
     {
         $response = "";

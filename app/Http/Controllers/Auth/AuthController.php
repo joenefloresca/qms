@@ -94,7 +94,7 @@ class AuthController extends Controller
             $today = date('Y-m-d');
             $timestamp = date('Y-m-d h:i:s');
             $logHour = new LoginHour();
-            $checkLogin = $logHour->checkLoginHours();
+            $checkLogin = $logHour->checkLoginHours($userid, $today);
 
 
             if($checkLogin == null)
@@ -138,7 +138,7 @@ class AuthController extends Controller
         $userid = Auth::user()->id;
         $today = date('Y-m-d');
         $logHour = new LoginHour();
-        $checkLogin = $logHour->checkLoginHoursOut();
+        $checkLogin = $logHour->checkLoginHoursOut($userid, $today);
 
         if($checkLogin != null)
         {

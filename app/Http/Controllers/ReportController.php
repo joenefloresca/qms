@@ -35,7 +35,7 @@ class ReportController extends Controller {
 
 		$query = "SELECT a.agent_id, c.name, a.TotalApplication, b.TotalLoginHours
 				     , b.TotalLoginHours / a.TotalApplication as ApplicationPerHour
-				     , 1.75 * b.TotalLoginHours / a.TotalApplication as RPH
+				     , 1.75 * (b.TotalLoginHours / a.TotalApplication) as RPH
 				FROM (
 				    SELECT a.agent_id as agent_id
 				         , COUNT(a.id) as TotalApplication
