@@ -230,7 +230,6 @@ class QuestionController extends Controller {
             'ColumnHeader'    		=> 'required',
             'DeliveryAssignment'    => 'required',
             'IsEnabled'             => 'required',
-            //'sortorder'             => 'required|unique:questions',
         );
         
         $validator = Validator::make(Input::all(), $rules);
@@ -239,7 +238,7 @@ class QuestionController extends Controller {
         // Check if all fields is filled
         if ($validator->fails()) 
         {
-            return Redirect::to('question')->withErrors($validator);
+            return Redirect::to('question/'.$id.'/edit')->withErrors($validator);
         }
         else
         {
@@ -263,7 +262,7 @@ class QuestionController extends Controller {
 
         	Session::flash('alert-success', 'Question Updated Successfully.');
 
-            return Redirect::to('question');
+            return Redirect::to('question/'.$id.'/edit');
         }
 	}
 

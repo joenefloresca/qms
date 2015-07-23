@@ -114,14 +114,14 @@
 							<div class="form-group">
 								<label class="col-md-4 control-label">Column Header</label>
 								<div class="col-md-6">
-									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}" disabled>
+									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}" readonly>
 								</div>
 							</div>
 						@else 
 							<div class="form-group">
 								<label class="col-md-4 control-label">Column Header</label>
 								<div class="col-md-6">
-									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}">
+									<input type="text" class="form-control" name="ColumnHeader" id="ColumnHeader" value="{!! $question->columnheader !!}" readonly>
 								</div>
 							</div>
 						@endif

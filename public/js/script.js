@@ -304,47 +304,13 @@ function get_response(id)
     			var parent = childsort[0].parent_colheader;
     			var nextcolheader = parent+"_"+nextChildSort;
 
-    			$.ajax({
-					url: "api/questions/checkchild", 
-					type: 'GET',
-					data: {"parent":parent, "colheader" : nextcolheader},
-					success: function(result){
-					var myObjResult = $.parseJSON(result);
-					if(myObjResult.count > 0)
+    			var checkchild = $.grep(records, function(e){ return e.parent_colheader == parent && e.columnheader == nextcolheader; });
+    			if(checkchild.length == 1)
+    		    {
+		    		if($("#"+currentheader).val() == checkchild[0].child_enable_response)
 					{
-						if($("#"+currentheader).val() == myObjResult.response)
-						{
-							$('#'+nextcolheader).prop("disabled", false);
+						$('#'+nextcolheader).prop("disabled", false);
 
-							if(response == "Yes" || response == "Possibly")
-							{
-								current_gross = current_gross + parseFloat(cost);
-								$("#CRMGross").val(current_gross.toFixed(2));
-								$("#"+currentheader+"block").css("display","none");
-							}
-							else
-							{
-								$("#"+currentheader+"block").css("display","none");
-							}
-						}
-						else
-						{
-							$('#'+nextcolheader).prop("disabled", true);
-
-							if(response == "Yes" || response == "Possibly")
-							{
-								current_gross = current_gross + parseFloat(cost);
-								$("#CRMGross").val(current_gross.toFixed(2));
-								$("#"+currentheader+"block").css("display","none");
-							}
-							else
-							{
-								$("#"+currentheader+"block").css("display","none");
-							}
-						}
-					}
-					else
-					{
 						if(response == "Yes" || response == "Possibly")
 						{
 							current_gross = current_gross + parseFloat(cost);
@@ -356,8 +322,91 @@ function get_response(id)
 							$("#"+currentheader+"block").css("display","none");
 						}
 					}
+					else
+					{
+						$('#'+nextcolheader).prop("disabled", true);
+
+						if(response == "Yes" || response == "Possibly")
+						{
+							current_gross = current_gross + parseFloat(cost);
+							$("#CRMGross").val(current_gross.toFixed(2));
+							$("#"+currentheader+"block").css("display","none");
+						}
+						else
+						{
+							$("#"+currentheader+"block").css("display","none");
+						}
+					}
+    		    }
+    		    else
+    		    {
+		    		if(response == "Yes" || response == "Possibly")
+					{
+						current_gross = current_gross + parseFloat(cost);
+						$("#CRMGross").val(current_gross.toFixed(2));
+						$("#"+currentheader+"block").css("display","none");
+					}
+					else
+					{
+						$("#"+currentheader+"block").css("display","none");
+					}
+    		    }
+
+
+    // 			$.ajax({
+				// 	url: "api/questions/checkchild", 
+				// 	type: 'GET',
+				// 	data: {"parent":parent, "colheader" : nextcolheader},
+				// 	success: function(result){
+				// 	var myObjResult = $.parseJSON(result);
+				// 	if(myObjResult.count > 0)
+				// 	{
+						// if($("#"+currentheader).val() == myObjResult.response)
+						// {
+						// 	$('#'+nextcolheader).prop("disabled", false);
+
+						// 	if(response == "Yes" || response == "Possibly")
+						// 	{
+						// 		current_gross = current_gross + parseFloat(cost);
+						// 		$("#CRMGross").val(current_gross.toFixed(2));
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// 	else
+						// 	{
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// }
+						// else
+						// {
+						// 	$('#'+nextcolheader).prop("disabled", true);
+
+						// 	if(response == "Yes" || response == "Possibly")
+						// 	{
+						// 		current_gross = current_gross + parseFloat(cost);
+						// 		$("#CRMGross").val(current_gross.toFixed(2));
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// 	else
+						// 	{
+						// 		$("#"+currentheader+"block").css("display","none");
+						// 	}
+						// }
+				// 	}
+				// 	else
+				// 	{
+						// if(response == "Yes" || response == "Possibly")
+						// {
+						// 	current_gross = current_gross + parseFloat(cost);
+						// 	$("#CRMGross").val(current_gross.toFixed(2));
+						// 	$("#"+currentheader+"block").css("display","none");
+						// }
+						// else
+						// {
+						// 	$("#"+currentheader+"block").css("display","none");
+						// }
+				// 	}
 					
-				}});
+				// }});
 
     		}
     	}

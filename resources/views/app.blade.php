@@ -49,11 +49,17 @@
 					@if (Auth::check())
 					    @if(Auth::user()->isAdmin == 1)
 					    	<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-							<li class="dropdown">
+							<!-- <li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('column') }}">Column Header List</a></li>
 									<li><a href="{{ url('column/create') }}">Add/Delete Column Header</a></li>
+								</ul>
+							</li> -->
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> QA Tools <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('qa/verifylist') }}">Verify</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -228,6 +234,36 @@
     			$("#"+value.columnheader).prop('checked', false);
     			
     		}
+    		
+		});
+	}}).error(function(){
+		  progress.progressTimer('error', {
+		  errorText:'ERROR!',
+		  onFinish:function(){
+		    alert('There was an error processing your information!');
+		  }
+		});
+	}).done(function(){
+			progress.progressTimer('complete');
+			$( "#progressbar" ).fadeOut( "slow" );
+	});
+
+	$.ajax({
+	url: "api/crm/all", 
+	type: 'GET',
+	success: function(result){
+	var myObj = $.parseJSON(result);
+    	$.each(myObj, function(key,value) {
+    		var t = $('#VerifyList').DataTable();
+    		t.row.add( [
+	            value.crmid,	
+	            value.name,
+	            value.title+" "+value.firstname+" "+value.surname,
+	            value.disposition,
+	            value.gross,
+	            value.created_at,
+	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+        	] ).draw();
     		
 		});
 	}}).error(function(){

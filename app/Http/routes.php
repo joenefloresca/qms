@@ -75,6 +75,12 @@ Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperform
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
 
+/* QA Tools / Modules Routes*/
+Route::get('qa/verifylist', 'QaController@verifylist');
+Route::get('qa/verify/{crmid}', 'QaController@showVerifyForm');
+
+/* QA Ajax Calls */
+Route::get('qa/api/crm/all', 'QaController@getCrmList');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
