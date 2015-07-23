@@ -1,4 +1,5 @@
 $('#Question').summernote();
+$('#comments').summernote();
 $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
 var records = [];

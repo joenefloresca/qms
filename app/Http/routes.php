@@ -78,6 +78,7 @@ Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesa
 /* QA Tools / Modules Routes*/
 Route::get('qa/verifylist', 'QaController@verifylist');
 Route::get('qa/verify/{crmid}', 'QaController@showVerifyForm');
+Route::post('qa/postverify', 'QaController@postVerify');
 
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
