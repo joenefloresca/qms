@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-success">
-				<div class="panel-heading">Verify Form</div>
+				<div class="panel-heading">Re-Verify Form</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -26,7 +26,7 @@
 				        @endforeach
 			        </div>
 
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('qa/postverify/'.$crm->id) }}">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url('qa/postreverify/'.$crm->id) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="agent_id" id="agent_id" value="{{ $crm->agent_id }}">
 						<input type="hidden" name="customer_id" id="customer_id" value="{{ $crm->customer_id }}">
@@ -251,53 +251,31 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Comments</label>
 										<div class="col-md-6">
-											<textarea name="comments" id="comments" class="form-control" row="7">Comment here..</textarea>
+											<textarea name="comments" id="comments" class="form-control" row="7">{{$crm->comments}}</textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Action</label>
 										<div class="col-md-6">
-											<select class="form-control" name="passwithchanges_status" id="passwithchanges_status">
-												<option value="">Choose One</option>
-												<option value="Changes/Updates to customer`s details">Changes/Updates to customer`s details</option>
-												<option value="Changes on how responses were tagged">Changes on how responses were tagged</option>
-												<option value="Call handling issues">Call handling issues</option>
-												<option value="Customer`s issue">Customer`s issue</option>
-												<option value="Bad Recording-Tech Issue">Bad Recording-Tech Issue</option>
-											</select>
+											{!! Form::select('passwithchanges_status', ['' => 'Choose One', 'Changes/Updates to customer`s details' => 'Changes/Updates to customer`s details', 'Changes on how responses were tagged' => 'Changes on how responses were tagged', 'Call handling issues' => 'Call handling issues', 'Customer`s issue' => 'Customer`s issue', 'Bad Recording-Tech Issue' => 'Bad Recording-Tech Issue'], $crm->passwithchanges_status, array('class' => 'form-control')) !!}							
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject A</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_a_status" id="reject_a_status">
-												<option value="">Choose One</option>
-												<option value="Weak Opt-In">Weak Opt-In</option>
-												<option value="Wrong Disposition">Wrong Disposition</option>
-											</select>
+											{!! Form::select('reject_a_status', ['' => 'Choose One', 'Weak Opt-In' => 'Weak Opt-In', 'Wrong Disposition' => 'Wrong Disposition'], $crm->reject_a_status, array('class' => 'form-control')) !!}
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject B</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_b_status" id="reject_b_status">
-												<option value="">Choose One</option>
-												<option value="NOT INTERESTED(MULTIPLE OBJECTIONS)">NOT INTERESTED(MULTIPLE OBJECTIONS)</option>
-												<option value="WRONG REBUTTAL OR PROBING INTRO">WRONG REBUTTAL OR PROBING INTRO</option>
-												<option value="SRC-NON COMPLIANCE">SRC-NON COMPLIANCE</option>
-												<option value="BAD RECORDING">BAD RECORDING</option>
-												<option value="POOR CALL HANDLING / POSSIBLE COMPLAING">POOR CALL HANDLING / POSSIBLE COMPLAIN</option>
-												<option value="DODGY CALLS/PRANK CUSTOMERS">DODGY CALLS/PRANK CUSTOMERS</option>
-											</select>
+											{!! Form::select('reject_b_status', ['' => 'Choose One', 'NOT INTERESTED(MULTIPLE OBJECTIONS)' => 'NOT INTERESTED(MULTIPLE OBJECTIONS)', 'WRONG REBUTTAL OR PROBING INTRO' => 'WRONG REBUTTAL OR PROBING INTRO', 'SRC-NON COMPLIANCE' => 'SRC-NON COMPLIANCE', 'BAD RECORDING' => 'BAD RECORDING', 'POOR CALL HANDLING / POSSIBLE COMPLAING' => 'POOR CALL HANDLING / POSSIBLE COMPLAING', 'DODGY CALLS/PRANK CUSTOMERS' => 'DODGY CALLS/PRANK CUSTOMERS'], $crm->reject_b_status, array('class' => 'form-control')) !!}
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject C</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_c_status" id="reject_c_status">
-												<option value="">Choose One</option>
-												<option value="Screamer">Screamer</option>
-											</select>
+											{!! Form::select('reject_c_status', ['' => 'Choose One', 'Screamer' => 'Screamer'], $crm->reject_c_status, array('class' => 'form-control')) !!}
 										</div>
 									</div>
 								</div>

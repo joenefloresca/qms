@@ -98,16 +98,10 @@ class CrmController extends Controller {
 				$responses->crm_id = $lastInsertId;
 				$responses->question_id = $id[0]->id;
 				$responses->response = Input::get($columnheader);
-				if($responses->save())
-				{
-					Session::flash('alert-info', 'Form and responses has been saved.');
-				}
-				else
-				{
-					Session::flash('alert-danger', 'Error in saving responses.');
-				}
-
+				$responses->save();
 			}
+
+			Session::flash('alert-info', 'Form and responses has been saved.');
 		}
 		else
 		{

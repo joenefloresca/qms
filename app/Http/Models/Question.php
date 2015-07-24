@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Models;
-use DB;
 
 class Question extends \Eloquent
 {

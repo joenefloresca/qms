@@ -60,6 +60,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> QA Tools <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('qa/verifylist') }}">Verify</a></li>
+									<li><a href="{{ url('qa/reverifylist') }}">Re-Verify Forms</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -277,6 +278,41 @@
 			progress.progressTimer('complete');
 			$( "#progressbar" ).fadeOut( "slow" );
 	});
+
+	$.ajax({
+	url: "api/crm/reverify", 
+	type: 'GET',
+	success: function(result){
+	var myObj = $.parseJSON(result);
+	console.log(myObj);
+    	$.each(myObj, function(key,value) {
+    		var t = $('#ReVerifyList').DataTable();
+    		t.row.add( [
+	            value.verfiedcrmid,	
+	            value.agentname,
+	            value.title+" "+value.firstname+" "+value.surname,
+	            value.disposition,
+	            value.gross,
+	            value.verified_status,
+	            value.created_at,
+	            value.verified_by,
+	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/reverify/';?>"+value.verfiedcrmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+        	] ).draw();
+    		
+		});
+	}}).error(function(){
+		  progress.progressTimer('error', {
+		  errorText:'ERROR!',
+		  onFinish:function(){
+		    alert('There was an error processing your information!');
+		  }
+		});
+	}).done(function(){
+			progress.progressTimer('complete');
+			$( "#progressbar" ).fadeOut( "slow" );
+	});
+
+
 	</script>
 
 </body>

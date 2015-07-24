@@ -78,10 +78,14 @@ Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesa
 /* QA Tools / Modules Routes*/
 Route::get('qa/verifylist', 'QaController@verifylist');
 Route::get('qa/verify/{crmid}', 'QaController@showVerifyForm');
-Route::post('qa/postverify', 'QaController@postVerify');
+Route::post('qa/postverify/{crmid}', 'QaController@postVerify');
+Route::get('qa/reverify/{crmid}', 'QaController@showReVerifyForm');
+Route::get('qa/reverifylist', 'QaController@updateVerifiedForms');
+Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
 
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
+Route::get('qa/api/crm/reverify', 'QaController@getCrmReverify');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

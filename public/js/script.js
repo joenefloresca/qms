@@ -138,7 +138,6 @@ $("#btnDateCharityRes").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		
 	    		table.row.add( [
 		            value.question_id,	
 		            value.columnheader,
@@ -148,7 +147,6 @@ $("#btnDateCharityRes").click(function() {
 		            value.costperlead,
 		            value.revenue,
 	        	] ).draw();
-	    		
 			});
 		}});
 
@@ -163,7 +161,6 @@ $("#btnDateCharityRes").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		
 	    		table.row.add( [
 		            value.question_id,	
 		            value.columnheader,
@@ -173,7 +170,6 @@ $("#btnDateCharityRes").click(function() {
 		            value.costperlead,
 		            value.revenue,
 	        	] ).draw();
-	    		
 			});
 		}});
 
@@ -199,7 +195,6 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -207,7 +202,6 @@ $("#btnDateAgentPer").click(function() {
 		            value.applicationperhour,
 		            value.rph,
 	        	] ).draw();
-	    		
 			});
 		}});
 
@@ -222,7 +216,6 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -230,7 +223,6 @@ $("#btnDateAgentPer").click(function() {
 		            value.applicationperhour,
 		            value.rph,
 	        	] ).draw();
-	    		
 			});
 		}});
 
@@ -1124,4 +1116,4 @@ $("#btnGenerate").click(function() {
 	     
 	    $('#NumberOfScripts').val(num);
  		
-});																		
+});	
