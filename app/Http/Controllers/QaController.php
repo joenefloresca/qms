@@ -284,19 +284,14 @@ class QaController extends Controller {
               
                 foreach ($questions->getQaResponsesByCrmId(intval($id)) as $key => $value) 
                 {
-
-
-                    var_dump($value->id);
-                    // $columnheader = $value->columnheader; 
-                    // $id_question = Question::where('columnheader', '=', $columnheader)->get();
-
-                    // $qa_response =new QaResponse();
-                    // $qa_response->question_id = intval($id_question[0]->id);
-                    // $qa_response->response = Input::get($columnheader);
-                    // $qa_response->save();
+                    $columnheader = $value->columnheader; 
+                    //$id_question = Question::where('columnheader', '=', $columnheader)->get();
+                    $qa_response = QaResponse::find($value->id);
+                    //$qa_response->question_id = intval($id_question[0]->id);
+                    $qa_response->response = Input::get($columnheader);
+                    $qa_response->save();
+                    
                 }
-
-                exit();
 
                 Session::flash('alert-info', 'Form and responses has been updated.');
             }

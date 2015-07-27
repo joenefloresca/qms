@@ -293,7 +293,7 @@
 	            value.title+" "+value.firstname+" "+value.surname,
 	            value.disposition,
 	            value.gross,
-	            value.verified_status,
+	            value.passwithchanges_status,
 	            value.created_at,
 	            value.verified_by,
 	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/reverify/';?>"+value.verfiedcrmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
