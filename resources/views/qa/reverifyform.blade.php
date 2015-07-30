@@ -46,7 +46,7 @@
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Disposition</label>
 									<div class="col-md-6">
-										{!! Form::select('disposition', ['' => 'Choose One', 'AnsweringMachine' => 'AnsweringMachine', 'Callback' => 'Callback', 'Deceased' => 'Deceased', 'DoNotCall' => 'DoNotCall', 'Foreign Language'=>'Foreign Language', 'Hibernate'=>'Hibernate', 'Manual Callback'=>'Manual Callback', 'NoAnswer'=>'NoAnswer', 'NoResponse'=>'NoResponse', 'NotInterested'=>'NotInterested', 'RaffleTicket'=>'RaffleTicket', 'Telcorecordedannouncement'=>'Telcorecordedannouncement', 'Appointmentset'=>'Appointmentset'], $crm->disposition, array('class' => 'form-control')) !!}
+										{!! Form::select('disposition', ['' => 'Choose One', 'AnsweringMachine' => 'AnsweringMachine', 'Callback' => 'Callback', 'Deceased' => 'Deceased', 'DoNotCall' => 'DoNotCall', 'Foreign Language'=>'Foreign Language', 'Hibernate'=>'Hibernate', 'Manual Callback'=>'Manual Callback', 'NoAnswer'=>'NoAnswer', 'NoResponse'=>'NoResponse', 'NotInterested'=>'NotInterested', 'RaffleTicket'=>'RaffleTicket', 'Telcorecordedannouncement'=>'Telcorecordedannouncement', 'Appointmentset'=>'Appointmentset', 'Completed Survey' => 'Completed Survey', 'MCS Record' => 'MCS Record'], $crm->disposition, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
@@ -186,63 +186,43 @@
 
 				        	</div> 
 			        	</div>
-
-			        	<div style="padding-bottom: 6px; padding-top: 6px">
-			        		<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">Show Responses</button>
-			        	</div>
-						<!-- Modal -->
-						<div id="myModal" class="modal fade" role="dialog">
-						  <div class="modal-dialog">
-
-						    <!-- Modal content-->
-						    <div class="modal-content modal-lg">
-						      <div class="modal-header">
-						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Question Responses</h4>
-						      </div>
-						      <div class="modal-body">
-						        	<div class="panel panel-info">
-										<div class="panel-heading">Question Responses</div>
-										<div class="panel-body">
-											<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="QaResponsesList">
-												<thead>
-						                            <tr>
-						                                <th>Response ID</th>
-						                                <th>Column Header</th>
-						                                <th>Question</th>
-						                                <th>Response</th>
-						                            </tr>
-					                        	</thead>
-					                        	<tbody>
-													@foreach ($responses as $response)
-													<tr>
-														<td>{{ $response->id }}</td>
-														<td>{{ $response->columnheader }}</td>
-														<td>{{ $response->question }}</td>
-														<td>
-															<select class="form-control" name="{{$response->columnheader}}">
-																<option value="{{$response->response}}" selected>{{$response->response}}</option>
-																<option value="Yes">Yes</option>
-																<option value="No">No</option>
-																<option value="Possibly">Possibly</option>
-															</select>
-														</td>
-													</tr>
-													@endforeach
-												</tbody>
-										   </table>
-										</div> 
-									</div>
-						      </div>
-						      <div class="modal-footer">
-						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						      </div>
-						    </div>
-
-						  </div>
+			        	<div style="padding-bottom: 8px">
+							<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showReponse">Show Responses</button>
 						</div>
-
-						
+						<div id="showReponse" class="collapse out">
+							<div class="panel panel-info">
+								<div class="panel-heading">Question Responses</div>
+								<div class="panel-body">
+									<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="QaResponsesList">
+										<thead>
+				                            <tr>
+				                                <th>Response ID</th>
+				                                <th>Column Header</th>
+				                                <th>Question</th>
+				                                <th>Response</th>
+				                            </tr>
+			                        	</thead>
+			                        	<tbody>
+											@foreach ($responses as $response)
+											<tr>
+												<td>{{ $response->id }}</td>
+												<td>{{ $response->columnheader }}</td>
+												<td>{{ $response->question }}</td>
+												<td>
+													<select class="form-control" name="{{$response->columnheader}}">
+														<option value="{{$response->response}}" selected>{{$response->response}}</option>
+														<option value="Yes">Yes</option>
+														<option value="No">No</option>
+														<option value="Possibly">Possibly</option>
+													</select>
+												</td>
+											</tr>
+											@endforeach
+										</tbody>
+								   </table>
+								</div> 
+							</div>
+						</div> 
 
 						<div class="panel panel-info">
 							<div class="panel-heading">Remarks</div>
@@ -257,27 +237,38 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Action</label>
 										<div class="col-md-6">
-											{!! Form::select('passwithchanges_status', ['' => 'Choose One', 'Changes/Updates to customer`s details' => 'Changes/Updates to customer`s details', 'Changes on how responses were tagged' => 'Changes on how responses were tagged', 'Call handling issues' => 'Call handling issues', 'Customer`s issue' => 'Customer`s issue', 'Bad Recording-Tech Issue' => 'Bad Recording-Tech Issue'], $crm->passwithchanges_status, array('class' => 'form-control')) !!}							
+											{!! Form::select('re_verified_status', ['' => 'Choose One', 'On The Proccess' => 'On The Proccess', 'Unverified' => 'Unverified', 'Passed' => 'Passed', 'Passed-Approved' => 'Passed-Approved', 'Passed-With Changes' => 'Passed-With Changes', 'Passed-Unverified' => 'Passed-Unverified', 'Reject A' => 'Reject A', 'Reject B' => 'Reject B', 'Reject C' => 'Reject C', 'Pending' => 'Pending'], $crm->verified_status, array('class' => 'form-control', 'id' => 're_verified_status')) !!}							
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label">Passed w/ Changes</label>
+										<div class="col-md-6">
+											{!! Form::select('re_passwithchanges_status', ['' => 'Choose One', 'Changes/Updates to customer`s details' => 'Changes/Updates to customer`s details', 'Changes on how responses were tagged' => 'Changes on how responses were tagged', 'Call handling issues' => 'Call handling issues', 'Customer`s issue' => 'Customer`s issue', 'Bad Recording-Tech Issue' => 'Bad Recording-Tech Issue'], $crm->passwithchanges_status, array('class' => 'form-control', 'id' => 're_passwithchanges_status')) !!}							
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject A</label>
 										<div class="col-md-6">
-											{!! Form::select('reject_a_status', ['' => 'Choose One', 'Weak Opt-In' => 'Weak Opt-In', 'Wrong Disposition' => 'Wrong Disposition'], $crm->reject_a_status, array('class' => 'form-control')) !!}
+											{!! Form::select('re_reject_a_status', ['' => 'Choose One', 'Weak Opt-In' => 'Weak Opt-In', 'Wrong Disposition' => 'Wrong Disposition'], $crm->reject_a_status, array('class' => 'form-control', 'id' => 're_reject_a_status')) !!}
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject B</label>
 										<div class="col-md-6">
-											{!! Form::select('reject_b_status', ['' => 'Choose One', 'NOT INTERESTED(MULTIPLE OBJECTIONS)' => 'NOT INTERESTED(MULTIPLE OBJECTIONS)', 'WRONG REBUTTAL OR PROBING INTRO' => 'WRONG REBUTTAL OR PROBING INTRO', 'SRC-NON COMPLIANCE' => 'SRC-NON COMPLIANCE', 'BAD RECORDING' => 'BAD RECORDING', 'POOR CALL HANDLING / POSSIBLE COMPLAING' => 'POOR CALL HANDLING / POSSIBLE COMPLAING', 'DODGY CALLS/PRANK CUSTOMERS' => 'DODGY CALLS/PRANK CUSTOMERS'], $crm->reject_b_status, array('class' => 'form-control')) !!}
+											{!! Form::select('re_reject_b_status', ['' => 'Choose One', 'NOT INTERESTED(MULTIPLE OBJECTIONS)' => 'NOT INTERESTED(MULTIPLE OBJECTIONS)', 'WRONG REBUTTAL OR PROBING INTRO' => 'WRONG REBUTTAL OR PROBING INTRO', 'SRC-NON COMPLIANCE' => 'SRC-NON COMPLIANCE', 'BAD RECORDING' => 'BAD RECORDING', 'POOR CALL HANDLING / POSSIBLE COMPLAING' => 'POOR CALL HANDLING / POSSIBLE COMPLAING', 'DODGY CALLS/PRANK CUSTOMERS' => 'DODGY CALLS/PRANK CUSTOMERS'], $crm->reject_b_status, array('class' => 'form-control', 'id' => 're_reject_b_status')) !!}
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject C</label>
 										<div class="col-md-6">
-											{!! Form::select('reject_c_status', ['' => 'Choose One', 'Screamer' => 'Screamer'], $crm->reject_c_status, array('class' => 'form-control')) !!}
+											{!! Form::select('re_reject_c_status', ['' => 'Choose One', 'Screamer' => 'Screamer'], $crm->reject_c_status, array('class' => 'form-control', 'id' => 're_reject_c_status')) !!}
 										</div>
 									</div>
+									<input type="hidden" name="verified_status" id="verified_status" value="{{$crm->verified_status}}">
+									<input type="hidden" name="passwithchanges_status" id="passwithchanges_status" value="{{$crm->passwithchanges_status}}">
+									<input type="hidden" name="reject_a_status" id="reject_a_status" value="{{$crm->reject_a_status}}">
+									<input type="hidden" name="reject_b_status" id="reject_b_status" value="{{$crm->reject_b_status}}">
+									<input type="hidden" name="reject_c_status" id="reject_c_status" value="{{$crm->reject_c_status}}">
 								</div>
 							</div> 
 						</div>  

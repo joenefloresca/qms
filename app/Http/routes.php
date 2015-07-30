@@ -69,11 +69,16 @@ Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
 /* Reports Routes */
 Route::get('reports/agentperformance', 'ReportController@agentperformance');
 Route::get('reports/charityresponses', 'ReportController@charityresponses');
+Route::get('reports/verifierreport', 'ReportController@showVerifierReport');
+Route::get('reports/qasummary', 'ReportController@showQaSummaryReport');
 
 /* Reports Ajax Calls */
 Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperformance');
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
+Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
+Route::get('reports/api/crm/verifierreport', 'ReportController@apiverifierreport');
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
+
 
 /* QA Tools / Modules Routes*/
 Route::get('qa/verifylist', 'QaController@verifylist');
@@ -82,6 +87,7 @@ Route::post('qa/postverify/{crmid}', 'QaController@postVerify');
 Route::get('qa/reverify/{crmid}', 'QaController@showReVerifyForm');
 Route::get('qa/reverifylist', 'QaController@updateVerifiedForms');
 Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
+
 
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');

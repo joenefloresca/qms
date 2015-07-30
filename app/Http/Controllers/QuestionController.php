@@ -121,7 +121,7 @@ class QuestionController extends Controller {
         // Check if all fields is filled
         if ($validator->fails()) 
         {
-            return Redirect::to('question/create')->withErrors($validator);
+            return Redirect::to('question/create')->withInput()->withErrors($validator);
         }
         else
         {

@@ -48,6 +48,8 @@
 									<option value="RaffleTicket">RaffleTicket</option>
 									<option value="Telcorecordedannouncement">Telcorecordedannouncement</option> 
 									<option value="Appointmentset">Appointmentset</option> 
+									<option value="Completed Survey">Completed Survey</option> 
+									<option value="MCS Record">MCS Record</option> 
 								 </select>
 							</div>
 						</div>
@@ -105,23 +107,23 @@
         </div>
 			<div class="col-md-9">
 				@if (count($errors) > 0)
-							<div class="alert alert-danger">
-								<strong>Whoops!</strong> There were some problems with your input.<br><br>
-								<ul>
-									@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
-									@endforeach
-								</ul>
-							</div>
-						@endif
+					<div class="alert alert-danger">
+						<strong>Whoops!</strong> There were some problems with your input.<br><br>
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
 
-						<div class="flash-message">
-					        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-					          @if(Session::has('alert-' . $msg))
-					          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
-					          @endif
-					        @endforeach
-				        </div>
+				<div class="flash-message">
+			        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+			          @if(Session::has('alert-' . $msg))
+			          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+			          @endif
+			        @endforeach
+		        </div>
 				<div class="panel panel-success">
 				<div class="panel-heading">CRM</div>
 				<div class="panel-body">

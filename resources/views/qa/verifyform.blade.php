@@ -46,7 +46,7 @@
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Disposition</label>
 									<div class="col-md-6">
-										{!! Form::select('disposition', ['' => 'Choose One', 'AnsweringMachine' => 'AnsweringMachine', 'Callback' => 'Callback', 'Deceased' => 'Deceased', 'DoNotCall' => 'DoNotCall', 'Foreign Language'=>'Foreign Language', 'Hibernate'=>'Hibernate', 'Manual Callback'=>'Manual Callback', 'NoAnswer'=>'NoAnswer', 'NoResponse'=>'NoResponse', 'NotInterested'=>'NotInterested', 'RaffleTicket'=>'RaffleTicket', 'Telcorecordedannouncement'=>'Telcorecordedannouncement', 'Appointmentset'=>'Appointmentset'], $crm->disposition, array('class' => 'form-control')) !!}
+										{!! Form::select('disposition', ['' => 'Choose One', 'AnsweringMachine' => 'AnsweringMachine', 'Callback' => 'Callback', 'Deceased' => 'Deceased', 'DoNotCall' => 'DoNotCall', 'Foreign Language'=>'Foreign Language', 'Hibernate'=>'Hibernate', 'Manual Callback'=>'Manual Callback', 'NoAnswer'=>'NoAnswer', 'NoResponse'=>'NoResponse', 'NotInterested'=>'NotInterested', 'RaffleTicket'=>'RaffleTicket', 'Telcorecordedannouncement'=>'Telcorecordedannouncement', 'Appointmentset'=>'Appointmentset', 'Completed Survey' => 'Completed Survey', 'MCS Record' => 'MCS Record'], $crm->disposition, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
@@ -187,15 +187,15 @@
 				        	</div> 
 			        	</div>
 
-			        	<div style="padding-bottom: 6px; padding-top: 6px">
+			        	<!-- <div style="padding-bottom: 6px; padding-top: 6px">
 			        		<button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">Show Responses</button>
-			        	</div>
+			        	</div> -->
 						<!-- Modal -->
-						<div id="myModal" class="modal fade" role="dialog">
-						  <div class="modal-dialog">
+						<!-- <div id="myModal" class="modal fade" role="dialog">
+						  <div class="modal-dialog"> -->
 
 						    <!-- Modal content-->
-						    <div class="modal-content modal-lg">
+						    <!-- <div class="modal-content modal-lg">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
 						        <h4 class="modal-title">Question Responses</h4>
@@ -240,7 +240,45 @@
 						    </div>
 
 						  </div>
-						</div>
+						</div> -->
+
+						<div style="padding-bottom: 8px">
+							<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showReponse">Show Responses</button>
+						</div> 
+						<div id="showReponse" class="collapse out">
+				        	<div class="panel panel-info">
+								<div class="panel-heading">Question Responses</div>
+								<div class="panel-body">
+									<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="QaResponsesList">
+										<thead>
+				                            <tr>
+				                                <th>Response ID</th>
+				                                <th>Column Header</th>
+				                                <th>Question</th>
+				                                <th>Response</th>
+				                            </tr>
+			                        	</thead>
+			                        	<tbody>
+											@foreach ($responses as $response)
+											<tr>
+												<td>{{ $response->id }}</td>
+												<td>{{ $response->columnheader }}</td>
+												<td>{{ $response->question }}</td>
+												<td>
+													<select class="form-control" name="{{$response->columnheader}}">
+														<option value="{{$response->response}}" selected>{{$response->response}}</option>
+														<option value="Yes">Yes</option>
+														<option value="No">No</option>
+														<option value="Possibly">Possibly</option>
+													</select>
+												</td>
+											</tr>
+											@endforeach
+										</tbody>
+								   </table>
+								</div> 
+							</div>
+						</div>  
 
 						
 
@@ -257,7 +295,25 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Action</label>
 										<div class="col-md-6">
-											<select class="form-control" name="passwithchanges_status" id="passwithchanges_status">
+											<select class="form-control" name="verified_status" id="verified_status">
+												<option value="">Choose One</option>
+												<option value="On The Proccess">On The Proccess</option>
+												<option value="Unverified">Unverified</option>
+												<option value="Passed">Passed</option>
+												<option value="Passed-Approved">Passed-Approved</option>
+												<option value="Passed-With Changes">Passed-With Changes</option>
+												<option value="Passed-Unverified">Passed-Unverified</option>
+												<option value="Reject A">Reject A</option>
+												<option value="Reject B">Reject B</option>
+												<option value="Reject C">Reject C</option>
+												<option value="Pending">Pending</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-4 control-label">Passed w/ Changes</label>
+										<div class="col-md-6">
+											<select class="form-control" name="passwithchanges_status" id="passwithchanges_status" disabled>
 												<option value="">Choose One</option>
 												<option value="Changes/Updates to customer`s details">Changes/Updates to customer`s details</option>
 												<option value="Changes on how responses were tagged">Changes on how responses were tagged</option>
@@ -270,7 +326,7 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject A</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_a_status" id="reject_a_status">
+											<select class="form-control" name="reject_a_status" id="reject_a_status" disabled>
 												<option value="">Choose One</option>
 												<option value="Weak Opt-In">Weak Opt-In</option>
 												<option value="Wrong Disposition">Wrong Disposition</option>
@@ -280,7 +336,7 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject B</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_b_status" id="reject_b_status">
+											<select class="form-control" name="reject_b_status" id="reject_b_status" disabled>
 												<option value="">Choose One</option>
 												<option value="NOT INTERESTED(MULTIPLE OBJECTIONS)">NOT INTERESTED(MULTIPLE OBJECTIONS)</option>
 												<option value="WRONG REBUTTAL OR PROBING INTRO">WRONG REBUTTAL OR PROBING INTRO</option>
@@ -294,7 +350,7 @@
 									<div class="form-group">
 										<label class="col-md-4 control-label">Reject C</label>
 										<div class="col-md-6">
-											<select class="form-control" name="reject_c_status" id="reject_c_status">
+											<select class="form-control" name="reject_c_status" id="reject_c_status" disabled>
 												<option value="">Choose One</option>
 												<option value="Screamer">Screamer</option>
 											</select>

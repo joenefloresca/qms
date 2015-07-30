@@ -96,6 +96,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
 									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
+									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
 								</ul>
 							</li>
 						@else
@@ -293,7 +294,7 @@
 	            value.title+" "+value.firstname+" "+value.surname,
 	            value.disposition,
 	            value.gross,
-	            value.passwithchanges_status,
+	            value.verified_status,
 	            value.created_at,
 	            value.verified_by,
 	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/reverify/';?>"+value.verfiedcrmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",

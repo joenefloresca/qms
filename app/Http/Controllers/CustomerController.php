@@ -124,12 +124,11 @@ class CustomerController extends Controller {
         );
         
         $validator = Validator::make(Input::all(), $rules);
-  
         
         // Check if all fields is filled
         if ($validator->fails()) 
         {
-            return Redirect::to('customer/create')->withErrors($validator);
+            return Redirect::to('customer/create')->withInput()->withErrors($validator);
         }
         else
         {

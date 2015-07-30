@@ -29,9 +29,7 @@ class ReportController extends Controller {
 	public function apiagentperformance()
 	{
 		$from = Input::get("from");
-		$to = Input::get("to");
-
-		
+		$to   = Input::get("to");
 
 		$query = "SELECT a.agent_id, c.name, a.TotalApplication, b.TotalLoginHours
 				     , b.TotalLoginHours / a.TotalApplication as ApplicationPerHour
@@ -53,16 +51,14 @@ class ReportController extends Controller {
 				     ON a.agent_id = b.agent_id
 				 INNER JOIN users c ON c.id = a.agent_id    
 				 ; ";	        
-
 		$data = DB::connection('pgsql')->select($query);
-
 		return json_encode($data);
 	}
 
 	public function apicharityresponses()
 	{
 		$from = Input::get("from");
-		$to = Input::get("to");
+		$to   = Input::get("to");
 
 		$query = "SELECT question_id, q.columnheader, ct_yes, ct_no, ct_maybe, q.costperlead, q.costperlead * (r.ct_yes + r.ct_maybe) AS revenue
 				FROM  (
@@ -75,7 +71,6 @@ class ReportController extends Controller {
 				   GROUP  BY 1
 				   ) r
 				JOIN questions q ON q.id = r.question_id;";
-
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
 	}
@@ -95,6 +90,53 @@ class ReportController extends Controller {
 
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);	
+	}
+
+	public function showVerifierReport()
+	{
+		$qa_names = array('All' => 'All') + DB::table('users')->where(array('isAdmin' => 1))->lists('name','id');
+		return view('reports.verifierreport')->with(array('qa_names' => $qa_names));
+	}
+
+	public function apiverifierreport()
+	{
+		$from    = Input::get("from");
+		$to      = Input::get("to");
+		$qa_name = Input::get("qa_name");
+
+
+		if($qa_name == "All")
+		{
+			$query = "SELECT verifier_id, verified_by,
+				COUNT(verified_status = 'Passed' OR NULL) AS passed, 
+				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
+				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
+				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
+				COUNT(verified_status = 'Pending' OR NULL) AS pending,
+				COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
+				COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
+				COUNT(verified_status = 'Reject C' OR NULL) AS reject_c
+				FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to'
+				GROUP BY verifier_id, verified_by;";
+		}
+		else
+		{
+			$query = "SELECT verifier_id, verified_by,
+				COUNT(verified_status = 'Passed' OR NULL) AS passed, 
+				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
+				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
+				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
+				COUNT(verified_status = 'Pending' OR NULL) AS pending,
+				COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
+				COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
+				COUNT(verified_status = 'Reject C' OR NULL) AS reject_c
+				FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to' AND verifier_id = '$qa_name'
+				GROUP BY verifier_id, verified_by;";
+		}
+
+		
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);		
 	}
 
 

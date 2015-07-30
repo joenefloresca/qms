@@ -101,6 +101,7 @@ class QaController extends Controller {
             $agent_id               = Input::get("agent_id");
             $customer_id            = Input::get("customer_id");
             $comments               = Input::get("comments");
+            $verified_status        = Input::get("verified_status");
             $passwithchanges_status = Input::get("passwithchanges_status");
             $reject_a_status        = Input::get("reject_a_status");
             $reject_b_status        = Input::get("reject_b_status");
@@ -132,11 +133,13 @@ class QaController extends Controller {
             $qacrm->customer_id = $customer_id;
             $qacrm->orig_crm_id = $id;
             $qacrm->comments = $comments;
+            $qacrm->verified_status = $verified_status;
             $qacrm->passwithchanges_status = $passwithchanges_status;
             $qacrm->reject_a_status = $reject_a_status;
             $qacrm->reject_b_status = $reject_b_status;
             $qacrm->reject_c_status = $reject_c_status;
             $qacrm->verified_by = Auth::user()->name;
+            $qacrm->verifier_id = Auth::user()->id;
 
             if($qacrm->save())
             {
@@ -242,6 +245,7 @@ class QaController extends Controller {
             $agent_id               = Input::get("agent_id");
             $customer_id            = Input::get("customer_id");
             $comments               = Input::get("comments");
+            $verified_status        = Input::get("verified_status");
             $passwithchanges_status = Input::get("passwithchanges_status");
             $reject_a_status        = Input::get("reject_a_status");
             $reject_b_status        = Input::get("reject_b_status");
@@ -273,11 +277,13 @@ class QaController extends Controller {
             $crm->customer_id = $customer_id;
             $crm->orig_crm_id = $id;
             $crm->comments = $comments;
+            $crm->verified_status = $verified_status;
             $crm->passwithchanges_status = $passwithchanges_status;
             $crm->reject_a_status = $reject_a_status;
             $crm->reject_b_status = $reject_b_status;
             $crm->reject_c_status = $reject_c_status;
             $crm->verified_by = Auth::user()->name;
+            $crm->verifier_id = Auth::user()->id;
             if($crm->save())
             {
                 $questions = new QaResponse();

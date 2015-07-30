@@ -45,65 +45,6 @@ $(document).ready(function() {
 
 
 });
-$( document ).ready(function() {
-
-	// var data = {labels: [], datasets: []};
-	// var label = {};
-	// var fillColor = {};
-	// var strokeColor = {};
-	// var highlightFill = {};
-	// var highlightStroke = {};
-	// var data = {};
-
-	$.ajax({
-		url: "api/crm/charityresponsesall", 
-		success: function(result){
-			var myObj = $.parseJSON(result);
-	    	$.each(myObj, function(key,value) {
-	    		// data.labels.push(value.columnheader);
-	    		
-	    		// var label = "label";
-	    		// data.datasets.push();
-
-
-	    		// console.log(value.columnheader);
-	    		// console.log(value.revenue);
-	    		
-			});
-	    	console.log(data);
-			
-			var data = {
-			    labels: ["January", "February", "March", "April", "May", "June", "July"],
-			    datasets: [
-			        {
-			            label: "My First dataset",
-			            fillColor: "rgba(220,220,220,0.5)",
-			            strokeColor: "rgba(220,220,220,0.8)",
-			            highlightFill: "rgba(220,220,220,0.75)",
-			            highlightStroke: "rgba(220,220,220,1)",
-			            data: [65, 59, 80, 81, 56, 55, 40]
-			        },
-			        {
-			            label: "My Second dataset",
-			            fillColor: "rgba(151,187,205,0.5)",
-			            strokeColor: "rgba(151,187,205,0.8)",
-			            highlightFill: "rgba(151,187,205,0.75)",
-			            highlightStroke: "rgba(151,187,205,1)",
-			            data: [28, 48, 40, 19, 86, 27, 90]
-			        }
-			    ]
-			};
-
-			
-			
-			var ctx = document.getElementById("canvas").getContext("2d");
-			myBar = new Chart(ctx).Bar(data, {
-				responsive : true
-			});
-		}	
-	});
-
-});
 
 $('#fromDateAgentPer').datepicker({
 	autoclose: true,
@@ -228,9 +169,132 @@ $("#btnDateAgentPer").click(function() {
 
 		var tt = new $.fn.dataTable.TableTools( table );
 	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-
 	}
 	
+});
+
+$("#submitVerifierReport").click(function() {
+	if ($.fn.dataTable.isDataTable('#VerifierReport') ) 
+	{
+    	table.destroy();
+    	table = $('#VerifierReport').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+    	$.ajax({
+		url: "api/crm/verifierreport", 
+		type: 'GET',
+		data: {"from" : $("#fromVerifierReport").val(), "to" :  $("#toVerifierReport").val(), "qa_name" : $("#qa_name").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+		var allTotal = 0;
+		var ctr = 1;
+		var totalPassed = 0;
+		var totalPassedApprove = 0;
+		var totalPassedChanges = 0;
+		var totalPassedUnverified = 0;
+		var totalPending = 0;
+		var totalRejectA = 0;
+		var totalRejectB = 0;
+		var totalRejectC = 0;
+		var totalTotal = 0;
+	    	$.each(myObj, function(key,value) {
+	    		totalPassed += parseInt(value.passed);
+	    		totalPassedApprove += parseInt(value.passed_approved);
+	    		totalPassedChanges += parseInt(value.passed_changes);
+	    		totalPassedUnverified += parseInt(value.passed_unverified);
+	    		totalPending += parseInt(value.pending);
+	    		totalRejectA += parseInt(value.reject_a);
+	    		totalRejectB += parseInt(value.reject_b);
+	    		totalRejectC += parseInt(value.reject_c);
+	    		allTotal = parseInt(value.passed) + parseInt(value.passed_approved) + parseInt(value.passed_changes) + parseInt(value.passed_unverified) + parseInt(value.pending) + parseInt(value.reject_a) + parseInt(value.reject_b) + parseInt(value.reject_c);
+	    		totalTotal += parseInt(allTotal);
+	    		table.row.add( [
+	    			ctr,
+		            value.verified_by,	
+		            value.passed,
+		            value.passed_approved,
+		            value.passed_changes,
+		            value.passed_unverified,
+		            value.pending,
+		            value.reject_a,
+		            value.reject_b,
+		            value.reject_c,
+		            allTotal
+	        	] ).draw();
+	        	ctr++;
+			});
+			$('#totalPassed').html(totalPassed);
+			$('#totalPassedApprove').html(totalPassedApprove);
+			$('#totalPassedChanges').html(totalPassedChanges);
+			$('#totalPassedUnverified').html(totalPassedUnverified);
+			$('#totalPending').html(totalPending);
+			$('#totalRejectA').html(totalRejectA);
+			$('#totalRejectB').html(totalRejectB);
+			$('#totalRejectC').html(totalRejectC);
+			$('#totalTotal').html(totalTotal);
+		}});
+	}
+	else
+	{
+		table = $('#VerifierReport').DataTable();
+		$.ajax({
+		url: "api/crm/verifierreport", 
+		type: 'GET',
+		data: {"from" : $("#fromVerifierReport").val(), "to" :  $("#toVerifierReport").val(), "qa_name" : $("#qa_name").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+		var allTotal = 0;
+		var ctr = 1;
+		var totalPassed = 0;
+		var totalPassedApprove = 0;
+		var totalPassedChanges = 0;
+		var totalPassedUnverified = 0;
+		var totalPending = 0;
+		var totalRejectA = 0;
+		var totalRejectB = 0;
+		var totalRejectC = 0;
+		var totalTotal = 0;
+	    	$.each(myObj, function(key,value) {
+	    		totalPassed += parseInt(value.passed);
+	    		totalPassedApprove += parseInt(value.passed_approved);
+	    		totalPassedChanges += parseInt(value.passed_changes);
+	    		totalPassedUnverified += parseInt(value.passed_unverified);
+	    		totalPending += parseInt(value.pending);
+	    		totalRejectA += parseInt(value.reject_a);
+	    		totalRejectB += parseInt(value.reject_b);
+	    		totalRejectC += parseInt(value.reject_c);
+	    		allTotal = parseInt(value.passed) + parseInt(value.passed_approved) + parseInt(value.passed_changes) + parseInt(value.passed_unverified) + parseInt(value.pending) + parseInt(value.reject_a) + parseInt(value.reject_b) + parseInt(value.reject_c);
+	    		totalTotal += parseInt(allTotal);
+	    		table.row.add( [
+	    			ctr,
+		            value.verified_by,	
+		            value.passed,
+		            value.passed_approved,
+		            value.passed_changes,
+		            value.passed_unverified,
+		            value.pending,
+		            value.reject_a,
+		            value.reject_b,
+		            value.reject_c,
+		            allTotal
+	        	] ).draw();
+	        	ctr++;
+			});
+			$('#totalPassed').html(totalPassed);
+			$('#totalPassedApprove').html(totalPassedApprove);
+			$('#totalPassedChanges').html(totalPassedChanges);
+			$('#totalPassedUnverified').html(totalPassedUnverified);
+			$('#totalPending').html(totalPending);
+			$('#totalRejectA').html(totalRejectA);
+			$('#totalRejectB').html(totalRejectB);
+			$('#totalRejectC').html(totalRejectC);
+			$('#totalTotal').html(totalTotal);
+		}});
+
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
+	    
 });
 
 
@@ -344,197 +408,10 @@ function get_response(id)
 						$("#"+currentheader+"block").css("display","none");
 					}
     		    }
-
-
-    // 			$.ajax({
-				// 	url: "api/questions/checkchild", 
-				// 	type: 'GET',
-				// 	data: {"parent":parent, "colheader" : nextcolheader},
-				// 	success: function(result){
-				// 	var myObjResult = $.parseJSON(result);
-				// 	if(myObjResult.count > 0)
-				// 	{
-						// if($("#"+currentheader).val() == myObjResult.response)
-						// {
-						// 	$('#'+nextcolheader).prop("disabled", false);
-
-						// 	if(response == "Yes" || response == "Possibly")
-						// 	{
-						// 		current_gross = current_gross + parseFloat(cost);
-						// 		$("#CRMGross").val(current_gross.toFixed(2));
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// 	else
-						// 	{
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// }
-						// else
-						// {
-						// 	$('#'+nextcolheader).prop("disabled", true);
-
-						// 	if(response == "Yes" || response == "Possibly")
-						// 	{
-						// 		current_gross = current_gross + parseFloat(cost);
-						// 		$("#CRMGross").val(current_gross.toFixed(2));
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// 	else
-						// 	{
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// }
-				// 	}
-				// 	else
-				// 	{
-						// if(response == "Yes" || response == "Possibly")
-						// {
-						// 	current_gross = current_gross + parseFloat(cost);
-						// 	$("#CRMGross").val(current_gross.toFixed(2));
-						// 	$("#"+currentheader+"block").css("display","none");
-						// }
-						// else
-						// {
-						// 	$("#"+currentheader+"block").css("display","none");
-						// }
-				// 	}
-					
-				// }});
-
     		}
     	}
     }
-//-----------------------------------------------------------------------------------------------------------------	
-	// Check if has child questions
-	// $.ajax({
-	// 	url: "api/questions/childcount", 
-	// 	type: 'GET',
-	// 	data: {"colheader":currentheader},
-	// 	success: function(result){
-	// 		if(result > 0) 
-	// 		{
-	// 			/*
-	// 			 Get the first child question and enable it
-	// 			 if the enable response if met				
-	// 			*/
-	// 			//console.log("First child is "+currentheader+"_1");
-	// 			$.ajax({
-	// 				url: "api/questions/childresponse", 
-	// 				type: 'GET',
-	// 				data: {"childheader":currentheader+"_1"},
-	// 				success: function(child_response){
-	// 					//console.log("First child response is "+child_response);
-						// if($("#"+currentheader).val() == child_response)
-						// {
-						// 	$('#'+currentheader+"_1").prop("disabled", false);
 
-						// 	if(response == "Yes" || response == "Possibly")
-						// 	{
-						// 		current_gross = current_gross + parseFloat(cost);
-						// 		$("#CRMGross").val(current_gross.toFixed(2));
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// 	else
-						// 	{
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// }
-						// else
-						// {
-						// 	$('#'+currentheader+"_1").prop("disabled", true);
-
-						// 	if(response == "Yes" || response == "Possibly")
-						// 	{
-						// 		current_gross = current_gross + parseFloat(cost);
-						// 		$("#CRMGross").val(current_gross.toFixed(2));
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// 	else
-						// 	{
-						// 		$("#"+currentheader+"block").css("display","none");
-						// 	}
-						// }
-	// 				}
-	// 			});			
-	// 		}
-	// 		else
-	// 		{
-	// 			// Handle the first child to the last
-	// 			//console.log("Has no child");	 
-	// 			//console.log(currentheader);
-	// 			// Get current child sort number
-	// 			$.ajax({
-	// 				url: "api/questions/childsort", 
-	// 				type: 'GET',
-	// 				data: {"childheader":currentheader},
-	// 				success: function(childsort){
-	// 					var myObj = $.parseJSON(childsort);
-	// 					var nextChildSort = parseInt(myObj.child_sort_num)+1;
-	// 					var parent = myObj.parent_colheader;
-	// 					var nextcolheader = parent+"_"+nextChildSort;
-
-	// 					$.ajax({
-	// 						url: "api/questions/checkchild", 
-	// 						type: 'GET',
-	// 						data: {"parent":parent, "colheader" : nextcolheader},
-	// 						success: function(result){
-	// 						var myObjResult = $.parseJSON(result);
-	// 						if(myObjResult.count > 0)
-	// 						{
-	// 							if($("#"+currentheader).val() == myObjResult.response)
-	// 							{
-	// 								$('#'+nextcolheader).prop("disabled", false);
-
-	// 								if(response == "Yes" || response == "Possibly")
-	// 								{
-	// 									current_gross = current_gross + parseFloat(cost);
-	// 									$("#CRMGross").val(current_gross.toFixed(2));
-	// 									$("#"+currentheader+"block").css("display","none");
-	// 								}
-	// 								else
-	// 								{
-	// 									$("#"+currentheader+"block").css("display","none");
-	// 								}
-	// 							}
-	// 							else
-	// 							{
-	// 								$('#'+nextcolheader).prop("disabled", true);
-
-	// 								if(response == "Yes" || response == "Possibly")
-	// 								{
-	// 									current_gross = current_gross + parseFloat(cost);
-	// 									$("#CRMGross").val(current_gross.toFixed(2));
-	// 									$("#"+currentheader+"block").css("display","none");
-	// 								}
-	// 								else
-	// 								{
-	// 									$("#"+currentheader+"block").css("display","none");
-	// 								}
-	// 							}
-	// 						}
-	// 						else
-	// 						{
-	// 							if(response == "Yes" || response == "Possibly")
-	// 							{
-	// 								current_gross = current_gross + parseFloat(cost);
-	// 								$("#CRMGross").val(current_gross.toFixed(2));
-	// 								$("#"+currentheader+"block").css("display","none");
-	// 							}
-	// 							else
-	// 							{
-	// 								$("#"+currentheader+"block").css("display","none");
-	// 							}
-	// 						}
-							
-	// 					}});
-
-	// 				}
-	// 			});	
-
-	// 		}
-
-	// 	}
-	// });
 
 }
 
@@ -992,12 +869,6 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 				});
 
 			}
-			//console.log(getRestrictions);
-
-			// if(value.child_count > 0)
-			// {
-   //             //console.log("This has child questions with "+value.child_count+" child questions");
-			// }
 
 		}
 		else
@@ -1017,6 +888,16 @@ $('#birthdate').datepicker({
 	autoclose: true,
 	format: "yyyy-mm-dd",
 	defaultViewDate: { year: 1960, month: 01, day: 01 }
+});
+
+$('#fromVerifierReport').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd"
+});
+
+$('#toVerifierReport').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd"
 });
 
 $("#CRMPostcodeBtn").click(function() { 
@@ -1098,22 +979,144 @@ $("#searchCustomer").click(function() {
 });
 
 $("#btnGenerate").click(function() {
-	     var num = parseInt($("#numGenerate").val());
-	     var html = '';
-	     var columnheader = $("#ColumnHeader").val();
+     var num = parseInt($("#numGenerate").val());
+     var html = '';
+     var columnheader = $("#ColumnHeader").val();
 
-	     for(var i = 1; i <= num ; i++)
-	     {
-	     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><select class="form-control" name="'+columnheader+'_'+i+'_response'+'"><option value="">Response</option><option value="Yes">Yes</option><option value="Possibly">Possibly</option></select></td></tr>';
-	     	$('#scripts').append(html);
-	     }
+     for(var i = 1; i <= num ; i++)
+     {
+     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><select class="form-control" name="'+columnheader+'_'+i+'_response'+'"><option value="">Response</option><option value="Yes">Yes</option><option value="Possibly">Possibly</option></select></td></tr>';
+     	$('#scripts').append(html);
+     }
 
-	     for(var x = 1; x <= num ; x++)
-	     {
-	     	$('#'+columnheader+'_'+x).summernote();
-	     	//console.log("in");
-	     }
-	     
-	    $('#NumberOfScripts').val(num);
- 		
+     for(var x = 1; x <= num ; x++)
+     {
+     	$('#'+columnheader+'_'+x).summernote();
+     }
+     
+    $('#NumberOfScripts').val(num);
 });	
+
+$("#verified_status").change(function() {
+	if($("#verified_status").val() == "Passed-With Changes")
+	{
+		$('#passwithchanges_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#passwithchanges_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject A")
+	{
+		$('#reject_a_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_a_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject B")
+	{
+		$('#reject_b_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_b_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject C")
+	{
+		$('#reject_c_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_c_status').prop("disabled", true); 
+	}
+
+});
+
+$("#re_verified_status").change(function() {
+	var re_ver_status = $("#re_verified_status").val();
+
+	if(re_ver_status == "On The Proccess" || re_ver_status == "Unverified" || re_ver_status == "Passed" || re_ver_status == "Passed-Approved" || re_ver_status == "Passed-Unverified" || re_ver_status == "Pending")
+	{
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+		$("#passwithchanges_status").val("");
+	}
+
+
+	$("#verified_status").val(re_ver_status);
+	if(re_ver_status == "Passed-With Changes")
+	{
+		$('#re_passwithchanges_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_b_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+
+	}
+	else
+	{
+		$('#re_passwithchanges_status').prop("disabled", true); 
+	}
+
+
+	if(re_ver_status == "Reject A")
+	{
+		$('#re_reject_a_status').prop("disabled", false); 
+
+		$("#re_reject_b_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+	}
+	else
+	{
+		$('#re_reject_a_status').prop("disabled", true); 
+	}
+
+	if(re_ver_status == "Reject B")
+	{
+		$('#re_reject_b_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_a_status").val("");
+		$("#reject_c_status").val("");
+	}
+	else
+	{
+		$('#re_reject_b_status').prop("disabled", true); 
+	}
+
+	if(re_ver_status == "Reject C")
+	{
+		$('#re_reject_c_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_b_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+	}
+	else
+	{
+		$('#re_reject_c_status').prop("disabled", true); 
+	}
+
+
+});
+
+$("#re_passwithchanges_status").change(function() { $("#passwithchanges_status").val($("#re_passwithchanges_status").val()); });
+$("#re_reject_a_status").change(function() { $("#reject_a_status").val($("#re_reject_a_status").val()); });
+$("#re_reject_b_status").change(function() { $("#reject_b_status").val($("#re_reject_b_status").val()); });
+$("#re_reject_c_status").change(function() { $("#reject_c_status").val($("#re_reject_c_status").val()); });
+
