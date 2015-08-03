@@ -77,7 +77,12 @@ Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperform
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('reports/api/crm/verifierreport', 'ReportController@apiverifierreport');
+Route::get('reports/api/crm/qasummary', 'ReportController@apiqasummary');
+Route::get('reports/api/crm/qasummary2', 'ReportController@apiqasummary2');
+Route::get('reports/api/crm/qasummary2', 'ReportController@apiqasummary2');
+Route::get('reports/api/crm/getqaresponses/{qaform_id}', 'ReportController@apigetqaresponses');
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
+
 
 
 /* QA Tools / Modules Routes*/

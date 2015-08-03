@@ -38,77 +38,94 @@ class CrmController extends Controller {
 
 	public function store()
 	{
-		$CrmDisposition           = Input::get("CrmDisposition");
-		$CRMGross                 = Input::get("CRMGross");
-		$CrmIsUKPermanentResident = Input::get("CrmIsUKPermanentResident");
-		$CRMPostcode 			  = Input::get("CRMPostcode");
-		$CrmAddr1 			  	  = Input::get("CrmAddr1");
-		$CrmAddr2 			  	  = Input::get("CrmAddr2");
-		$CrmAddr3 			  	  = Input::get("CrmAddr3");
-		$CrmAddr4 			  	  = Input::get("CrmAddr4");
-		$CrmTown 			  	  = Input::get("CrmTown");
-		$CrmCountry 			  = Input::get("CrmCountry");
-		$Title 			          = Input::get("Title");
-		$Gender 			      = Input::get("Gender");
-		$CrmFirstName 		  	  = Input::get("CrmFirstName");
-		$CrmSurname 			  = Input::get("CrmSurname");
-		$CRMTelephoneOptions      = Input::get("CRMTelephoneOptions");
-		$CRMTelephoneNo           = Input::get("CRMTelephoneNo");
-		$CrmAge                   = Input::get("CrmAge");
-		$CRMWorkStatus            = Input::get("CRMWorkStatus");
-		$CRMOwnHomeOptions        = Input::get("CRMOwnHomeOptions");
-		$CRMMaritalStatus         = Input::get("CRMMaritalStatus");
-		$customer_id              = Input::get("customer_id");
+		$rules = array(
+            'CrmDisposition'           => 'required',
+            'CrmIsUKPermanentResident' => 'required',
+        );
 
-		$crm = new Crm();
-		$crm->disposition         = $CrmDisposition;
-		$crm->gross               = $CRMGross;
-		$crm->ispermanentresident = $CrmIsUKPermanentResident;
-		$crm->postcode            = $CRMPostcode;
-		$crm->addr1               = $CrmAddr1;
-		$crm->addr2               = $CrmAddr2;
-		$crm->addr3               = $CrmAddr3;
-		$crm->addr4               = $CrmAddr4;
-		$crm->town                = $CrmTown;
-		$crm->country             = $CrmCountry;
-		$crm->title               = $Title;
-		$crm->gender              = $Gender;
-		$crm->firstname           = $CrmFirstName;
-		$crm->surname             = $CrmSurname;
-		$crm->phonetype           = $CRMTelephoneOptions;
-		$crm->phone_num           = $CRMTelephoneNo;
-		$crm->age_bracket         = $CrmAge;
-		$crm->work_status         = $CRMWorkStatus;
-		$crm->home_status         = $CRMOwnHomeOptions;
-		$crm->marital_status      = $CRMMaritalStatus;
-		$crm->agent_id      	  = Auth::user()->id;
-		$crm->customer_id      	  = $customer_id ;
+        $validator = Validator::make(Input::all(), $rules);
 
-		if($crm->save())
-		{
-			$lastInsertId = $crm->id;
-			$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
-			$columnheader = "";
-			foreach ($questions as $key => $value) 
+
+        // Check if all fields is filled
+        if ($validator->fails()) 
+        {
+            return Redirect::to('crm/create')->withInput()->withErrors($validator);
+        }
+        else
+        {
+        	$CrmDisposition           = Input::get("CrmDisposition");
+			$CRMGross                 = Input::get("CRMGross");
+			$CrmIsUKPermanentResident = Input::get("CrmIsUKPermanentResident");
+			$CRMPostcode 			  = Input::get("CRMPostcode");
+			$CrmAddr1 			  	  = Input::get("CrmAddr1");
+			$CrmAddr2 			  	  = Input::get("CrmAddr2");
+			$CrmAddr3 			  	  = Input::get("CrmAddr3");
+			$CrmAddr4 			  	  = Input::get("CrmAddr4");
+			$CrmTown 			  	  = Input::get("CrmTown");
+			$CrmCountry 			  = Input::get("CrmCountry");
+			$Title 			          = Input::get("Title");
+			$Gender 			      = Input::get("Gender");
+			$CrmFirstName 		  	  = Input::get("CrmFirstName");
+			$CrmSurname 			  = Input::get("CrmSurname");
+			$CRMTelephoneOptions      = Input::get("CRMTelephoneOptions");
+			$CRMTelephoneNo           = Input::get("CRMTelephoneNo");
+			$CrmAge                   = Input::get("CrmAge");
+			$CRMWorkStatus            = Input::get("CRMWorkStatus");
+			$CRMOwnHomeOptions        = Input::get("CRMOwnHomeOptions");
+			$CRMMaritalStatus         = Input::get("CRMMaritalStatus");
+			$customer_id              = Input::get("customer_id");
+
+			$crm = new Crm();
+			$crm->disposition         = $CrmDisposition;
+			$crm->gross               = $CRMGross;
+			$crm->ispermanentresident = $CrmIsUKPermanentResident;
+			$crm->postcode            = $CRMPostcode;
+			$crm->addr1               = $CrmAddr1;
+			$crm->addr2               = $CrmAddr2;
+			$crm->addr3               = $CrmAddr3;
+			$crm->addr4               = $CrmAddr4;
+			$crm->town                = $CrmTown;
+			$crm->country             = $CrmCountry;
+			$crm->title               = $Title;
+			$crm->gender              = $Gender;
+			$crm->firstname           = $CrmFirstName;
+			$crm->surname             = $CrmSurname;
+			$crm->phonetype           = $CRMTelephoneOptions;
+			$crm->phone_num           = $CRMTelephoneNo;
+			$crm->age_bracket         = $CrmAge;
+			$crm->work_status         = $CRMWorkStatus;
+			$crm->home_status         = $CRMOwnHomeOptions;
+			$crm->marital_status      = $CRMMaritalStatus;
+			$crm->agent_id      	  = Auth::user()->id;
+			$crm->customer_id      	  = $customer_id ;
+
+			if($crm->save())
 			{
-				$columnheader = $value->columnheader; 
-				$id = Question::where('columnheader', '=', $columnheader)->get();
+				$lastInsertId = $crm->id;
+				$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
+				$columnheader = "";
+				foreach ($questions as $key => $value) 
+				{
+					$columnheader = $value->columnheader; 
+					$id = Question::where('columnheader', '=', $columnheader)->get();
 
-				$responses = new Response();
-				$responses->crm_id = $lastInsertId;
-				$responses->question_id = $id[0]->id;
-				$responses->response = Input::get($columnheader);
-				$responses->save();
+					$responses = new Response();
+					$responses->crm_id = $lastInsertId;
+					$responses->question_id = $id[0]->id;
+					$responses->response = Input::get($columnheader);
+					$responses->save();
+				}
+
+				Session::flash('alert-info', 'Form and responses has been saved.');
+			}
+			else
+			{
+				Session::flash('alert-danger', 'Error saving form.');
 			}
 
-			Session::flash('alert-info', 'Form and responses has been saved.');
-		}
-		else
-		{
-			Session::flash('alert-danger', 'Error saving form.');
-		}
+			return Redirect::to('crm/create');
+        }
 
-		return Redirect::to('crm/create');
 
 	}
 

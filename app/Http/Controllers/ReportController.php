@@ -104,47 +104,111 @@ class ReportController extends Controller {
 		$to      = Input::get("to");
 		$qa_name = Input::get("qa_name");
 
-
-		if($qa_name == "All")
+		$qaname_query = "";
+		if($qa_name != "All")
 		{
-			$query = "SELECT verifier_id, verified_by,
-				COUNT(verified_status = 'Passed' OR NULL) AS passed, 
-				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
-				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
-				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
-				COUNT(verified_status = 'Pending' OR NULL) AS pending,
-				COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
-				COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
-				COUNT(verified_status = 'Reject C' OR NULL) AS reject_c
-				FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to'
-				GROUP BY verifier_id, verified_by;";
-		}
-		else
-		{
-			$query = "SELECT verifier_id, verified_by,
-				COUNT(verified_status = 'Passed' OR NULL) AS passed, 
-				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
-				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
-				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
-				COUNT(verified_status = 'Pending' OR NULL) AS pending,
-				COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
-				COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
-				COUNT(verified_status = 'Reject C' OR NULL) AS reject_c
-				FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to' AND verifier_id = '$qa_name'
-				GROUP BY verifier_id, verified_by;";
+			$qaname_query = "AND verifier_id = '".$qa_name."'";
 		}
 
+		$query = "SELECT verifier_id, verified_by,
+			COUNT(verified_status = 'Passed' OR NULL) AS passed, 
+			COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
+			COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
+			COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
+			COUNT(verified_status = 'Pending' OR NULL) AS pending,
+			COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
+			COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
+			COUNT(verified_status = 'Reject C' OR NULL) AS reject_c 
+			FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to' $qaname_query
+			GROUP BY verifier_id, verified_by;";
 		
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
 	}
 
+	public function showQaSummaryReport()
+	{
+		$agent_name = array('All' => 'All') + DB::table('users')->where(array('isAdmin' => 0))->lists('name','id');
+		return view('reports.qasummary')->with(array('agent_name' => $agent_name));
+	}
 
+	public function apiqasummary()
+	{
+		$from           = Input::get("from");
+		$to             = Input::get("to");
+		$agent          = Input::get("agent");
+		$disposition    = Input::get("disposition");
+		$verifiedstatus = Input::get("verifiedstatus");
+		$dispositionQuery = " AND disposition IN('Completed Survey', 'MCS Record')";
+		$verifiedQuery = "";
+		$agentQuery = "";
 
-	
+		if($disposition != "All")
+		{
+			$dispositionQuery = "AND disposition IN ('".$disposition."')";
+		}
 
-	
-	
+		if($verifiedstatus != "All")
+		{
+			$verifiedQuery = "AND verified_status IN ('".$verifiedstatus."')";
+		}
+
+		if($agent != "All")
+		{
+			$agentQuery = "AND agent_id IN ('".$agent."')";
+		}
+
+		$query = "SELECT disposition, verified_status, COUNT(phone_num) as totalcount 
+					FROM qa_forms 
+					WHERE created_at >= '$from' AND created_at <= '$to' $dispositionQuery $verifiedQuery $agentQuery
+					GROUP BY disposition, verified_status ORDER BY 1;";
+
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);	
+	}
+
+	public function apiqasummary2()
+	{
+		$from           = Input::get("from");
+		$to             = Input::get("to");
+		$agent          = Input::get("agent");
+		$disposition    = Input::get("disposition");
+		$verifiedstatus = Input::get("verifiedstatus");
+		$dispositionQuery = " AND disposition IN('Completed Survey', 'MCS Record')";
+		$verifiedQuery = "";
+		$agentQuery = "";
+
+		if($disposition != "All")
+		{
+			$dispositionQuery = "AND disposition IN ('".$disposition."')";
+		}
+
+		if($verifiedstatus != "All")
+		{
+			$verifiedQuery = "AND verified_status IN ('".$verifiedstatus."')";
+		}
+
+		if($agent != "All")
+		{
+			$agentQuery = "AND agent_id IN ('".$agent."')";
+		}
+
+		$query = "SELECT *
+					FROM qa_forms 
+					WHERE created_at >= '$from' AND created_at <= '$to' $dispositionQuery $verifiedQuery $agentQuery
+					ORDER BY created_at ASC;";
+
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);				
+	}
+
+	public function apigetqaresponses($id)
+	{
+		$query = "SELECT a.question_id, a.response, b.columnheader FROM qa_responses a INNER JOIN questions b ON a.question_id = b.id WHERE qa_forms_id = '$id';";
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);
+	}
 
 
 }
+

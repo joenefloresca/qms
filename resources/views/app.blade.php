@@ -97,6 +97,7 @@
 									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
 									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
 									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
+									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
 								</ul>
 							</li>
 						@else

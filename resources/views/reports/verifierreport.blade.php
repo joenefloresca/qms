@@ -41,7 +41,6 @@
 			<div class="panel panel-success">
 				<div class="panel-heading">Verifier Report</div>
 				<div class="panel-body">
-					<!-- <div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div> -->
                     <table id="VerifierReport" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>

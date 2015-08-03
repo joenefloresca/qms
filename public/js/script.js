@@ -59,13 +59,24 @@ $('#fromDateCharityRes').datepicker({
 	autoclose: true,
 	format: "yyyy-mm-dd",
 });
+
 $('#toDateCharityRes').datepicker({
 	autoclose: true,
 	format: "yyyy-mm-dd",
 });
 
+$('#fromQaSummary').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#toQaSummary').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
 $("#btnDateCharityRes").click(function() {
-	if ($.fn.dataTable.isDataTable('#CharityResponses') ) 
+	if($.fn.dataTable.isDataTable('#CharityResponses')) 
 	{	
     	table.destroy();
     	table = $('#CharityResponses').DataTable();
@@ -122,7 +133,7 @@ $("#btnDateCharityRes").click(function() {
 });
 
 $("#btnDateAgentPer").click(function() {
-	if ($.fn.dataTable.isDataTable('#AgentPerformance') ) 
+	if($.fn.dataTable.isDataTable('#AgentPerformance')) 
 	{
     	table.destroy();
     	table = $('#AgentPerformance').DataTable();
@@ -174,7 +185,7 @@ $("#btnDateAgentPer").click(function() {
 });
 
 $("#submitVerifierReport").click(function() {
-	if ($.fn.dataTable.isDataTable('#VerifierReport') ) 
+	if($.fn.dataTable.isDataTable('#VerifierReport')) 
 	{
     	table.destroy();
     	table = $('#VerifierReport').DataTable();
@@ -297,15 +308,130 @@ $("#submitVerifierReport").click(function() {
 	    
 });
 
+$("#submitQaSummary").click(function() {
+	if($.fn.dataTable.isDataTable('#SummaryReportA')) 
+	{
+		table.destroy();
+    	table = $('#SummaryReportA').DataTable();
+    	table2.destroy();
+    	table2 = $('#SummaryReportB').DataTable();
+    	table.clear().draw();
+    	table2.clear().draw();
+    	// var tt = new $.fn.dataTable.TableTools( table );
+    	// var tt2 = new $.fn.dataTable.TableTools( table2 );
+    	$.ajax({
+		url: "api/crm/qasummary", 
+		type: 'GET',
+		data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+		success: function(result){
+			var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) { 
+				table.row.add( [
+		            value.disposition,	
+		            value.verified_status,
+		            value.totalcount
+	    		] ).draw();
+			});
+
+			$.ajax({
+			url: "api/crm/qasummary2", 
+			type: 'GET',
+			data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result2){
+				var myObj2 = $.parseJSON(result2);
+				$.each(myObj2, function(key,value2) { 
+					table2.row.add( [
+					  value2.verified_by,
+			          value2.verified_status,
+			          value2.passwithchanges_status,
+			          value2.comments,
+			          value2.gross,
+			          value2.title,
+			          value2.firstname,
+			          value2.surname,
+			          '<button type="button" class="btn btn-info" data-toggle="collapse" id="showBtnFullDetails" data-target="#showFullDetails" value="'+value2.id+'">Show Responses</button>'
+		    		] ).draw();
+				});	
+			}});
+
+		}});
+	}
+	else
+	{
+		table = $('#SummaryReportA').DataTable();
+		table2 = $('#SummaryReportB').DataTable();
+		$.ajax({
+			url: "api/crm/qasummary", 
+			type: 'GET',
+			data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result){
+			var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) { 
+				table.row.add( [
+		            value.disposition,	
+		            value.verified_status,
+		            value.totalcount
+	    		] ).draw();
+			});
+
+			$.ajax({
+			url: "api/crm/qasummary2", 
+			type: 'GET',
+			data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result2){
+				var myObj2 = $.parseJSON(result2);
+				$.each(myObj2, function(key,value2) { 
+					table2.row.add( [
+			          value2.verified_by,
+			          value2.verified_status,
+			          value2.passwithchanges_status,
+			          value2.comments,
+			          value2.gross,
+			          value2.title,
+			          value2.firstname,
+			          value2.surname,
+			          '<button type="button" class="btn btn-info" data-toggle="collapse" id="showBtnFullDetails" data-target="#showFullDetails" value="'+value2.id+'">Show Responses</button>'
+		    		] ).draw();
+				});	
+			}});
+
+
+		}});
+
+		// var tt = new $.fn.dataTable.TableTools( table );
+	 //    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	 //    var tt2 = new $.fn.dataTable.TableTools( table2 );
+	 //    $( tt2.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
+});
+
+
+$(document).on("click", "#showBtnFullDetails", function() {
+	var id = $("#showBtnFullDetails").val();
+	table = $('#SummaryReportResponses').DataTable();
+	$.ajax({
+	url: "api/crm/getqaresponses/"+id, 
+	type: 'GET',
+	success: function(result){
+		var myObj = $.parseJSON(result);
+		$.each(myObj, function(key,value) { 
+			table.row.add( [
+		        value.columnheader,	
+		        value.response
+			] ).draw();
+		});	
+	}});
+
+});
 
 function get_response(id)
 {
 	console.log(records);
 	var currentheader = $(id).attr('id');
 	var current_gross = parseFloat($("#CRMGross").val());
-	var cost 	= $("#"+currentheader).attr('value');
+	var cost 	 = $("#"+currentheader).attr('value');
 	var response = $("#"+currentheader).val();
-	var counter = 1;
+	var counter  = 1;
 
     var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
     console.log(result);
