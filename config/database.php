@@ -74,17 +74,7 @@ return [
             'prefix'   => '',
             'schema'   => 'public',
         ],
-
-        // 'pgsql' => [
-        //     'driver'   => 'pgsql',
-        //     'host'     => '192.168.3.9',
-        //     'database' => 'qms',
-        //     'username' => 'postgres',
-        //     'password' => 'postgres',
-        //     'charset'  => 'utf8',
-        //     'prefix'   => '',
-        //     'schema'   => 'public',
-        // ],
+        
 
         // 'pgsql' => [
         //     'driver'   => 'pgsql',
