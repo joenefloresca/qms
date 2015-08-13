@@ -137,13 +137,13 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Shall we proceed?… Yes/No</label>
 							<div class="col-md-4">
-								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#continueModal">Yes</button>
+								<!-- <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#continueModal">Yes</button> -->
 								<!-- <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#shallwestart">Yes/No</button>	 -->
-								<!-- <select name="CrmShallWeStart" id="CrmShallWeStart" class="form-control">
+								<select name="CrmShallWeStart" id="CrmShallWeStart" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Yes">Yes</option>
 									<option value="No">No</option>
-								 </select> -->
+								 </select>
 							</div>
 						</div>
 					</div>

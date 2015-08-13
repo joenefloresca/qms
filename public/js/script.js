@@ -648,15 +648,16 @@ $("#CrmShallWeStart").change(function() {
 
 	if(choosen == "Yes")
 	{
-		$("#shallwestart").css("display","block");
-	}
-	else if(choosen == "No")
-	{
-		$("#shallwestart").css("display","none");
+		$('#continueModal').modal('toggle');
+		$('#CRMGross').val(0.20);
+
 	}
 	else
 	{
-		$("#shallwestart").css("display","none");
+		$('#continueModal').modal('hide');
+		var current_gross = $('#CRMGross').val();
+		var newgross = current_gross - 0.20;
+		$('#CRMGross').val(newgross);
 	}
 	  	
 });
