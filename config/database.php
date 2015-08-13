@@ -69,7 +69,7 @@ return [
             'host'     => 'localhost',
             'database' => 'qms',
             'username' => 'postgres',
-            'password' => '',
+            'password' => 'postgres',
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
