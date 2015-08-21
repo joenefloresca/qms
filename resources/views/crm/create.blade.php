@@ -272,7 +272,7 @@
 				<div class="panel-body">
 						<table class="table borderless">
 							<tr>
-								<td class="bg-danger" colspan="3">Alternate</td>
+								<td class="bg-primary" colspan="3">Alternate</td>
 							</tr>
 						</table>
 
@@ -377,7 +377,7 @@
 						<table class="table table-striped table-bordered" id="CRMTable"> 
 						 <thead>
 						 	<tr>
-                            	<th colspan="2" class="bg-danger">Mr./Mrs. I am going to ask you a series of questions and you can answer me with yes, never, or yes,possibly, if you so wish</th>
+                            	<th colspan="2" class="text-primary">Mr./Mrs. I am going to ask you a series of questions and you can answer me with yes, never, or yes,possibly, if you so wish</th>
                               
                             </tr>
                             <tr>
@@ -425,7 +425,7 @@
                             </tbody>
                             <tfoot>
                             	<tr>
-                            		<th colspan="2" class="bg-danger">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, www.mycharitysurvey.com. Have a great day!
+                            		<th colspan="2" class="text-primary">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, www.mycharitysurvey.com. Have a great day!
                             		</th>
                             	</tr>
                             </tfoot>
