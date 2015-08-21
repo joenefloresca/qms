@@ -265,12 +265,13 @@
 												<td>{{ $response->columnheader }}</td>
 												<td>{{ $response->question }}</td>
 												<td>
-													<select class="form-control" name="{{$response->columnheader}}">
+													<input type="text" class="form-control" name="{{$response->columnheader}}" value="{{$response->response}}">
+													<!-- <select class="form-control" name="{{$response->columnheader}}">
 														<option value="{{$response->response}}" selected>{{$response->response}}</option>
 														<option value="Yes">Yes</option>
 														<option value="No">No</option>
 														<option value="Possibly">Possibly</option>
-													</select>
+													</select> -->
 												</td>
 											</tr>
 											@endforeach
