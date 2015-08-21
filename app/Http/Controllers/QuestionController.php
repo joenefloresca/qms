@@ -127,8 +127,10 @@ class QuestionController extends Controller {
         {
             if(Input::get("numGenerate") == "") // For Single Questions
             {
+               
                 $question = new Question();
                 $question->question             = Input::get('Question');
+                $question->parent_enable_response   = Input::get('lead_response');
                 $question->postcoderestriction  = Input::get('PostCodeRestriction');
                 $question->postcodeinclusion    = Input::get('PostCodeInclusion');
                 $question->postcodeexclusion    = Input::get('PostCodeExclusion');
@@ -160,6 +162,7 @@ class QuestionController extends Controller {
                 // Save the main question first
                 $question = new Question();
                 $question->question              = Input::get('Question');
+                $question->parent_enable_response   = Input::get('lead_response');
                 $question->postcoderestriction   = Input::get('PostCodeRestriction');
                 $question->postcodeinclusion     = Input::get('PostCodeInclusion');
                 $question->postcodeexclusion     = Input::get('PostCodeExclusion');
@@ -189,6 +192,7 @@ class QuestionController extends Controller {
                     $questionChild->question              = Input::get($colheader);
                     $questionChild->costperlead           = floatval(Input::get($colheader."_cost"));
                     $questionChild->child_enable_response = Input::get($colheader."_response");
+                    $questionChild->child_lead_respponse = Input::get($colheader."_response_activate");
                     $questionChild->isenabled             = Input::get('IsEnabled');
                     $questionChild->is_child              = 1;
                     $questionChild->columnheader          = $colheader;
@@ -244,6 +248,7 @@ class QuestionController extends Controller {
         {
         	$question = Question::find($id);
         	$question->question = Input::get('Question');
+            $question->parent_enable_response = Input::get('lead_response');
             $question->postcoderestriction = Input::get('PostCodeRestriction');
             $question->postcodeinclusion = Input::get('PostCodeInclusion');
             $question->postcodeexclusion = Input::get('PostCodeExclusion');

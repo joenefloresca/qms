@@ -66,7 +66,7 @@ return [
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => 'localhost',
+            'host'     => '192.168.3.9',
             'database' => 'qms',
             'username' => 'postgres',
             'password' => 'postgres',

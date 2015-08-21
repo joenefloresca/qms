@@ -38,6 +38,8 @@ $(document).ready(function() {
 	                telephoneoptions: value.telephoneoptions,
 	                telephonerestriction: value.telephonerestriction,
 	                updated_at: value.updated_at,
+	                parent_enable_response: value.parent_enable_response,
+	                child_lead_respponse: value.child_lead_respponse,
 				});
 			});
 			
@@ -429,13 +431,14 @@ function get_response(id)
 	console.log(records);
 	var currentheader = $(id).attr('id');
 	var current_gross = parseFloat($("#CRMGross").val());
-	var cost 	 = $("#"+currentheader).attr('value');
+	var cost 	 = $("#hidden_val_"+currentheader).attr('value');
 	var response = $("#"+currentheader).val();
 	var counter  = 1;
+	var parent_response_enable = records[0].parent_enable_response.split(',');
+	console.log(parent_response_enable);
 
     var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
-    console.log(result);
-    console.log(currentheader);
+
 
     if (result.length == 1)
     {
@@ -444,13 +447,16 @@ function get_response(id)
     	{
     		 console.log("Has child questions.");
     		 var childresponse = $.grep(records, function(e){ return e.columnheader == currentheader+"_1"; });
+    		 var child_response_enable = childresponse[0].child_enable_response.split(',');
+    		
     		 if(childresponse.length == 1)
     		 {
-	 			if($("#"+currentheader).val() == childresponse[0].child_enable_response)
+	 			if($.inArray($("#"+currentheader).val(), child_response_enable) >= 0)
 				{
+					
 					$('#'+currentheader+"_1").prop("disabled", false);
 
-					if(response == "Yes" || response == "Possibly")
+					if($.inArray(response, parent_response_enable) >= 0)
 					{
 						current_gross = current_gross + parseFloat(cost);
 						$("#CRMGross").val(current_gross.toFixed(2));
@@ -465,7 +471,7 @@ function get_response(id)
 				{
 					$('#'+currentheader+"_1").prop("disabled", true);
 
-					if(response == "Yes" || response == "Possibly")
+					if($.inArray(response, parent_response_enable) >= 0)
 					{
 						current_gross = current_gross + parseFloat(cost);
 						$("#CRMGross").val(current_gross.toFixed(2));
@@ -480,61 +486,103 @@ function get_response(id)
     	}
     	else
     	{
+    		console.log("No child questions.");
     		var childsort = $.grep(records, function(e){ return e.columnheader == currentheader; });
-    		if(childsort.length == 1)
+    		
+    		console.log(childsort[0].is_child);
+    		if(childsort[0].is_child == 0) // Check if the current question is a parent question with no child
     		{
-    			var nextChildSort = parseInt(childsort[0].child_sort_num)+1;
-    			var parent = childsort[0].parent_colheader;
-    			var nextcolheader = parent+"_"+nextChildSort;
+    			var parent_lead_response = childsort[0].parent_enable_response.split(",");
+   
+    			if($.inArray(response, parent_lead_response) >= 0)
+				{
+					current_gross = current_gross + parseFloat(cost);
+					$("#CRMGross").val(current_gross.toFixed(2));
+					$("#"+currentheader+"block").css("display","none");
+				}
+				else
+				{
+					$("#"+currentheader+"block").css("display","none");
+				}
 
-    			var checkchild = $.grep(records, function(e){ return e.parent_colheader == parent && e.columnheader == nextcolheader; });
-    			if(checkchild.length == 1)
-    		    {
-		    		if($("#"+currentheader).val() == checkchild[0].child_enable_response)
-					{
-						$('#'+nextcolheader).prop("disabled", false);
-
-						if(response == "Yes" || response == "Possibly")
-						{
-							current_gross = current_gross + parseFloat(cost);
-							$("#CRMGross").val(current_gross.toFixed(2));
-							$("#"+currentheader+"block").css("display","none");
-						}
-						else
-						{
-							$("#"+currentheader+"block").css("display","none");
-						}
-					}
-					else
-					{
-						$('#'+nextcolheader).prop("disabled", true);
-
-						if(response == "Yes" || response == "Possibly")
-						{
-							current_gross = current_gross + parseFloat(cost);
-							$("#CRMGross").val(current_gross.toFixed(2));
-							$("#"+currentheader+"block").css("display","none");
-						}
-						else
-						{
-							$("#"+currentheader+"block").css("display","none");
-						}
-					}
-    		    }
-    		    else
-    		    {
-		    		if(response == "Yes" || response == "Possibly")
-					{
-						current_gross = current_gross + parseFloat(cost);
-						$("#CRMGross").val(current_gross.toFixed(2));
-						$("#"+currentheader+"block").css("display","none");
-					}
-					else
-					{
-						$("#"+currentheader+"block").css("display","none");
-					}
-    		    }
     		}
+    		else
+    		{
+    			if(childsort.length == 1)
+	    		{
+	    			var nextChildSort = parseInt(childsort[0].child_sort_num)+1;
+	    			console.log("##");
+	    			console.log(nextChildSort);
+	    			var parent = childsort[0].parent_colheader;
+	    			var nextcolheader2 = parent+"_"+nextChildSort;
+	    			var nextcolheader = parent+"_"+childsort[0].child_sort_num;
+
+	    			console.log(parent);
+	    			console.log(nextcolheader);
+	    			console.log(records);
+	    			console.log(childsort[0].child_sort_num);
+	    			console.log("^");
+
+	    			var checkchild = $.grep(records, function(e){ return e.parent_colheader == parent && e.columnheader == nextcolheader; });
+	    			var child_lead_respponse = checkchild[0].child_lead_respponse.split(',');
+	    			console.log(checkchild);
+	    			console.log(child_lead_respponse);
+
+	    		
+	    			
+	    			if(checkchild.length == 1)
+	    		    {
+			    		
+			    		if($.inArray($("#"+currentheader).val(), child_lead_respponse) >= 0)
+						{
+							$('#'+nextcolheader2).prop("disabled", false);
+
+							if($.inArray(response, child_lead_respponse) >= 0)
+							{
+								current_gross = current_gross + parseFloat(cost);
+								$("#CRMGross").val(current_gross.toFixed(2));
+								$("#"+currentheader+"block").css("display","none");
+							}
+							else
+							{
+								$("#"+currentheader+"block").css("display","none");
+							}
+						}
+						else
+						{
+							$('#'+nextcolheader2).prop("disabled", true);
+
+							if($.inArray(response, parent_response_enable) >= 0)
+							{
+								current_gross = current_gross + parseFloat(cost);
+								$("#CRMGross").val(current_gross.toFixed(2));
+								$("#"+currentheader+"block").css("display","none");
+							}
+							else
+							{
+								$("#"+currentheader+"block").css("display","none");
+							}
+						}
+	    		    }
+	    		    else
+	    		    {
+	    		    	
+			    		if($.inArray(response, child_lead_respponse) >= 0)
+						{
+							
+							current_gross = current_gross + parseFloat(cost);
+							$("#CRMGross").val(current_gross.toFixed(2));
+							$("#"+currentheader+"block").css("display","none");
+						}
+						else
+						{
+							$("#"+currentheader+"block").css("display","none");
+						}
+	    		    }
+	    		}
+    		}
+    	
+    		
     	}
     }
 
@@ -648,13 +696,11 @@ $("#CrmShallWeStart").change(function() {
 
 	if(choosen == "Yes")
 	{
-		$('#continueModal').modal('toggle');
 		$('#CRMGross').val(0.20);
 
 	}
 	else
 	{
-		$('#continueModal').modal('hide');
 		var current_gross = $('#CRMGross').val();
 		var newgross = current_gross - 0.20;
 		$('#CRMGross').val(newgross);
@@ -662,24 +708,56 @@ $("#CrmShallWeStart").change(function() {
 	  	
 });
 
-$("#OwnHomeRestriction").change(function() {
+$("#CrmIsUKPermanentResident").change(function() {
 
-	var choosen = $("#OwnHomeRestriction").val();
+	var choosen = $("#CrmIsUKPermanentResident").val();
 
 	if(choosen == "Yes")
 	{
-		$("#DivOwnHomeOptions").css("display","block");
-	}
-	else if(choosen == "No")
-	{
-		$("#DivOwnHomeOptions").css("display","none");
+		$('#continueModal').modal('toggle');
 	}
 	else
 	{
-		$("#DivOwnHomeOptions").css("display","none");
+		$('#continueModal').modal('hide');
 	}
 	  	
 });
+
+$("#CrmDisposition").change(function() {
+
+	var choosen = $("#CrmDisposition").val();
+
+	if(choosen != "")
+	{
+		$("#CrmSubmitDiv").css("display","block");
+	}
+	else
+	{
+		$("#CrmSubmitDiv").css("display","none");
+	}
+	  	
+});
+
+$("#TelephoneRestriction").change(function() {
+
+	var choosen = $("#TelephoneRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivTelephoneOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	  	
+});
+
+
 
 var progress = $(".loading-progress").progressTimer({
 	  timeLimit: 10,
@@ -694,6 +772,8 @@ function changeEnable(id)
 {
 	var val 	= $(id).attr('id');
 	var ischeck = $("#"+val).is(":checked");
+
+	alert(ischeck);
 	if(ischeck == true)
 	{
 		$.ajax({
@@ -810,8 +890,7 @@ var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
 var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 
-	
-    //console.log(data);
+
 	$.each(data, function(key,value) {
 		// Make an array variable where you will store the Restriction Name and Loop thru it
 		var getRestrictions = [];
@@ -858,6 +937,8 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 				count++;
 				getRestrictions.push("telephoneoptions");
 			}
+             
+           
 
 			if(getRestrictions.length == 0) // If has no restriction then enable the question
 			{
@@ -865,22 +946,36 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 			}
 			else
 			{
+				console.log(getRestrictions);
 				// Apply restriction rule
 				$.each(getRestrictions, function(key2, value2)
 				{
+					console.log("Loop on "+ value2);
 					if(value2 == "agebracket")
 					{
-						if(value.agebracket == age)
+						var QuesAge = value.agebracket.split('-');
+						var minQuesAge = QuesAge[0];
+						var maxQuesAge = QuesAge[1];
+
+						var CustomerAge = age.split('-');
+						var minCusAge = CustomerAge[0];
+						var maxCusAge = CustomerAge[1];
+
+						console.log(minQuesAge);
+						console.log(maxQuesAge);
+						console.log(minCusAge);
+						console.log(maxCusAge);
+
+						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
 						{
-							//console.log("Age is in.");
-							//console.log("Flag is "+flag);
-							//console.log("Count is "+count);
 							flag++;
+							console.log("age is satisfied, flag value is "+flag+ ", while count is "+count);
 							if(flag == count)
 							{
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
+
 					}
 					if(value2 == "telephoneoptions")
 					{
@@ -894,12 +989,18 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						}
 					}
 					if(value2 == "ownhomeoptions")
-					{
-						if(value.ownhomeoptions == CRMOwnHomeOptions)
+					{	
+						var ownHomeRestrictions = value.ownhomeoptions.split(',');
+						var find = $.inArray(CRMOwnHomeOptions, ownHomeRestrictions);
+
+						if(find >= 0)
 						{
+							
 							flag++;
+							console.log("own home, flag value is "+flag+ ", while count is "+count);
 							if(flag == count)
 							{
+								
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
@@ -910,6 +1011,9 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						var postcodeinclusion = value.postcodeinclusion.split(',');
 						var postcodes = CRMPostcode.split('/');
 						var numMatches = 0;
+
+						console.log(postcodeinclusion);
+						console.log(postcodes);
 
 						for (var i = 0; i < postcodes.length; i++) 
 						{
@@ -945,13 +1049,21 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 							}
 						}
 
+						console.log(numMatches);
+
 					    if(numMatches > 0)
 					    {
 					    	$('#'+value.columnheader).prop("disabled", false);
 					    }
+					    else
+					    {	
+							$('#'+value.columnheader).prop("disabled", true);
+
+					    }
 					}
-					if(value2 = "postcodeexclusion")
+					if(value2 == "postcodeexclusion")
 					{
+						console.log("it goes into exclusion");
 						var postcodeexclusion = value.postcodeexclusion.split(',');
 						var postcodes = CRMPostcode.split('/');
 						var numMatches2 = 0;
@@ -961,6 +1073,7 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 							for(var x = 0; x < postcodeexclusion.length; x++)
 							{
 								var checkspace = (postcodeexclusion[x].indexOf(' ') >= 0);
+								
 								if(checkspace == true)
 								{
 									if ($.inArray(postcodes[i], postcodeexclusion) == -1)
@@ -980,7 +1093,7 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 										var newpostcodein = postcodes[i].split(' ');
 										if(newpostcodein[0] == postcodeexclusion[x])
 										{
-										numMatches2++;
+											numMatches2++;
 										}
 									}
 								}
@@ -991,6 +1104,17 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 					    {
 					    	$('#'+value.columnheader).prop("disabled", true);
 					    }
+					    else
+					    {
+					    	flag++;
+							console.log("exlusion passed, flag value is "+flag+ ", while count is "+count);
+							if(flag == count)
+							{
+								
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+					    }
+					    
 					}
 
 				});
@@ -998,13 +1122,13 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 			}
 
 		}
-		else
-		{
-			//console.log(value.columnheader+" is a child question.");
-			//console.log(value.columnheader+" value is "+value.costperlead);
-			//console.log(value.columnheader+" response enable is "+value.child_enable_response);
-			//console.log(value.columnheader+" parent is "+value.parent_colheader);
-		}
+		// else
+		// {
+		// 	//console.log(value.columnheader+" is a child question.");
+		// 	//console.log(value.columnheader+" value is "+value.costperlead);
+		// 	//console.log(value.columnheader+" response enable is "+value.child_enable_response);
+		// 	//console.log(value.columnheader+" parent is "+value.parent_colheader);
+		// }
   			
 		
 
@@ -1095,6 +1219,7 @@ $("#searchCustomer").click(function() {
 			$("#customer_id").val(myObj.id);
 
 			alert("Record found for "+myObj.title+" "+myObj.firstname+" "+myObj.lastname);
+			//console.log("Record found for "+myObj.title+" "+myObj.firstname+" "+myObj.lastname);
 		}
 		else
 		{
@@ -1112,7 +1237,7 @@ $("#btnGenerate").click(function() {
 
      for(var i = 1; i <= num ; i++)
      {
-     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><select class="form-control" name="'+columnheader+'_'+i+'_response'+'"><option value="">Response</option><option value="Yes">Yes</option><option value="Possibly">Possibly</option></select></td></tr>';
+     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><input type="text" class="form-control" name="'+columnheader+'_'+i+'_response'+'" placeholder="Response Activation" ><input type="text" class="form-control" name="'+columnheader+'_'+i+'_response_activate'+'" placeholder="Lead Response"></td></tr>';
      	$('#scripts').append(html);
      }
 
@@ -1246,4 +1371,33 @@ $("#re_passwithchanges_status").change(function() { $("#passwithchanges_status")
 $("#re_reject_a_status").change(function() { $("#reject_a_status").val($("#re_reject_a_status").val()); });
 $("#re_reject_b_status").change(function() { $("#reject_b_status").val($("#re_reject_b_status").val()); });
 $("#re_reject_c_status").change(function() { $("#reject_c_status").val($("#re_reject_c_status").val()); });
+
+$("#OwnHome").click(function() {
+	var value = $("#OwnHome").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#Renting").click(function() {
+	var value = $("#Renting").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#LivWithFamFrnd").click(function() {
+	var value = $("#LivWithFamFrnd").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#NotAns").click(function() {
+	var value = $("#NotAns").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
 

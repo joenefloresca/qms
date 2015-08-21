@@ -169,12 +169,13 @@
     			var label = "<span class='label label-danger'>Disabled</span>";
     		}
 
+
     		t.row.add( [
 	            value.sortorder,	
 	            value.columnheader,
 	            value.costperlead,
-	            // value.isenabled,
-	            "<label class='toggle'><input type='checkbox' checked='' onclick='return changeEnable(this);' id='"+value.columnheader+"'><span class='handle'></span></label>"+label,
+	             value.isenabled,
+	            // "<label class='toggle'><input type='checkbox' checked='' onclick='return changeEnable(this);' id='"+value.columnheader+"'><span class='handle'></span></label>"+label,
 	            value.id,
 	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('question').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
 	            "<form method='POST' action='<?php echo URL::to('question').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
@@ -182,17 +183,19 @@
 	            "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
         	] ).draw();
 
-        	if(value.isenabled == "Yes")
-    		{
-    			$("#"+value.columnheader).prop('checked', true);
-    			
-    		}
-    		else if(value.isenabled == "No")
-    		{
-    			$("#"+value.columnheader).prop('checked', false);
-    			
-    		}
-    		
+      //   	if(value.isenabled == "Yes")
+    		// {
+    		// 	$("#"+value.columnheader).prop('checked', true);
+    		// 	console.log(value.columnheader);
+    		// }
+    		// else if(value.isenabled == "No")
+    		// {
+    		// 	//$("#"+value.columnheader).prop('checked', false);
+    		// 	$("#"+value.columnheader).removeAttr('checked');
+
+    		// 	console.log(value.columnheader+ " should be unchecked.");
+    		// }
+
 		});
 	}}).error(function(){
 		  progress.progressTimer('error', {

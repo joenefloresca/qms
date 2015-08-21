@@ -14,7 +14,7 @@
 	       					<div class="col-md-12">
 							 <div class="input-group">
 							 	  <input type="hidden" class="form-control" id="customer_id" name="customer_id">
-							      <input type="text" class="form-control" id="customer_number" placeholder="Search customer number.">
+							      <input type="text" class="form-control" id="customer_number" placeholder="Search customer number." value="09277878031">
 							      <span class="input-group-btn">
 							        <button class="btn btn-default" id="searchCustomer" type="button"><i class="glyphicon glyphicon-search"></i></button>
 							      </span>
@@ -30,29 +30,7 @@
 							</div>
 						</div>
 					
-						<div class="form-group">
-							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
-							<div class="col-md-8">
-								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
-									<option value="">Choose One</option>
-									<option value="AnsweringMachine">AnsweringMachine</option>
-									<option value="Callback">Callback</option>
-									<option value="Deceased">Deceased</option>
-									<option value="DoNotCall">DoNotCall</option>
-									<option value="Foreign Language">Foreign Language</option>
-									<option value="Hibernate">Hibernate</option>
-									<option value="Manual Callback">Manual Callback</option>
-									<option value="NoAnswer">NoAnswer</option>
-									<option value="NoResponse">NoResponse</option>
-									<option value="NotInterested">NotInterested</option>
-									<option value="RaffleTicket">RaffleTicket</option>
-									<option value="Telcorecordedannouncement">Telcorecordedannouncement</option> 
-									<option value="Appointmentset">Appointmentset</option> 
-									<option value="Completed Survey">Completed Survey</option> 
-									<option value="MCS Record">MCS Record</option> 
-								 </select>
-							</div>
-						</div>
+						
 						<div class="form-group">
 							<ul class="list-group">
 				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Local TZ <input type="text" class="form-control timepicker" id="cbkTimeLocalTz" name="cbkTimeLocalTz" placeholder="Select CBK Time" data-default-time="false"></li>
@@ -277,7 +255,7 @@
 						      </div>
 						      <div class="modal-footer">
 						        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-						        <button type="button" class="btn btn-success" data-dismiss="modal">Hide</button>
+						        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
 						      </div>
 						    </div>
 						  </div>
@@ -388,6 +366,14 @@
 							</div>
 						</div>
 
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="button" id="trigger" name="trigger" class="btn btn-info">
+									Begin Survey
+								</button>
+							</div>
+						</div>
+
 						<table class="table table-striped table-bordered" id="CRMTable"> 
 						 <thead>
 						 	<tr>
@@ -407,10 +393,32 @@
                                         <td>
                                         	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
                                         		<option value=""></option>
+	                                        	<?php
+	                                        	
+	                                        		if($value->is_child == 0)
+	                                        		{	
+	                                        			$options = explode(",",$value->parent_enable_response);
+	                                        		}
+	                                        		else
+	                                        		{
+	                                        			$options = explode(",",$value->child_lead_respponse);
+	                                        		}
+	                                        		
+
+	                                        		foreach ($options as $key) {
+	                                        			echo "<option value='$key'>".$key."</option>";
+	                                        		}
+	                                        	?>
+	                                        	<option value="">N/A</option>
+                                        	</select>
+                                        	<!-- <input type="text" class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" onblur="return get_response(this);" placeholder="Ex. Yes, No, Possibly" disabled> -->
+                                        	<input type="hidden" class="form-control" name="hidden_val_{{ $value->columnheader }}" id="hidden_val_{{ $value->columnheader }}" value="{{ $value->costperlead }}">
+                                        	<!-- <select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
+                                        		<option value=""></option>
                                         		<option value="Yes">Yes</option>
                                         		<option value="No">No</option>
                                         		<option value="Possibly">Possibly</option>
-                                        	</select>
+                                        	</select> -->
                                         </td>
                                     </tr>
                                 @endforeach
@@ -423,15 +431,19 @@
                             </tfoot>
                         </table> 
 
-                        <div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="button" id="trigger" name="trigger" class="btn btn-danger">
-									Trigger Rules
-								</button>
+						<div class="form-group">
+							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
+							<div class="col-md-4">
+								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
+									<option value="">Choose One</option>
+									<option value="Completed Survey">Completed Survey</option> 
+									<option value="Partial Survey">Partial Survey</option> 
+									<!-- <option value="MCS Record">MCS Record</option>  -->
+								 </select>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" style="display: none" id="CrmSubmitDiv">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
 									Submit

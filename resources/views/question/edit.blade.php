@@ -36,6 +36,13 @@
 							</div>
 						</div>
 
+						<div class="form-group">
+							<label class="col-md-4 control-label">Lead Reponse</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="lead_response" id="lead_response" value="{!! $question->parent_enable_response !!}" placeholder="Ex. Yes,Possibly">
+							</div>
+						</div>
+
 						@if($question->is_child == 0)
 						   <div class="form-group">
 								<label class="col-md-4 control-label">Postcode Restriction</label>
@@ -81,12 +88,33 @@
 							</div>
 							
 
-							<div class="form-group">
+							<div class="form-group" id="DivOwnHomeOptions">
 								<label class="col-md-4 control-label">Own Home Options</label>
 								<div class="col-md-6">
-									{!! Form::select('OwnHomeOptions', ['' => 'Choose One', 'Own Home' => 'Own Home', 'Renting' => 'Renting', 'Living with Family/Friend' => 'Living with Family/Friend', 'Not Answered' => 'Not Answered'], $question->ownhomeoptions, array('class' => 'form-control')) !!}
+									<!-- <select name="OwnHomeOptions" id="OwnHomeOptions" class="form-control">
+										<option value="">Choose One</option>
+										<option value="Own Home">Own Home</option>
+										<option value="Renting">Renting</option>
+										<option value="Living with Family/Friend">Living with Family/Friend</option>
+										<option value="Not Answered">Not Answered</option>
+									</select> -->
+									<div class="checkbox">
+	 					 				<label><input type="checkbox" name="OwnHome" id="OwnHome" value="Own Home">Own Home</label>
+									</div>
+									<div class="checkbox">
+	 					 				<label><input type="checkbox" name="Renting" id="Renting" value="Renting">Renting</label>
+									</div>
+									<div class="checkbox">
+	 					 				<label><input type="checkbox" name="LivWithFamFrnd" id="LivWithFamFrnd" value="Living with Family/Friend">Living with Family/Friend</label>
+									</div>
+									<div class="checkbox">
+	 					 				<label><input type="checkbox" name="NotAns" id="NotAns" value="Not Answered">Not Answered</label>
+									</div>
+									
+									<div class="text" style="padding-top: 4px"><input type="text" class="form-control" name="OwnHomeOptions" id="OwnHomeOptions" value="{{$question->ownhomeoptions}}"></div>
 								</div>
 							</div>
+
 
 							<div class="form-group">
 								<label class="col-md-4 control-label">Telephone Restriction</label>
