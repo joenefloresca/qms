@@ -84,7 +84,6 @@ Route::get('reports/api/crm/getqaresponses/{qaform_id}', 'ReportController@apige
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
 
 
-
 /* QA Tools / Modules Routes*/
 Route::get('qa/verifylist', 'QaController@verifylist');
 Route::get('qa/verify/{crmid}', 'QaController@showVerifyForm');
@@ -97,6 +96,10 @@ Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
 Route::get('qa/api/crm/reverify', 'QaController@getCrmReverify');
+
+/* Users / Agents Routes */
+Route::get('crm/api/agent/loginhours', 'UserController@getAgentLoginHours');
+Route::get('crm/api/agent/daygross', 'UserController@getAgentDayGross');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

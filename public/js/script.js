@@ -1,3 +1,28 @@
+// var themes = {
+//     "default": "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css",
+//     "amelia" : "//bootswatch.com/amelia/bootstrap.min.css",
+//     "cerulean" : "//bootswatch.com/cerulean/bootstrap.min.css",
+//     "cosmo" : "//bootswatch.com/cosmo/bootstrap.min.css",
+//     "cyborg" : "//bootswatch.com/cyborg/bootstrap.min.css",
+//     "flatly" : "//bootswatch.com/flatly/bootstrap.min.css",
+//     "journal" : "//bootswatch.com/journal/bootstrap.min.css",
+//     "readable" : "//bootswatch.com/readable/bootstrap.min.css",
+//     "simplex" : "//bootswatch.com/simplex/bootstrap.min.css",
+//     "slate" : "//bootswatch.com/slate/bootstrap.min.css",
+//     "spacelab" : "//bootswatch.com/spacelab/bootstrap.min.css",
+//     "united" : "//bootswatch.com/united/bootstrap.min.css"
+// }
+
+// $(function(){
+//    var themesheet = $('<link href="'+themes['cosmo']+'" rel="stylesheet" />');
+//     themesheet.appendTo('head');
+//     $('.theme-link').click(function(){
+//        var themeurl = themes[$(this).attr('data-theme')]; 
+//         themesheet.attr('href',themeurl);
+//     });
+// });
+
+
 $('#Question').summernote();
 $('#comments').summernote();
 $('#cbkTimeLocalTz').timepicker();
@@ -76,6 +101,7 @@ $('#toQaSummary').datepicker({
 	autoclose: true,
 	format: "yyyy-mm-dd",
 });
+
 
 $("#btnDateCharityRes").click(function() {
 	if($.fn.dataTable.isDataTable('#CharityResponses')) 
@@ -885,6 +911,8 @@ $.ajax({
 
 
 $("#trigger").click(function() {
+$("#CRMTable").css("display","block");	
+$("#DispositionDiv").css("display","block");	
 var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();

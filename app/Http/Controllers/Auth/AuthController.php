@@ -24,6 +24,7 @@ class AuthController extends Controller
     */
 
     use AuthenticatesAndRegistersUsers;
+    protected $username = 'username';
 
 
     /**
@@ -47,6 +48,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
+            'username' => 'required|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -62,6 +64,7 @@ class AuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
     }
@@ -82,7 +85,7 @@ class AuthController extends Controller
         // exit();
 
         $this->validate($request, [
-            'email' => 'required|email', 'password' => 'required',
+            'username' => 'required', 'password' => 'required',
         ]);
 
         $credentials = $this->getCredentials($request);
@@ -112,14 +115,24 @@ class AuthController extends Controller
                         where('user_id', '=', $userid)->
                         update(['timestamp' => $timestamp, 'status' => 1]);
             }
+
+            if(Auth::user()->isAdmin == 0)
+            {
+                return redirect()->intended('crm/create');
+            }
+            else
+            {
+                 return redirect()->intended('/');
+            }
+
                  
-            return redirect()->intended($this->redirectPath());
+            
         }
 
         return redirect($this->loginPath())
-            ->withInput($request->only('email', 'remember'))
+            ->withInput($request->only('username', 'remember'))
             ->withErrors([
-                'email' => $this->getFailedLoginMessage(),
+                'username' => $this->getFailedLoginMessage(),
             ]);
     }
 
@@ -157,8 +170,7 @@ class AuthController extends Controller
                         where('user_id', '=', $userid)->
                         update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
         }                         
-       
-                               
+                           
 
         Auth::logout();
 

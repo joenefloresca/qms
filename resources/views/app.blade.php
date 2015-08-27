@@ -7,7 +7,7 @@
 	<title>Satellite CRM</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet">
+	<!-- <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet"> -->
 	<link href="{{ asset('/css/bootstrap-timepicker.css') }}" rel="stylesheet">
 	<!-- <link href="{{ asset('bootflat/css/bootflat.css') }}" rel="stylesheet">
 	<link href="{{ asset('bootflat/css/bootflat.css.map') }}" rel="stylesheet"> -->
@@ -100,6 +100,27 @@
 									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
 								</ul>
 							</li>
+							<!-- <li class="dropdown">
+								<ul class="nav navbar-nav">
+						            <li class="dropdown">
+						              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Themes <b class="caret"></b></a>
+						              <ul class="dropdown-menu">
+						                <li><a href="#" data-theme="default" class="theme-link">Default</a></li>
+						                <li><a href="#" data-theme="amelia" class="theme-link">Amelia</a></li>
+						                <li><a href="#" data-theme="cerulean" class="theme-link">Cerulean</a></li>
+						                <li><a href="#" data-theme="cosmo" class="theme-link">Cosmo</a></li>
+						                <li><a href="#" data-theme="cyborg" class="theme-link">Cyborg</a></li>
+						                <li><a href="#" data-theme="flatly" class="theme-link">Flatly</a></li>
+						                <li><a href="#" data-theme="journal" class="theme-link">Journal</a></li>
+						                <li><a href="#" data-theme="readable" class="theme-link">Readable</a></li>
+						                <li><a href="#" data-theme="simplex" class="theme-link">Simplex</a></li>
+						                 <li><a href="#" data-theme="slate" class="theme-link">Slate</a></li>
+						                  <li><a href="#" data-theme="spacelab" class="theme-link">Spacelab</a></li>
+						                  <li><a href="#" data-theme="united" class="theme-link">United</a></li>
+						              </ul>
+						            </li>
+						          </ul>
+							</li> -->
 						@else
 						   	<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
@@ -152,6 +173,7 @@
 	<script src="{{ asset('js/script.js') }}"></script>
 	<script type="text/javascript">
 	var data = <?php if(isset($questions)) {echo $questions; } else {echo '';} ?> 
+	var agent_id = <?php  if(isset(Auth::user()->id)) {echo Auth::user()->id; } else {echo '' ;} ?> 
 	$.ajax({
 	url: "api/question/all", 
 	type: 'GET',
@@ -316,6 +338,49 @@
 			progress.progressTimer('complete');
 			$( "#progressbar" ).fadeOut( "slow" );
 	});
+
+	// $.ajax({
+	// url: "api/agent/loginhours", 
+	// type: 'GET',
+	// data: {'agent_id':agent_id},
+	// success: function(result){
+	// 	console.log("Login hours is "+result);
+	// 	$("#agentLoginHours").val(result);
+	// }});
+
+	checkAgentLoginHours();
+	function checkAgentLoginHours(){
+		$.ajax({
+			url: "api/agent/loginhours",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentLoginHours").val(result);
+			},
+			complete: function() {
+	                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	checkAgentDayGross();
+	function checkAgentDayGross(){
+		$.ajax({
+			url: "api/agent/daygross",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentTodayGross").val(result);
+			},
+			complete: function() {
+	                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+
 
 
 	</script>

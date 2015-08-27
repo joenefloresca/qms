@@ -22,16 +22,16 @@
     						</div>
 						</div>
 
-	       				<div class="form-group">
+	       				<!-- <div class="form-group">
 	       					<div class="col-md-8">
-				       			<!-- <center> -->
+				       			<center> 
 					       			<div style="margin: 15px 0px 0px; display: inline-block; text-align: center;"><div style="display: inline-block; padding: 2px 4px; margin: 0px 0px 5px; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: rgb(255, 255, 255);"><a href="http://localtimes.info/difference" style="text-decoration: none; font-size: 13px; color: rgb(0, 0, 0);">World Clock</a></div><script type="text/javascript" src="http://localtimes.info/world_clock2.php?&cp1_Hex=000000&cp2_Hex=FFFFFF&cp3_Hex=000000&fwdt=88&ham=0&hbg=0&hfg=0&sid=0&mon=0&wek=0&wkf=0&sep=0&widget_number=11000"></script></div>
-								<!-- </center> -->
+								</center> 
 							</div>
 						</div>
-					
+					 -->
 						
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<ul class="list-group">
 				              <li class="list-group-item"><input type='radio'  id='selfcallback' name="selfcallback"> Local TZ <input type="text" class="form-control timepicker" id="cbkTimeLocalTz" name="cbkTimeLocalTz" placeholder="Select CBK Time" data-default-time="false"></li>
             				</ul>
@@ -64,6 +64,23 @@
 				              </li>
             				</ul>
 
+						</div> -->
+						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Your Total Login Hours</label>
+							<div class="col-md-6">
+								<div class="input-group">
+			                      	<input type="text" class="form-control" name="agentLoginHours" id="agentLoginHours"  readonly>
+                    			</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Your Total Gross Today</label>
+							<div class="col-md-6">
+								<div class="input-group">
+									<span class="input-group-addon">£</span>
+			                      	<input type="text" class="form-control" name="agentTodayGross" id="agentTodayGross"  readonly>
+                    			</div>
+							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-5 control-label text-success">Gross Revenue</label>
@@ -266,7 +283,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-12">
 			<div class="panel panel-success">
 				<div class="panel-heading">CRM</div>
 				<div class="panel-body">
@@ -374,7 +391,7 @@
 							</div>
 						</div>
 
-						<table class="table table-striped table-bordered" id="CRMTable"> 
+						<table class="table table-striped table-bordered" id="CRMTable" style="display: none"> 
 						 <thead>
 						 	<tr>
                             	<th colspan="2" class="text-primary">Mr./Mrs. I am going to ask you a series of questions and you can answer me with yes, never, or yes,possibly, if you so wish</th>
@@ -431,7 +448,7 @@
                             </tfoot>
                         </table> 
 
-						<div class="form-group">
+						<div class="form-group" id="DispositionDiv" style="display: none">
 							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
 							<div class="col-md-4">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
