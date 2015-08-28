@@ -74,6 +74,38 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Completed Surveys</label>
+							<div class="col-md-6">
+								<div class="input-group">
+			                      	<input type="text" class="form-control" name="agentCompletedSurvey" id="agentCompletedSurvey"  readonly>
+                    			</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Completed Survey Gross</label>
+							<div class="col-md-6">
+								<div class="input-group">
+			                      	<input type="text" class="form-control" name="agentCompletedSurveyGross" id="agentCompletedSurveyGross"  readonly>
+                    			</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Partital Surveys</label>
+							<div class="col-md-6">
+								<div class="input-group">
+			                      	<input type="text" class="form-control" name="agentPartialSurvey" id="agentPartialSurvey"  readonly>
+                    			</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-5 control-label text-success">Partital Survey Gross</label>
+							<div class="col-md-6">
+								<div class="input-group">
+			                      	<input type="text" class="form-control" name="agentPartialSurveyGross" id="agentPartialSurveyGross"  readonly>
+                    			</div>
+							</div>
+						</div>
+						<!-- <div class="form-group">
 							<label class="col-md-5 control-label text-success">Your Total Gross Today</label>
 							<div class="col-md-6">
 								<div class="input-group">
@@ -81,8 +113,8 @@
 			                      	<input type="text" class="form-control" name="agentTodayGross" id="agentTodayGross"  readonly>
                     			</div>
 							</div>
-						</div>
-						<div class="form-group">
+						</div> -->
+						<div class="form-group" style="visibility: hidden">
 							<label class="col-md-5 control-label text-success">Gross Revenue</label>
 							<div class="col-md-6">
 								<div class="input-group">
@@ -391,7 +423,7 @@
 							</div>
 						</div>
 
-						<table class="table table-striped table-bordered" id="CRMTable" style="display: none"> 
+						<table class="table table-bordered" id="CRMTable" style="display: none"> 
 						 <thead>
 						 	<tr>
                             	<th colspan="2" class="text-primary">Mr./Mrs. I am going to ask you a series of questions and you can answer me with yes, never, or yes,possibly, if you so wish</th>
@@ -405,7 +437,14 @@
                         </thead>                               
 							<tbody>
                                 @foreach($questions as $key => $value)
-                                    <tr id="{{ $value->columnheader }}block">
+                                    <?php
+                                    	if($value->is_child == 0 && $value->child_count == 0){
+                                    		$class = "bg-success";
+                                    	} else{
+                                    		$class = "bg-warning";
+                                    	}
+                                    ?>
+                                    <tr id="{{ $value->columnheader }}block" class="{{$class}}">
                                         <td>{!! $value->question !!}</td>
                                         <td>
                                         	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>

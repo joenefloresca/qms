@@ -27,4 +27,26 @@ class UserController extends Controller
 
         return $data[0]->sum;
     }
+
+    public function getAgentCompletedSurvey()
+    {
+        $user_id = Input::get('agent_id');
+        $today = date('Y-m-d');
+
+        $query = "SELECT COUNT(id) as completed_survey FROM forms WHERE disposition = 'Completed Survey' AND agent_id = $user_id AND created_at = '$today'";
+        $data = DB::connection('pgsql')->select($query);
+
+        return $data[0]->completed_survey;
+    }
+
+    public function getAgentPartialSurvey()
+    {
+        $user_id = Input::get('agent_id');
+        $today = date('Y-m-d');
+
+        $query = "SELECT COUNT(id) as partital_survey FROM forms WHERE disposition = 'Partial Survey' AND agent_id = $user_id AND created_at = '$today'";
+        $data = DB::connection('pgsql')->select($query);
+
+        return $data[0]->partital_survey;
+    }
 }

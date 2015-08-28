@@ -7,7 +7,7 @@
 	<title>Satellite CRM</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-	<!-- <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet"> -->
+	<link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/bootstrap-timepicker.css') }}" rel="stylesheet">
 	<!-- <link href="{{ asset('bootflat/css/bootflat.css') }}" rel="stylesheet">
 	<link href="{{ asset('bootflat/css/bootflat.css.map') }}" rel="stylesheet"> -->
@@ -32,7 +32,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -200,8 +200,8 @@
 	<script src="{{ asset('js/Chart.js') }}"></script>
 	<script src="{{ asset('js/script.js') }}"></script>
 	<script type="text/javascript">
-	var data = <?php if(isset($questions)) {echo $questions; } else {echo '';} ?> 
-	var agent_id = <?php  if(isset(Auth::user()->id)) {echo Auth::user()->id; } else {echo '' ;} ?> 
+	var data = <?php if(isset($questions)) {echo $questions; } else {echo '"";';} ?> 
+	var agent_id = <?php  if(isset(Auth::user()->id)) {echo Auth::user()->id; } else {echo '' ;} ?> ;
 	$.ajax({
 	url: "api/question/all", 
 	type: 'GET',
@@ -392,21 +392,59 @@
 		});
 	}
 
-	checkAgentDayGross();
-	function checkAgentDayGross(){
+	getCompletedSurvey();
+	function getCompletedSurvey(){
 		$.ajax({
-			url: "api/agent/daygross",  
+			url: "api/agent/completedsurvey",  
 			type: 'GET',
 			data: {'agent_id':agent_id},
 			success: function(result){
-				$("#agentTodayGross").val(result);
+				$("#agentCompletedSurvey").val(result);
+				var gross = parseInt(result) * 1.75;
+				$("#agentCompletedSurveyGross").val(gross);
+
 			},
 			complete: function() {
-	                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
+	                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
 	        }
 
 		});
 	}
+
+	getPartitalSurvey();
+	function getPartitalSurvey(){
+		$.ajax({
+			url: "api/agent/partialsurvey",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentPartialSurvey").val(result);
+				var gross = parseInt(result) * 0.40;
+				$("#agentPartialSurveyGross").val(gross);
+
+			},
+			complete: function() {
+	                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	// checkAgentDayGross();
+	// function checkAgentDayGross(){
+	// 	$.ajax({
+	// 		url: "api/agent/daygross",  
+	// 		type: 'GET',
+	// 		data: {'agent_id':agent_id},
+	// 		success: function(result){
+	// 			$("#agentTodayGross").val(result);
+	// 		},
+	// 		complete: function() {
+	//                 setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
+	//         }
+
+	// 	});
+	// }
 
 
 

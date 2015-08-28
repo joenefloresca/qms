@@ -101,6 +101,8 @@ Route::get('qa/api/crm/reverify', 'QaController@getCrmReverify');
 /* Users / Agents Routes */
 Route::get('crm/api/agent/loginhours', 'UserController@getAgentLoginHours');
 Route::get('crm/api/agent/daygross', 'UserController@getAgentDayGross');
+Route::get('crm/api/agent/completedsurvey', 'UserController@getAgentCompletedSurvey');
+Route::get('crm/api/agent/partialsurvey', 'UserController@getAgentPartialSurvey');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

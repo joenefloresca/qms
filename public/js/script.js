@@ -676,10 +676,8 @@ function get_response(id)
 	    		    }
 	    		    else
 	    		    {
-	    		    	
 			    		if($.inArray(response, child_lead_respponse) >= 0)
 						{
-							
 							current_gross = current_gross + parseFloat(cost);
 							$("#CRMGross").val(current_gross.toFixed(2));
 							$("#"+currentheader+"block").css("display","none");
@@ -694,6 +692,11 @@ function get_response(id)
     	
     		
     	}
+    }
+
+    if($("#"+lastItem).val() != "")
+    {
+    	$("#DispositionDiv").css("display","block");
     }
 
 
@@ -993,10 +996,10 @@ $.ajax({
 // 	});
 
 
-
+var lastItem = "";
+var enabled_questions = [];
 $("#trigger").click(function() {
-$("#CRMTable").css("display","block");	
-$("#DispositionDiv").css("display","block");	
+$("#CRMTable").css("display","block");		
 var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
@@ -1058,11 +1061,11 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 			}
 			else
 			{
-				console.log(getRestrictions);
+				//console.log(getRestrictions);
 				// Apply restriction rule
 				$.each(getRestrictions, function(key2, value2)
 				{
-					console.log("Loop on "+ value2);
+					//console.log("Loop on "+ value2);
 					if(value2 == "agebracket")
 					{
 						var QuesAge = value.agebracket.split('-');
@@ -1073,11 +1076,7 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						var minCusAge = CustomerAge[0];
 						var maxCusAge = CustomerAge[1];
 
-						console.log(minQuesAge);
-						console.log(maxQuesAge);
-						console.log(minCusAge);
-						console.log(maxCusAge);
-
+						
 						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
 						{
 							flag++;
@@ -1124,9 +1123,6 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						var postcodes = CRMPostcode.split('/');
 						var numMatches = 0;
 
-						console.log(postcodeinclusion);
-						console.log(postcodes);
-
 						for (var i = 0; i < postcodes.length; i++) 
 						{
 							for(var x = 0; x < postcodeinclusion.length; x++)
@@ -1161,8 +1157,6 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 							}
 						}
 
-						console.log(numMatches);
-
 					    if(numMatches > 0)
 					    {
 					    	$('#'+value.columnheader).prop("disabled", false);
@@ -1175,7 +1169,7 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 					}
 					if(value2 == "postcodeexclusion")
 					{
-						console.log("it goes into exclusion");
+						//console.log("it goes into exclusion");
 						var postcodeexclusion = value.postcodeexclusion.split(',');
 						var postcodes = CRMPostcode.split('/');
 						var numMatches2 = 0;
@@ -1219,7 +1213,6 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 					    else
 					    {
 					    	flag++;
-							console.log("exlusion passed, flag value is "+flag+ ", while count is "+count);
 							if(flag == count)
 							{
 								
@@ -1236,17 +1229,55 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 			}
 
 		}
-		// else
-		// {
-		// 	//console.log(value.columnheader+" is a child question.");
-		// 	//console.log(value.columnheader+" value is "+value.costperlead);
-		// 	//console.log(value.columnheader+" response enable is "+value.child_enable_response);
-		// 	//console.log(value.columnheader+" parent is "+value.parent_colheader);
-		// }
-  			
 		
-
 	});
+
+	/* Remove restricted questions on the table */
+	$.each(data, function(key,value) {
+		var colheader = value.columnheader;
+		var child_count = value.child_count;
+		var is_child = value.is_child;
+		var isDisabled = $("#"+colheader).is(':disabled');
+		if (isDisabled && child_count > 0) 
+		{
+			if(child_count > 0 && is_child == 0)
+			{
+				// console.log("Has child questions");
+				// console.log("Parent question.");
+				// console.log(child_count);
+				$('table#CRMTable tr#'+colheader+"block").remove();
+				for(var g = 1; g <= child_count; g++)
+				{
+					$('table#CRMTable tr#'+colheader+"_"+g+"block").remove();
+					console.log(colheader+" is removed.");
+				}
+			}
+			else
+			{
+				$('table#CRMTable tr#'+colheader+"block").remove();
+				console.log(colheader+" is removed.");
+			}
+	    }
+	    else if(isDisabled && is_child == 0)
+	    {
+	    	$('table#CRMTable tr#'+colheader+"block").remove();
+	    	console.log(colheader+" is removed.");
+	    }
+	    else
+	    {
+	    	lastItem = colheader;
+	    	enabled_questions.push(colheader);
+	    	console.log(colheader);
+	    } 
+	});
+
+	// console.log("Last item is "+lastItem)
+	// console.log(enabled_questions)
+	// $.each(enabled_questions, function(key,value) {
+	// 	console.log(value);
+	// 	$('#'+value).prop("disabled", true);
+	// });
+
 });
 
 $('#birthdate').datepicker({
