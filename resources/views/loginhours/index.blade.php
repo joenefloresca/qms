@@ -7,30 +7,44 @@
 			<div class="panel panel-success">
 				<div class="panel-heading">Login Hours</div>
 				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-md-4 control-label">From</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" name="loginHoursFrom" id="loginHoursFrom">
+							</div>
 						</div>
-					@endif
-					<div class="flash-message">
-				        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-				          @if(Session::has('alert-' . $msg))
-				          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
-				          @endif
-				        @endforeach
-			        </div>
-					<div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div>
+					</div>
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-md-4 control-label">To</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" name="loginHoursTo" id="loginHoursTo">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6 col-md-offset-4">
+							<button type="button" class="btn btn-primary" id="sortLoginHours">
+								Submit
+							</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="panel panel-success">
+				<div class="panel-heading">Login Hours</div>
+				<div class="panel-body">
+					
+					<!-- <div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div> -->
                     <table id="LoginHourList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>ID</th>
                                 <th>Date</th>
                                 <th>Status</th>
+                                <th>Name</th>
                                 <th>Login Hours</th>
                             </tr>
                         </thead>

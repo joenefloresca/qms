@@ -47,7 +47,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					@if (Auth::check())
-					    @if(Auth::user()->isAdmin == 1)
+					    @if(Auth::user()->isAdmin == 1) <!-- Admin -->
 					    	<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
 							<!-- <li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
@@ -85,12 +85,12 @@
 									<li><a href="{{ url('customer-upload') }}">Upload Customer</a></li>
 								</ul>
 							</li>
-							<li class="dropdown">
+							<!-- <li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
-							</li>
+							</li> -->
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> Reports <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
@@ -98,6 +98,7 @@
 									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
 									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
 									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
+									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
 							</li>
 							<!-- <li class="dropdown">
@@ -121,15 +122,42 @@
 						            </li>
 						          </ul>
 							</li> -->
-						@else
+						@endif	
+						@if(Auth::user()->isAdmin == 0) <!-- Agent -->
 						   	<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
 									<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
 								</ul>
 							</li>
 					    @endif
+					    @if(Auth::user()->isAdmin == 2) <!-- Supervisor -->
+						   	<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> Reports <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
+									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
+									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
+									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
+									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
+								</ul>
+							</li>
+						@endif
+						@if(Auth::user()->isAdmin == 3) <!-- QA -->
+						   	<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> QA Tools <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('qa/verifylist') }}">Verify</a></li>
+									<li><a href="{{ url('qa/reverifylist') }}">Re-Verify Forms</a></li>
+								</ul>
+							</li>
+						@endif	
 					@endif 
 
 				</ul>

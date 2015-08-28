@@ -102,6 +102,88 @@ $('#toQaSummary').datepicker({
 	format: "yyyy-mm-dd",
 });
 
+$('#loginHoursFrom').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$('#loginHoursTo').datepicker({
+	autoclose: true,
+	format: "yyyy-mm-dd",
+});
+
+$("#sortLoginHours").click(function() {
+	if($.fn.dataTable.isDataTable('#LoginHourList')) 
+	{	
+		table.destroy();
+		table = $('#LoginHourList').DataTable();
+		table.clear().draw();
+		var tt = new $.fn.dataTable.TableTools( table );
+		$( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+		$.ajax({
+		url: "api/loginhours/filter", 
+		type: 'GET',
+		data: {"from" : $("#loginHoursFrom").val(), "to" :  $("#loginHoursTo").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	$.each(myObj, function(key,value) {
+	    		if(value.status == 1)
+	    		{
+	    			var status = "Logged-In";
+	    		}
+	    		else
+	    		{
+	    			var status = "Logged-Out";
+	    		}
+	    		table.row.add( [
+		            value.id,	
+		            value.date,	
+		            status,	
+		            value.name,	
+		            value.loginhours,	
+		            
+	        	] ).draw();
+			});
+		}});
+
+
+	}
+    else 
+    {
+	   table = $('#LoginHourList').DataTable();
+	   $.ajax({
+		url: "api/loginhours/filter", 
+		type: 'GET',
+		data: {"from" : $("#loginHoursFrom").val(), "to" :  $("#loginHoursTo").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+			  $.each(myObj, function(key,value) {
+					  	if(value.status == 1)
+			    		{
+			    			var status = "Logged-In";
+			    		}
+			    		else
+			    		{
+			    			var status = "Logged-Out";
+			    		}
+			    		table.row.add( [
+				            value.id,	
+				            value.date,	
+				            status,	
+				            value.name,	
+				            value.loginhours,	
+				            
+			        	] ).draw();
+					});
+		}});
+
+	    var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+
+	}
+	
+});
+
 
 $("#btnDateCharityRes").click(function() {
 	if($.fn.dataTable.isDataTable('#CharityResponses')) 
@@ -454,6 +536,8 @@ $(document).on("click", "#showBtnFullDetails", function() {
 
 function get_response(id)
 {
+	var lastIndex = records.length - 1;
+	console.log(lastIndex);
 	console.log(records);
 	var currentheader = $(id).attr('id');
 	var current_gross = parseFloat($("#CRMGross").val());
@@ -461,7 +545,7 @@ function get_response(id)
 	var response = $("#"+currentheader).val();
 	var counter  = 1;
 	var parent_response_enable = records[0].parent_enable_response.split(',');
-	console.log(parent_response_enable);
+	//console.log(parent_response_enable);
 
     var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
 
@@ -871,42 +955,42 @@ $.ajax({
 			$( "#progressbar" ).fadeOut( "slow" );
 	});
 
-$.ajax({
-	url: "api/loginhours/all",
-	type: 'GET',
-	success: function(result){
-	var myObj = $.parseJSON(result);
-    	$.each(myObj, function(key,value) {
+// $.ajax({
+// 	url: "api/loginhours/all",
+// 	type: 'GET',
+// 	success: function(result){
+// 	var myObj = $.parseJSON(result);
+//     	$.each(myObj, function(key,value) {
     		
-    		if(value.status == 1)
-    		{
-    			var status = "Logged-In";
-    		}
-    		else
-    		{
-    			var status = "Logged-Out";
-    		}
-    		var t = $('#LoginHourList').DataTable();
+//     		if(value.status == 1)
+//     		{
+//     			var status = "Logged-In";
+//     		}
+//     		else
+//     		{
+//     			var status = "Logged-Out";
+//     		}
+//     		var t = $('#LoginHourList').DataTable();
 
-    		t.row.add( [
-	            value.name,
-	            value.date,
-	            status,
-	            value.loginhours,
-        	] ).draw();
+//     		t.row.add( [
+// 	            value.name,
+// 	            value.date,
+// 	            status,
+// 	            value.loginhours,
+//         	] ).draw();
     		
-		});
-	}}).error(function(){
-		  progress.progressTimer('error', {
-		  errorText:'ERROR!',
-		  onFinish:function(){
-		    alert('There was an error processing your information!');
-		  }
-		});
-	}).done(function(){
-			progress.progressTimer('complete');
-			$( "#progressbar" ).fadeOut( "slow" );
-	});
+// 		});
+// 	}}).error(function(){
+// 		  progress.progressTimer('error', {
+// 		  errorText:'ERROR!',
+// 		  onFinish:function(){
+// 		    alert('There was an error processing your information!');
+// 		  }
+// 		});
+// 	}).done(function(){
+// 			progress.progressTimer('complete');
+// 			$( "#progressbar" ).fadeOut( "slow" );
+// 	});
 
 
 

@@ -53,6 +53,7 @@ Route::resource('loginhours', 'LoginHourController');
 
 /* Login Hours Ajax Calls */
 Route::get('api/loginhours/all', 'LoginHourController@getLoginHoursAll');
+Route::get('api/loginhours/filter', 'LoginHourController@getLoginHoursFilter');
 
 /* Customers Resource Route*/
 Route::resource('customer', 'CustomerController');
