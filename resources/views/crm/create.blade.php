@@ -447,7 +447,7 @@
                                     <tr id="{{ $value->columnheader }}block" class="{{$class}}">
                                         <td>{!! $value->question !!}</td>
                                         <td>
-                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
+                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
                                         		<option value=""></option>
 	                                        	<?php
 	                                        	

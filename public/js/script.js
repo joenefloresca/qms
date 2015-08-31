@@ -537,8 +537,8 @@ $(document).on("click", "#showBtnFullDetails", function() {
 function get_response(id)
 {
 	var lastIndex = records.length - 1;
-	console.log(lastIndex);
-	console.log(records);
+	// console.log(lastIndex);
+	// console.log(records);
 	var currentheader = $(id).attr('id');
 	var current_gross = parseFloat($("#CRMGross").val());
 	var cost 	 = $("#hidden_val_"+currentheader).attr('value');
@@ -998,13 +998,13 @@ $.ajax({
 
 var lastItem = "";
 var enabled_questions = [];
+var check_questions = [];
 $("#trigger").click(function() {
 $("#CRMTable").css("display","block");		
 var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
 var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
-
 
 	$.each(data, function(key,value) {
 		// Make an array variable where you will store the Restriction Name and Loop thru it
@@ -1219,15 +1219,11 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 					    }
-					    
 					}
 
 				});
 
-				
-
 			}
-
 		}
 		
 	});
@@ -1246,39 +1242,66 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 				// console.log("Parent question.");
 				// console.log(child_count);
 				$('table#CRMTable tr#'+colheader+"block").remove();
+				//console.log(colheader+" is removed. Tier 1a.");
 				for(var g = 1; g <= child_count; g++)
 				{
 					$('table#CRMTable tr#'+colheader+"_"+g+"block").remove();
-					console.log(colheader+" is removed.");
+					console.log(colheader+"_"+g+" is in the child loop.");
+					arr = data.filter(function(e) { return e.columnheader !== colheader+"_"+g });
+					check_questions.push(colheader+"_"+g);
+					//console.log(arr);
 				}
 			}
 			else
 			{
 				$('table#CRMTable tr#'+colheader+"block").remove();
-				console.log(colheader+" is removed.");
+				//console.log(colheader+" is removed. Tier 2.");
 			}
 	    }
 	    else if(isDisabled && is_child == 0)
 	    {
 	    	$('table#CRMTable tr#'+colheader+"block").remove();
-	    	console.log(colheader+" is removed.");
+	    	//console.log(colheader+" is removed. Tier 3.");
 	    }
 	    else
 	    {
+	    	var checkRemove = $.grep(check_questions, function(e){ return e == colheader; });
+	    	if(checkRemove != colheader)
+	    	{
+	    		enabled_questions.push(colheader);
+	    	}
 	    	lastItem = colheader;
-	    	enabled_questions.push(colheader);
-	    	console.log(colheader);
 	    } 
 	});
 
-	// console.log("Last item is "+lastItem)
-	// console.log(enabled_questions)
-	// $.each(enabled_questions, function(key,value) {
-	// 	console.log(value);
-	// 	$('#'+value).prop("disabled", true);
-	// });
+	console.log("Last item is "+lastItem)
+	console.log(enabled_questions)
+	$.each(enabled_questions, function(key,value) {
+		if(key > 0)
+		{
+			console.log(value);
+			$('#'+value).prop("disabled", true);
+		}
+		
+	});
 
 });
+
+function enable_next(id)
+{
+	var currentheader = $(id).attr('id');
+	var response = $("#"+currentheader).val();
+	var current_index = $.inArray( currentheader, enabled_questions );
+	var next_index = parseInt(current_index) + 1;
+
+	// console.log(currentheader);
+	// console.log(response);
+	// console.log(enabled_questions[0]);
+	// console.log(current_index);
+
+	$('#'+enabled_questions[next_index]).prop("disabled", false);
+
+}
 
 $('#birthdate').datepicker({
 	autoclose: true,
