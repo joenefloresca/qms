@@ -260,7 +260,8 @@ $("#btnDateAgentPer").click(function() {
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
-		            value.totalapplication,
+		            value.completedsurvey,
+		            value.partial_survey,
 		            value.applicationperhour,
 		            value.rph,
 	        	] ).draw();
@@ -281,7 +282,8 @@ $("#btnDateAgentPer").click(function() {
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
-		            value.totalapplication,
+		            value.completedsurvey,
+		            value.partial_survey,
 		            value.applicationperhour,
 		            value.rph,
 	        	] ).draw();
@@ -694,9 +696,12 @@ function get_response(id)
     	}
     }
 
+    //console.log(lastItem);
     if($("#"+lastItem).val() != "")
     {
-    	$("#DispositionDiv").css("display","block");
+    	//$("#DispositionDiv").css("display","block");
+    	$('#CrmDisposition').append($('<option>', {value: 'Completed Survey', text:'Completed Survey'}));
+    	console.log("last last last");
     }
 
 
@@ -1270,18 +1275,24 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 	    	{
 	    		enabled_questions.push(colheader);
 	    	}
-	    	lastItem = colheader;
+	    	//lastItem = colheader;
 	    } 
 	});
 
-	console.log("Last item is "+lastItem)
+	// console.log("Last item is "+lastItem)
 	console.log(enabled_questions)
+	var len = enabled_questions.length;
 	$.each(enabled_questions, function(key,value) {
 		if(key > 0)
 		{
 			console.log(value);
 			$('#'+value).prop("disabled", true);
 		}
+
+		if (key == len - 1) {
+              lastItem = value;
+              console.log("Last item is "+lastItem);
+          }
 		
 	});
 
@@ -1293,11 +1304,6 @@ function enable_next(id)
 	var response = $("#"+currentheader).val();
 	var current_index = $.inArray( currentheader, enabled_questions );
 	var next_index = parseInt(current_index) + 1;
-
-	// console.log(currentheader);
-	// console.log(response);
-	// console.log(enabled_questions[0]);
-	// console.log(current_index);
 
 	$('#'+enabled_questions[next_index]).prop("disabled", false);
 

@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Models\LoginHour;
+use Redirect;
+use Session;
 
 class AuthController extends Controller
 {
@@ -25,6 +27,8 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers;
     protected $username = 'username';
+    protected $redirectAfterLogout  = '/auth/login';
+    protected $redirectTo = '/auth/login';
 
 
     /**
@@ -146,34 +150,72 @@ class AuthController extends Controller
     public function getLogout()
     {
 
-        date_default_timezone_set('Asia/Taipei');
-
-        $userid = Auth::user()->id;
-        $today = date('Y-m-d');
-        $logHour = new LoginHour();
-        $checkLogin = $logHour->checkLoginHoursOut($userid, $today);
-
-        if($checkLogin != null)
+        if (Auth::guest())
         {
-            $loginhours = '';
-            $timestamp = date('Y-m-d h:i:s');
-            $timestamp2 = strtotime($timestamp);
 
-            $userLastLogin = $checkLogin[0]->timestamp;
-            $userLastLogin2 = strtotime($userLastLogin);
-           
-            // Get difference in hours
-            $diffHours = round(($timestamp2 - $userLastLogin2) / 3600, 2);
+            return Redirect::to('/auth/login');
+        }
+        else
+        {
+            
+            $userid = Auth::user()->id;
+
+            date_default_timezone_set('Asia/Taipei');
+        
+            $today = date('Y-m-d');
+            $logHour = new LoginHour();
+            $checkLogin = $logHour->checkLoginHoursOut(intval($userid), $today);
+
+            if($checkLogin != null)
+            {
+                $loginhours = '';
+                $timestamp = date('Y-m-d h:i:s');
+                $timestamp2 = strtotime($timestamp);
+
+                $userLastLogin = $checkLogin[0]->timestamp;
+                $userLastLogin2 = strtotime($userLastLogin);
+               
+                // Get difference in hours
+                $diffHours = round(($timestamp2 - $userLastLogin2) / 3600, 2);
 
 
-            LoginHour::where('date', '=', $today)->
-                        where('user_id', '=', $userid)->
-                        update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
-        }                         
-                           
+                LoginHour::where('date', '=', $today)->
+                            where('user_id', '=', $userid)->
+                            update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
+            }
 
-        Auth::logout();
+            Auth::logout();
+            Session::flush();
 
-        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/auth/login');
+
+            return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/auth/login');
+        }
+
+        
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $this->create($request->all());
+
+        Session::flash('alert-success', 'Registration submitted Successfully!');
+
+        return Redirect::to('auth/register');
     }
 }

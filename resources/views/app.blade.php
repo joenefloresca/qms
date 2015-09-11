@@ -259,49 +259,48 @@
 			$( "#progressbar" ).fadeOut( "slow" );
 	});
 
-	$.ajax({
-	url: "api/customer/all", 
-	type: 'GET',
-	success: function(result){
-	var myObj = $.parseJSON(result);
-    	$.each(myObj, function(key,value) {
-    		var t = $('#CustomerList').DataTable();
-    		t.row.add( [
-	            value.id,	
-	            value.firstname,
-	            value.lastname,
-	            value.gender,
-	            value.phone_num,
-	            value.postcode,
-	            value.country,
-	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
-	            "<form method='POST' action='<?php echo URL::to('customer').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
-	            "<input name='_method' type='hidden' value='DELETE'>"+
-	            "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
-        	] ).draw();
-
-        	if(value.isenabled == "Yes")
-    		{
-    			$("#"+value.columnheader).prop('checked', true);
-    			
-    		}
-    		else if(value.isenabled == "No")
-    		{
-    			$("#"+value.columnheader).prop('checked', false);
-    			
-    		}
+	// $.ajax({
+	// url: "api/customer/all", 
+	// type: 'GET',
+	// success: function(result){
+	// var myObj = $.parseJSON(result);
+ //    	$.each(myObj, function(key,value) {
+ //    		var t = $('#CustomerList').DataTable(
+	//     		{
+	//     			"processing": true,
+	//     			"scrollY" : 400
+	//     		}
+ //    		);
+ //    		t.row.add( [
+	//             value.id,	
+	//             value.firstname,
+	//             value.lastname,
+	//             value.gender,
+	//             value.phone_num,
+	//             value.postcode,
+	//             value.country,
+	//             // "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+	//             // "<form method='POST' action='<?php echo URL::to('customer').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
+	//             // "<input name='_method' type='hidden' value='DELETE'>"+
+	//             // "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
+ //        	] ).draw();
     		
-		});
-	}}).error(function(){
-		  progress.progressTimer('error', {
-		  errorText:'ERROR!',
-		  onFinish:function(){
-		    alert('There was an error processing your information!');
-		  }
-		});
-	}).done(function(){
-			progress.progressTimer('complete');
-			$( "#progressbar" ).fadeOut( "slow" );
+	// 	});
+	// }});
+
+	
+
+	$(document).ready(function() {
+	    $('#CustomerList').DataTable( {
+	        "processing": true,
+	        "serverSide": true,
+	        "ajax": "api/customer/all",
+	        "paging" : true,
+	        "scrollY" : 400,
+	        "searching" : true,
+    		"ordering" :  true,
+    		"pagingType" : "full_numbers" 
+	    } );
 	});
 
 	$.ajax({
@@ -376,59 +375,59 @@
 	// 	$("#agentLoginHours").val(result);
 	// }});
 
-	checkAgentLoginHours();
-	function checkAgentLoginHours(){
-		$.ajax({
-			url: "api/agent/loginhours",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentLoginHours").val(result);
-			},
-			complete: function() {
-	                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
-	        }
+	// checkAgentLoginHours();
+	// function checkAgentLoginHours(){
+	// 	$.ajax({
+	// 		url: "api/agent/loginhours",  
+	// 		type: 'GET',
+	// 		data: {'agent_id':agent_id},
+	// 		success: function(result){
+	// 			$("#agentLoginHours").val(result);
+	// 		},
+	// 		complete: function() {
+	//                 setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
+	//         }
 
-		});
-	}
+	// 	});
+	// }
 
-	getCompletedSurvey();
-	function getCompletedSurvey(){
-		$.ajax({
-			url: "api/agent/completedsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentCompletedSurvey").val(result);
-				var gross = parseInt(result) * 1.75;
-				$("#agentCompletedSurveyGross").val(gross);
+	// getCompletedSurvey();
+	// function getCompletedSurvey(){
+	// 	$.ajax({
+	// 		url: "api/agent/completedsurvey",  
+	// 		type: 'GET',
+	// 		data: {'agent_id':agent_id},
+	// 		success: function(result){
+	// 			$("#agentCompletedSurvey").val(result);
+	// 			var gross = parseInt(result) * 1.75;
+	// 			$("#agentCompletedSurveyGross").val(gross);
 
-			},
-			complete: function() {
-	                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
-	        }
+	// 		},
+	// 		complete: function() {
+	//                 setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
+	//         }
 
-		});
-	}
+	// 	});
+	// }
 
-	getPartitalSurvey();
-	function getPartitalSurvey(){
-		$.ajax({
-			url: "api/agent/partialsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentPartialSurvey").val(result);
-				var gross = parseInt(result) * 0.40;
-				$("#agentPartialSurveyGross").val(gross);
+	// getPartitalSurvey();
+	// function getPartitalSurvey(){
+	// 	$.ajax({
+	// 		url: "api/agent/partialsurvey",  
+	// 		type: 'GET',
+	// 		data: {'agent_id':agent_id},
+	// 		success: function(result){
+	// 			$("#agentPartialSurvey").val(result);
+	// 			var gross = parseInt(result) * 0.40;
+	// 			$("#agentPartialSurveyGross").val(gross);
 
-			},
-			complete: function() {
-	                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
-	        }
+	// 		},
+	// 		complete: function() {
+	//                 setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
+	//         }
 
-		});
-	}
+	// 	});
+	// }
 
 	// checkAgentDayGross();
 	// function checkAgentDayGross(){

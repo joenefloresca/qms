@@ -7,6 +7,7 @@ use Session;
 use View;
 use \App\Http\Models\Customer;
 use Excel;
+use DB;
 
 class CustomerController extends Controller {
 
@@ -64,6 +65,8 @@ class CustomerController extends Controller {
                     $customer->home_status    =  $value['home_status'];
                     $customer->marital_status =  $value['marital_status'];
                     $customer->agebracket     =  $value['age_bracket'];
+                    $customer->trackingurn    =  $value['trackingurn'];
+                    $customer->source         =  $value['source'];
                     $customer->save();
                 }
 
@@ -77,8 +80,38 @@ class CustomerController extends Controller {
 
     public function apiGetCustomers()
     {
-        $customers = Customer::orderBy('id', 'desc')->get();
-        return json_encode($customers);
+        
+        //$customers = Customer::all()->get();
+         $query = "SELECT id, firstname, lastname, gender, phone_num, postcode, country FROM customers ORDER BY id ASC LIMIT 500;";
+         $data = DB::connection('pgsql')->select($query);
+
+        $count = "SELECT COUNT(id) as count FROM customers LIMIT 500";
+        $data_count = DB::connection('pgsql')->select($count);
+
+        $dataset = array(
+            array(
+                'sEcho' => 3,
+                'iTotalDisplay' => intval($data_count[0]->count),
+                'iTotalDisplayRecords' => intval(5),
+  
+
+            )
+        );
+
+        foreach ($data as $key => $value) {
+            $dataset['aaData'][] = array(
+                $value->id, 
+                $value->firstname, 
+                $value->lastname, 
+                $value->gender, 
+                $value->phone_num, 
+                $value->postcode, 
+                $value->country
+            );
+        }
+
+        return json_encode($dataset);
+
     }
 
     public function apiGetByNumber()

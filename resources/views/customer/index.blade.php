@@ -7,7 +7,7 @@
 			<div class="panel panel-success">
 				<div class="panel-heading">Customer List</div>
 				<div class="panel-body">
-					<div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div>
+					<!-- <div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div> -->
                     <div class="flash-message">
                         @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                           @if(Session::has('alert-' . $msg))
@@ -19,7 +19,7 @@
                         <thead>
                             <tr>
                             	<th colspan="7"> <center>Customer Information<center></th>
-                                <th colspan="2"> <center>Actions<center></th>
+                                <!-- <th colspan="2"> <center>Actions<center></th> -->
                             </tr>
                             <tr>
                                 <th>ID</th>
@@ -29,18 +29,19 @@
                                 <th>Phone Number</th>
                                 <th>Postcode</th>
                                 <th>Country</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
+                            <!--     <th>Edit</th>
+                                <th>Delete</th> -->
                             </tr>
                         </thead>
                         <tbody>
                         
                         </tbody>
-                        <tfoot>
+                        <!-- <tfoot>
 							<tr>
-								<td colspan="9">&nbsp;</td>
+                                <td colspan="9">&nbsp;</td>
+								<td colspan="7">&nbsp;</td>
 							</tr>
-						</tfoot>
+						</tfoot> -->
                     </table>
                   
                     

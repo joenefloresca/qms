@@ -31,14 +31,35 @@ class ReportController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
-		$query = "SELECT a.agent_id, c.name, a.TotalApplication, b.TotalLoginHours
-				     , b.TotalLoginHours / a.TotalApplication as ApplicationPerHour
-				     , 1.75 * (b.TotalLoginHours / a.TotalApplication) as RPH
+		// $query = "SELECT a.agent_id, c.name, a.TotalApplication, b.TotalLoginHours
+		// 		     , b.TotalLoginHours / a.TotalApplication as ApplicationPerHour
+		// 		     , 1.75 * (b.TotalLoginHours / a.TotalApplication) as RPH
+		// 		FROM (
+		// 		    SELECT a.agent_id as agent_id
+		// 		         , COUNT(a.id) as TotalApplication
+		// 		    FROM forms a
+		// 		    WHERE  a.created_at >= '$from' AND a.created_at <= '$to'
+		// 		    GROUP BY a.agent_id
+		// 		 ) AS a
+		// 		 join (
+		// 		     SELECT b.user_id as agent_id
+		// 		          , SUM(b.loginhours) as TotalLoginHours
+		// 		     FROM loginhours b 
+		// 		     WHERE  created_at >= '$from' AND created_at <= '$to'
+		// 		     GROUP BY b.user_id
+		// 		 ) as b 
+		// 		     ON a.agent_id = b.agent_id
+		// 		 INNER JOIN users c ON c.id = a.agent_id    
+		// 		 ; ";
+		$query = "SELECT a.agent_id, c.name, a.completedsurvey, a.partial_survey, b.TotalLoginHours
+				     , a.CompletedSurvey + a.partial_survey as ApplicationPerHour
+				     , (a.CompletedSurvey * 1.75) + (a.partial_survey * 0.40) as RPH
 				FROM (
-				    SELECT a.agent_id as agent_id
-				         , COUNT(a.id) as TotalApplication
+				    SELECT a.agent_id as agent_id, 
+				  COUNT(case when disposition = 'Completed Survey' then a.id end) as completedsurvey, 
+          COUNT(case when disposition = 'Partial Survey' then a.id end) as partial_survey
 				    FROM forms a
-				    WHERE  a.created_at >= '$from' AND a.created_at <= '$to'
+				    WHERE  a.created_at >= '$from' AND a.created_at <= '$to' 
 				    GROUP BY a.agent_id
 				 ) AS a
 				 join (
