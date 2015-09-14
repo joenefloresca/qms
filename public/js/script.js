@@ -1005,7 +1005,20 @@ var lastItem = "";
 var enabled_questions = [];
 var check_questions = [];
 $("#trigger").click(function() {
-$("#CRMTable").css("display","block");		
+var isPermanentResident = $('#CrmIsUKPermanentResident').val();	
+var phoneType = $('#CRMTelephoneOptions').val();	
+var ageBracket = $('#CrmAge').val();	
+var workStatus = $('#CRMWorkStatus').val();	
+var homeStatus = $('#CRMOwnHomeOptions').val();	
+var civilStatus = $('#CRMMaritalStatus').val();
+
+if(phoneType == "" || ageBracket == "" || workStatus == "" || homeStatus == "" || civilStatus == "")
+{
+	alert("Please select answer on the required fields.");
+}
+else
+{
+	$("#CRMTable").css("display","block");		
 var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
@@ -1279,7 +1292,7 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 	    } 
 	});
 
-	// console.log("Last item is "+lastItem)
+	console.log("Last item is "+lastItem)
 	console.log(enabled_questions)
 	var len = enabled_questions.length;
 	$.each(enabled_questions, function(key,value) {
@@ -1295,6 +1308,8 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
           }
 		
 	});
+}	
+
 
 });
 
@@ -1304,6 +1319,9 @@ function enable_next(id)
 	var response = $("#"+currentheader).val();
 	var current_index = $.inArray( currentheader, enabled_questions );
 	var next_index = parseInt(current_index) + 1;
+
+	console.log("Enabling "+enabled_questions[next_index]);
+	console.log(enabled_questions)
 
 	$('#'+enabled_questions[next_index]).prop("disabled", false);
 

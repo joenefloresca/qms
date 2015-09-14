@@ -198,6 +198,7 @@
 									<option value="No">No</option>
 								 </select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<!-- Modal -->
@@ -338,6 +339,7 @@
 									<option value="Mobile">Mobile</option>
 								</select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
@@ -361,6 +363,7 @@
 			  						<option value="75+">75+</option>
 								 </select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group col-md-12">
@@ -384,6 +387,7 @@
 									<option value="Not answered">Not answered</option>
 								</select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
@@ -397,6 +401,7 @@
 									<option value="Not Answered">Not Answered</option>
 								</select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
@@ -413,6 +418,7 @@
 					              <option value="Others">Others</option>
 								</select>
 							</div>
+							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
