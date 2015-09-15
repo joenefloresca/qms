@@ -498,7 +498,7 @@
 							<div class="col-md-4">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
 									<option value="">Choose One</option>
-									<!-- <option value="Completed Survey">Completed Survey</option>  -->
+									<option value="Completed Survey">Completed Survey</option> 
 									<option value="Partial Survey">Partial Survey</option> 
 									<!-- <option value="MCS Record">MCS Record</option>  -->
 								 </select>

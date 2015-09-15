@@ -66,7 +66,11 @@ return [
 
         'pgsql' => [
             'driver'   => 'pgsql',
+<<<<<<< HEAD
             'host'     => 'localhost',
+=======
+            'host'     => 'qdf-satcrm.cloudapp.net',
+>>>>>>> 0d755f21cd8a1d0eed6086458b7e407809d69fc1
             'database' => 'gcl',
             'username' => 'postgres',
             'password' => 'CheRambil27',

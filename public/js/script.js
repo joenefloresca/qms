@@ -697,12 +697,12 @@ function get_response(id)
     }
 
     //console.log(lastItem);
-    if($("#"+lastItem).val() != "")
-    {
-    	//$("#DispositionDiv").css("display","block");
-    	$('#CrmDisposition').append($('<option>', {value: 'Completed Survey', text:'Completed Survey'}));
-    	console.log("last last last");
-    }
+    // if($("#"+lastItem).val() != "")
+    // {
+    // 	//$("#DispositionDiv").css("display","block");
+    // 	$('#CrmDisposition').append($('<option>', {value: 'Completed Survey', text:'Completed Survey'}));
+    // 	console.log("last last last");
+    // }
 
 
 }

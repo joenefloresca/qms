@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "a1cec7de391b0255073df55906fe4c1f",
@@ -2542,6 +2542,7 @@
         },
         {
             "name": "phpunit/php-token-stream",
+<<<<<<< HEAD
             "version": "1.4.6",
             "source": {
                 "type": "git",
@@ -2552,6 +2553,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
                 "reference": "3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
+=======
+            "version": "1.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-token-stream.git",
+                "reference": "6f1447a60f068c89d345ceee32025a51dd630f1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/6f1447a60f068c89d345ceee32025a51dd630f1c",
+                "reference": "6f1447a60f068c89d345ceee32025a51dd630f1c",
+>>>>>>> 0d755f21cd8a1d0eed6086458b7e407809d69fc1
                 "shasum": ""
             },
             "require": {
@@ -2587,7 +2600,11 @@
             "keywords": [
                 "tokenizer"
             ],
+<<<<<<< HEAD
             "time": "2015-08-16 08:51:00"
+=======
+            "time": "2015-09-14 18:56:12"
+>>>>>>> 0d755f21cd8a1d0eed6086458b7e407809d69fc1
         },
         {
             "name": "phpunit/phpunit",
