@@ -67,9 +67,9 @@ return [
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => 'localhost',
-            'database' => 'qms',
+            'database' => 'gcl',
             'username' => 'postgres',
-            'password' => 'postgres',
+            'password' => 'CheRambil27',
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
