@@ -182,6 +182,11 @@ $("#sortLoginHours").click(function() {
 
 
 $("#btnDateCharityRes").click(function() {
+	var totalyes = 0;
+	var totalno = 0;
+	var totalpossibly = 0;
+	var totalrev = 0;
+
 	if($.fn.dataTable.isDataTable('#CharityResponses')) 
 	{	
     	table.destroy();
@@ -196,6 +201,11 @@ $("#btnDateCharityRes").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+	    		totalyes += parseInt(value.ct_yes); 
+	    		totalno += parseInt(value.ct_no); 
+	    		totalpossibly += parseInt(value.ct_maybe); 
+	    		totalrev += parseFloat(value.revenue); 
+
 	    		table.row.add( [
 		            value.question_id,	
 		            value.columnheader,
@@ -206,6 +216,10 @@ $("#btnDateCharityRes").click(function() {
 		            value.revenue,
 	        	] ).draw();
 			});
+			$("#CharityRepTotalYes").html(totalyes);
+			$("#CharityRepTotalNo").html(totalno);
+			$("#CharityRepTotalPossib").html(totalpossibly);
+			$("#CharityRepTotalRev").html(totalrev.toFixed(2));
 		}});
 
 	}
@@ -219,6 +233,11 @@ $("#btnDateCharityRes").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+	    		totalyes += parseInt(value.ct_yes); 
+	    		totalno += parseInt(value.ct_no); 
+	    		totalpossibly += parseInt(value.ct_maybe); 
+	    		totalrev += parseInt(value.revenue); 
+
 	    		table.row.add( [
 		            value.question_id,	
 		            value.columnheader,
@@ -229,6 +248,10 @@ $("#btnDateCharityRes").click(function() {
 		            value.revenue,
 	        	] ).draw();
 			});
+			$("#CharityRepTotalYes").html(totalyes);
+			$("#CharityRepTotalNo").html(totalno);
+			$("#CharityRepTotalPossib").html(totalpossibly);
+			$("#CharityRepTotalRev").html(totalrev.toFixed(2));
 		}});
 
 		var tt = new $.fn.dataTable.TableTools( table );

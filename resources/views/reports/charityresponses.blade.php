@@ -43,7 +43,6 @@
 				<div class="panel-body">
 					<table id="CharityResponses" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
-                            
                             <tr>
                                 <th>ID</th>
                                 <th>Column Header</th>
@@ -57,6 +56,20 @@
                         <tbody>
                         
                         </tbody>
+                        <tfoot>
+						    <tr>
+                                <th colspan="2">Total YES Count</th>
+                                <th colspan="2">Total NO Count</th>
+                                <th>Total POSSIBLY Count</th>
+                                <th colspan="2">Total Revenue </th>
+						    </tr>
+						     <tr>
+                                <td colspan="2" id="CharityRepTotalYes"></td>
+                                <td colspan="2" id="CharityRepTotalNo"></td>
+                                <td id="CharityRepTotalPossib"></td>
+                                <td colspan="2" id="CharityRepTotalRev"></td>
+						    </tr>
+						</tfoot>
                     </table>
 				</div> 
 			</div> 
