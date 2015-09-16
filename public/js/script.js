@@ -73,44 +73,40 @@ $(document).ready(function() {
 
 });
 
-$('#fromDateAgentPer').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-});
-$('#toDateAgentPer').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+
+jQuery('#fromDateAgentPer').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#fromDateCharityRes').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+jQuery('#toDateAgentPer').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#toDateCharityRes').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+
+jQuery('#fromDateCharityRes').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#fromQaSummary').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+jQuery('#toDateCharityRes').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#toQaSummary').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+jQuery('#fromQaSummary').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#loginHoursFrom').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+jQuery('#toQaSummary').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
-$('#loginHoursTo').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
+jQuery('#loginHoursFrom').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
+
+jQuery('#loginHoursTo').datetimepicker({
+  format:'Y-m-d H:i:s',
+});
+
 
 $("#sortLoginHours").click(function() {
 	if($.fn.dataTable.isDataTable('#LoginHourList')) 
@@ -243,6 +239,7 @@ $("#btnDateCharityRes").click(function() {
 });
 
 $("#btnDateAgentPer").click(function() {
+	var sph = 0;
 	if($.fn.dataTable.isDataTable('#AgentPerformance')) 
 	{
     	table.destroy();
@@ -257,6 +254,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+	    		sph = (parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours);
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -264,6 +262,7 @@ $("#btnDateAgentPer").click(function() {
 		            value.partial_survey,
 		            value.applicationperhour,
 		            value.rph,
+		            sph.toFixed(2),
 	        	] ).draw();
 			});
 		}});
@@ -279,6 +278,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+	    		sph = (parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours);
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -286,6 +286,7 @@ $("#btnDateAgentPer").click(function() {
 		            value.partial_survey,
 		            value.applicationperhour,
 		            value.rph,
+		            sph.toFixed(2),
 	        	] ).draw();
 			});
 		}});

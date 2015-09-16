@@ -25,7 +25,7 @@ class QaResponse extends \Eloquent
 
     public function getQaResponsesByCrmId($qacrmid)
     {
-        $query = "SELECT a.id, a.question_id, b.columnheader, b.question, a.response FROM qa_responses a INNER JOIN questions b ON a.question_id = b.id WHERE a.qa_forms_id = '$qacrmid' ORDER BY a.id DESC;";
+        $query = "SELECT a.id, a.question_id, b.columnheader, b.question, a.response, b.child_lead_respponse, b.parent_enable_response FROM qa_responses a INNER JOIN questions b ON a.question_id = b.id WHERE a.qa_forms_id = '$qacrmid' ORDER BY a.id ASC;";
         $data = DB::connection('pgsql')->select($query);
         return $data;
     }

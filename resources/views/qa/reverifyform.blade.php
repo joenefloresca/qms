@@ -46,7 +46,7 @@
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Disposition</label>
 									<div class="col-md-6">
-										{!! Form::select('disposition', ['' => 'Choose One', 'AnsweringMachine' => 'AnsweringMachine', 'Callback' => 'Callback', 'Deceased' => 'Deceased', 'DoNotCall' => 'DoNotCall', 'Foreign Language'=>'Foreign Language', 'Hibernate'=>'Hibernate', 'Manual Callback'=>'Manual Callback', 'NoAnswer'=>'NoAnswer', 'NoResponse'=>'NoResponse', 'NotInterested'=>'NotInterested', 'RaffleTicket'=>'RaffleTicket', 'Telcorecordedannouncement'=>'Telcorecordedannouncement', 'Appointmentset'=>'Appointmentset', 'Completed Survey' => 'Completed Survey', 'MCS Record' => 'MCS Record'], $crm->disposition, array('class' => 'form-control')) !!}
+										{!! Form::select('disposition', ['' => 'Choose One', 'Completed Survey' => 'Completed Survey', 'Partial Survey' => 'Partial Survey'], $crm->disposition, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
@@ -209,13 +209,28 @@
 												<td>{{ $response->columnheader }}</td>
 												<td>{{ $response->question }}</td>
 												<td>
-													<input type="text" class="form-control" name="{{$response->columnheader}}" value="{{$response->response}}">
-													<!-- <select class="form-control" name="{{$response->columnheader}}">
+													<!-- <input type="text" class="form-control" name="{{$response->columnheader}}" value="{{$response->response}}"> -->
+													<select class="form-control" name="{{$response->columnheader}}">
 														<option value="{{$response->response}}" selected>{{$response->response}}</option>
-														<option value="Yes">Yes</option>
-														<option value="No">No</option>
-														<option value="Possibly">Possibly</option>
-													</select> -->
+														<?php  
+															if($response->child_lead_respponse == "" || $response->child_lead_respponse == NULL)
+															{
+																$options = explode(",",$response->parent_enable_response);
+																foreach ($options as $key) {
+	                                        						echo "<option value='$key'>".$key."</option>";
+	                                        					}
+															}
+															else
+															{
+																$options = explode(",",$response->child_lead_respponse);
+																foreach ($options as $key) {
+	                                        						echo "<option value='$key'>".$key."</option>";
+	                                        					}
+															}
+														?>
+														<option value="">N/A</option>
+												
+													</select>
 												</td>
 											</tr>
 											@endforeach

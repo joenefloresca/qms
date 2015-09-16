@@ -105,6 +105,7 @@
                     			</div>
 							</div>
 						</div>
+
 						<!-- <div class="form-group">
 							<label class="col-md-5 control-label text-success">Your Total Gross Today</label>
 							<div class="col-md-6">
@@ -521,4 +522,78 @@
 	<!-- </div> -->	
 	</form>
 </div>
+@endsection
+
+@section('CrmCreate')
+<script type="text/javascript">
+checkAgentLoginHours();
+	function checkAgentLoginHours(){
+		$.ajax({
+			url: "api/agent/loginhours",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentLoginHours").val(result);
+			},
+			complete: function() {
+	                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	getCompletedSurvey();
+	function getCompletedSurvey(){
+		$.ajax({
+			url: "api/agent/completedsurvey",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentCompletedSurvey").val(result);
+				var gross = parseInt(result) * 1.75;
+				$("#agentCompletedSurveyGross").val(gross);
+
+			},
+			complete: function() {
+	                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	getPartitalSurvey();
+	function getPartitalSurvey(){
+		$.ajax({
+			url: "api/agent/partialsurvey",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentPartialSurvey").val(result);
+				var gross = parseInt(result) * 0.40;
+				$("#agentPartialSurveyGross").val(gross);
+
+			},
+			complete: function() {
+	                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	checkAgentDayGross();
+	function checkAgentDayGross(){
+		$.ajax({
+			url: "api/agent/daygross",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+				$("#agentTodayGross").val(result);
+			},
+			complete: function() {
+	                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+</script>
 @endsection

@@ -17,7 +17,7 @@ class Crm extends \Eloquent
 
     public function getCrmList()
     {
-    	$query = "SELECT a.id as crmid, b.name, a.title, a.firstname, a.surname, a.disposition, a.gross, a.created_at FROM forms a INNER JOIN users b ON a.agent_id = b.id;";
+    	$query = "SELECT a.id as crmid, b.name, a.title, a.firstname, a.surname, a.disposition, a.gross, a.created_at, a.phone_num FROM forms a INNER JOIN users b ON a.agent_id = b.id;";
     	$data = DB::connection('pgsql')->select($query);
 		return $data;
     }

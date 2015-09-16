@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 	<link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/bootstrap-datepicker.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/jquery.datetimepicker.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/dataTables.tableTools.css') }}" rel="stylesheet">
 	
 
@@ -196,7 +196,7 @@
 	<script src="{{ asset('js/summernote.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-timepicker.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('js/jquery.datetimepicker.js') }}"></script>
 	<script src="{{ asset('js/Chart.js') }}"></script>
 	<script src="{{ asset('js/script.js') }}"></script>
 	<script type="text/javascript">
@@ -295,11 +295,11 @@
 	        "processing": true,
 	        "serverSide": true,
 	        "ajax": "api/customer/all",
-	        "paging" : true,
-	        "scrollY" : 400,
-	        "searching" : true,
-    		"ordering" :  true,
-    		"pagingType" : "full_numbers" 
+	        //"paging" : true,
+	        //"scrollY" : 400,
+	       // "searching" : true,
+    		//"ordering" :  true,
+    		//"pagingType" : "full_numbers" 
 	    } );
 	});
 
@@ -316,22 +316,13 @@
 	            value.title+" "+value.firstname+" "+value.surname,
 	            value.disposition,
 	            value.gross,
+	            value.phone_num,
 	            value.created_at,
 	            "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
         	] ).draw();
     		
 		});
-	}}).error(function(){
-		  progress.progressTimer('error', {
-		  errorText:'ERROR!',
-		  onFinish:function(){
-		    alert('There was an error processing your information!');
-		  }
-		});
-	}).done(function(){
-			progress.progressTimer('complete');
-			$( "#progressbar" ).fadeOut( "slow" );
-	});
+	}});
 
 	$.ajax({
 	url: "api/crm/reverify", 
@@ -354,98 +345,10 @@
         	] ).draw();
     		
 		});
-	}}).error(function(){
-		  progress.progressTimer('error', {
-		  errorText:'ERROR!',
-		  onFinish:function(){
-		    alert('There was an error processing your information!');
-		  }
-		});
-	}).done(function(){
-			progress.progressTimer('complete');
-			$( "#progressbar" ).fadeOut( "slow" );
-	});
+	}});
 
-	// $.ajax({
-	// url: "api/agent/loginhours", 
-	// type: 'GET',
-	// data: {'agent_id':agent_id},
-	// success: function(result){
-	// 	console.log("Login hours is "+result);
-	// 	$("#agentLoginHours").val(result);
-	// }});
-
-	checkAgentLoginHours();
-	function checkAgentLoginHours(){
-		$.ajax({
-			url: "api/agent/loginhours",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentLoginHours").val(result);
-			},
-			complete: function() {
-	                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
-	}
-
-	getCompletedSurvey();
-	function getCompletedSurvey(){
-		$.ajax({
-			url: "api/agent/completedsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentCompletedSurvey").val(result);
-				var gross = parseInt(result) * 1.75;
-				$("#agentCompletedSurveyGross").val(gross);
-
-			},
-			complete: function() {
-	                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
-	}
-
-	getPartitalSurvey();
-	function getPartitalSurvey(){
-		$.ajax({
-			url: "api/agent/partialsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentPartialSurvey").val(result);
-				var gross = parseInt(result) * 0.40;
-				$("#agentPartialSurveyGross").val(gross);
-
-			},
-			complete: function() {
-	                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
-	}
-
-	checkAgentDayGross();
-	function checkAgentDayGross(){
-		$.ajax({
-			url: "api/agent/daygross",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentTodayGross").val(result);
-			},
-			complete: function() {
-	                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
-	}
 
 	</script>
-
+	@yield('CrmCreate')
 </body>
 </html>

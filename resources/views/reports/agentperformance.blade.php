@@ -51,6 +51,7 @@
                                 <th>Total Partital Surveys</th>
                                 <th>APH</th>
                                 <th>RPH</th>
+                                <th>SPH</th>
                             </tr>
                         </thead>
                         <tbody>
