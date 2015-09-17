@@ -76,7 +76,6 @@ Route::get('reports/qasummary', 'ReportController@showQaSummaryReport');
 /* Reports Ajax Calls */
 Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperformance');
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
-Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('reports/api/crm/verifierreport', 'ReportController@apiverifierreport');
 Route::get('reports/api/crm/qasummary', 'ReportController@apiqasummary');
 Route::get('reports/api/crm/qasummary2', 'ReportController@apiqasummary2');

@@ -81,7 +81,7 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        date_default_timezone_set('Asia/Taipei');
+        //date_default_timezone_set('Asia/Taipei');
         // $today = date('Y-m-d');
         // $yesterday =  date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $today) ) ));
         // $endshift =  date('Y-m-d h:i:s',(strtotime ( '+6 hour' , strtotime ( $today) ) ));
@@ -99,7 +99,7 @@ class AuthController extends Controller
             
             $userid = Auth::user()->id;
             $today = date('Y-m-d');
-            $timestamp = date('Y-m-d h:i:s');
+            $timestamp = date('Y-m-d H:i:s', time());
             $logHour = new LoginHour();
             $checkLogin = $logHour->checkLoginHours($userid, $today);
 
@@ -169,7 +169,7 @@ class AuthController extends Controller
             if($checkLogin != null)
             {
                 $loginhours = '';
-                $timestamp = date('Y-m-d h:i:s');
+                $timestamp = date('Y-m-d H:i:s', time());
                 $timestamp2 = strtotime($timestamp);
 
                 $userLastLogin = $checkLogin[0]->timestamp;
@@ -181,7 +181,7 @@ class AuthController extends Controller
 
                 LoginHour::where('date', '=', $today)->
                             where('user_id', '=', $userid)->
-                            update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp]);
+                            update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp, 'lastlogout' => $timestamp]);
             }
 
             Auth::logout();

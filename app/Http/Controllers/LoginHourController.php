@@ -34,7 +34,7 @@ class LoginHourController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
-		$query = "SELECT a.id, a.date, a.status, b.name, a.loginhours FROM loginhours a INNER JOIN users b ON a.user_id = b.id WHERE a.date >= '$from' AND a.date <= '$to'";
+		$query = "SELECT a.id, a.date, a.status, b.name, a.loginhours, a.created_at, a.lastlogout FROM loginhours a INNER JOIN users b ON a.user_id = b.id WHERE a.created_at >= '$from' AND a.created_at <= '$to'";
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);	
 	}

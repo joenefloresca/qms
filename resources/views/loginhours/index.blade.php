@@ -42,10 +42,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Date</th>
-                                <th>Status</th>
                                 <th>Name</th>
+                                <th>Login Time</th>
+                                <th>Last Logout</th>
                                 <th>Login Hours</th>
+                                <th>Current Status</th>
+                                
                             </tr>
                         </thead>
                         <tbody>

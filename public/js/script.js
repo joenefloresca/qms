@@ -107,6 +107,19 @@ jQuery('#loginHoursTo').datetimepicker({
   format:'Y-m-d H:i:s',
 });
 
+jQuery('#fromVerifierReport').datetimepicker({
+  format:'Y-m-d H:i:s',
+});
+
+jQuery('#toVerifierReport').datetimepicker({
+  format:'Y-m-d H:i:s',
+});
+
+jQuery('#birthdate').datetimepicker({
+  format:'Y-m-d',
+  timepicker:false,
+});
+
 
 $("#sortLoginHours").click(function() {
 	if($.fn.dataTable.isDataTable('#LoginHourList')) 
@@ -133,11 +146,11 @@ $("#sortLoginHours").click(function() {
 	    		}
 	    		table.row.add( [
 		            value.id,	
-		            value.date,	
-		            status,	
 		            value.name,	
-		            value.loginhours,	
-		            
+		            value.created_at,	
+		            value.lastlogout,
+		             value.loginhours,
+		            status,	
 	        	] ).draw();
 			});
 		}});
@@ -164,11 +177,11 @@ $("#sortLoginHours").click(function() {
 			    		}
 			    		table.row.add( [
 				            value.id,	
-				            value.date,	
-				            status,	
 				            value.name,	
-				            value.loginhours,	
-				            
+				            value.created_at,	
+				            value.lastlogout,
+				             value.loginhours,
+				            status,	
 			        	] ).draw();
 					});
 		}});
@@ -277,7 +290,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		sph = (parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours);
+	    		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -301,7 +314,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-	    		sph = (parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours);
+	    		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
 	    		table.row.add( [
 		            value.name,	
 		            value.totalloginhours,
@@ -1351,21 +1364,7 @@ function enable_next(id)
 
 }
 
-$('#birthdate').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd",
-	defaultViewDate: { year: 1960, month: 01, day: 01 }
-});
 
-$('#fromVerifierReport').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd"
-});
-
-$('#toVerifierReport').datepicker({
-	autoclose: true,
-	format: "yyyy-mm-dd"
-});
 
 $("#CRMPostcodeBtn").click(function() { 
 	$("#CRMPostcode").val($("#CRMPostcodeNew").val());
