@@ -81,7 +81,7 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        //date_default_timezone_set('Asia/Taipei');
+        date_default_timezone_set('Europe/London');
         // $today = date('Y-m-d');
         // $yesterday =  date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $today) ) ));
         // $endshift =  date('Y-m-d h:i:s',(strtotime ( '+6 hour' , strtotime ( $today) ) ));
@@ -149,7 +149,7 @@ class AuthController extends Controller
      */
     public function getLogout()
     {
-
+        date_default_timezone_set('Europe/London');
         if (Auth::guest())
         {
 
@@ -159,8 +159,6 @@ class AuthController extends Controller
         {
             
             $userid = Auth::user()->id;
-
-            date_default_timezone_set('Asia/Taipei');
         
             $today = date('Y-m-d');
             $logHour = new LoginHour();
@@ -177,7 +175,6 @@ class AuthController extends Controller
                
                 // Get difference in hours
                 $diffHours = round(($timestamp2 - $userLastLogin2) / 3600, 2);
-
 
                 LoginHour::where('date', '=', $today)->
                             where('user_id', '=', $userid)->

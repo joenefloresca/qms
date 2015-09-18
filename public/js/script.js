@@ -1614,5 +1614,3 @@ $("#NotAns").click(function() {
      	return val + (!val ? '' : ',') + value;
 	});
 });
-
-

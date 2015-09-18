@@ -38,8 +38,18 @@ class LoginHour extends \Eloquent
     {
         $query = "SELECT * FROM loginhours 
                 WHERE user_id = '$user_id' AND date = '$today' 
-                AND status = 1 
-                AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'";
+                AND status = 1 ";
+                // AND TIMESTAMP < CAST((CAST(now() AS DATE) + INTEGER '1') as TIMESTAMP) + INTERVAL '6 hours'
+                // ";
+        $data = DB::connection('pgsql')->select($query);
+                  
+        return $data;        
+    }
+
+    public function checkLoginHoursOutLive($user_id, $today)
+    {
+        $query = "SELECT * FROM loginhours 
+                WHERE user_id = '$user_id' AND date = '$today'";
         $data = DB::connection('pgsql')->select($query);
                   
         return $data;        

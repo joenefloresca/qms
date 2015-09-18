@@ -45,7 +45,7 @@
                         <thead>
                             
                             <tr>
-                                <th>Agent ID</th>
+                                <th>Agent Name</th>
                                 <th>Total Login Hours</th>
                                 <th>Total Completed Surveys</th>
                                 <th>Total Partital Surveys</th>

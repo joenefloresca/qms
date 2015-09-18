@@ -495,7 +495,7 @@
                         </table> 
 
 						<div class="form-group" id="DispositionDiv" style="display: block">
-							<label class="col-md-4 control-label"><small>Set Disposition</small></label>
+							<label class="col-md-4 control-label"><small class="text-danger">Set Disposition</small></label>
 							<div class="col-md-4">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
 									<option value="">Choose One</option>
@@ -526,7 +526,22 @@
 
 @section('CrmCreate')
 <script type="text/javascript">
-checkAgentLoginHours();
+	checkAgentLoginHoursLive();
+	function checkAgentLoginHoursLive(){
+		$.ajax({
+			url: "api/agent/loginhourslive",  
+			type: 'GET',
+			data: {'agent_id':agent_id},
+			success: function(result){
+			},
+			complete: function() {
+	                setTimeout(checkAgentLoginHoursLive,300000); //After completion of request, time to redo it after a second
+	        }
+
+		});
+	}
+
+	checkAgentLoginHours();
 	function checkAgentLoginHours(){
 		$.ajax({
 			url: "api/agent/loginhours",  
