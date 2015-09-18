@@ -158,28 +158,28 @@ class AuthController extends Controller
         else
         {
             
-            $userid = Auth::user()->id;
+            // $userid = Auth::user()->id;
         
-            $today = date('Y-m-d');
-            $logHour = new LoginHour();
-            $checkLogin = $logHour->checkLoginHoursOut(intval($userid), $today);
+            // $today = date('Y-m-d');
+            // $logHour = new LoginHour();
+            // $checkLogin = $logHour->checkLoginHoursOut(intval($userid), $today);
 
-            if($checkLogin != null)
-            {
-                $loginhours = '';
-                $timestamp = date('Y-m-d H:i:s', time());
-                $timestamp2 = strtotime($timestamp);
+            // if($checkLogin != null)
+            // {
+            //     $loginhours = '';
+            //     $timestamp = date('Y-m-d H:i:s', time());
+            //     $timestamp2 = strtotime($timestamp);
 
-                $userLastLogin = $checkLogin[0]->timestamp;
-                $userLastLogin2 = strtotime($userLastLogin);
+            //     $userLastLogin = $checkLogin[0]->timestamp;
+            //     $userLastLogin2 = strtotime($userLastLogin);
                
-                // Get difference in hours
-                $diffHours = round(($timestamp2 - $userLastLogin2) / 3600, 2);
+            //     // Get difference in hours
+            //     $diffHours = round(($timestamp2 - $userLastLogin2) / 3600, 2);
 
-                LoginHour::where('date', '=', $today)->
-                            where('user_id', '=', $userid)->
-                            update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp, 'lastlogout' => $timestamp]);
-            }
+            //     LoginHour::where('date', '=', $today)->
+            //                 where('user_id', '=', $userid)->
+            //                 update(['loginhours' => $checkLogin[0]->loginhours + $diffHours, 'status' => 0, 'timestamp' => $timestamp, 'lastlogout' => $timestamp]);
+            // }
 
             Auth::logout();
             Session::flush();
