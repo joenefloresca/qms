@@ -10,8 +10,10 @@ use \App\Http\Models\Response;
 use \App\Http\Models\QaCrm;
 use \App\Http\Models\QaResponse;
 use \App\Http\Models\Question;
+use \App\Http\Models\Telesurveymaster;
 use \App\User;
 use Auth;
+use DB;
 
 class QaController extends Controller {
 
@@ -55,9 +57,9 @@ class QaController extends Controller {
             'firstname'      => 'required',
             'lastname'       => 'required',
             'addr1'          => 'required',
-            'addr2'          => 'required',
-            'addr3'          => 'required',
-            'addr4'          => 'required',
+            // 'addr2'          => 'required',
+            // 'addr3'          => 'required',
+            // 'addr4'          => 'required',
             'town'           => 'required',
             'country'        => 'required',
             'postcode'       => 'required',
@@ -78,6 +80,7 @@ class QaController extends Controller {
         }
         else
         {
+
             $gross                  = Input::get("gross");
             $disposition            = Input::get("disposition");
             $gender                 = Input::get("gender");
@@ -106,6 +109,7 @@ class QaController extends Controller {
             $reject_a_status        = Input::get("reject_a_status");
             $reject_b_status        = Input::get("reject_b_status");
             $reject_c_status        = Input::get("reject_c_status");
+            $tracking_urn           = md5($phone_num.date("Y-m-d H:i:s"));
 
             $qacrm = new QaCrm();
             $qacrm->disposition = $disposition;
@@ -140,10 +144,47 @@ class QaController extends Controller {
             $qacrm->reject_c_status = $reject_c_status;
             $qacrm->verified_by = Auth::user()->name;
             $qacrm->verifier_id = Auth::user()->id;
+            $qacrm->trackingurn = $tracking_urn;
+
+
+            $telesurveymaster = new Telesurveymaster();
+            $telesurveymaster->TrackingURN = $tracking_urn;
+            $telesurveymaster->Title = $title;
+            $telesurveymaster->Firstname = $firstname;
+            $telesurveymaster->Surname = $lastname;
+            $telesurveymaster->Address1 = $addr1;
+            $telesurveymaster->Address2 = $addr2;
+            $telesurveymaster->Address3 = $addr3;
+            $telesurveymaster->Address4 = $addr4;
+            $telesurveymaster->Town = $town;
+            $telesurveymaster->County = $country;
+            $telesurveymaster->Postcode = $postcode;
+            $telesurveymaster->Telephone = $phone_num;
+            $telesurveymaster->MobilePhone = $phone_num;
+            $telesurveymaster->Survey = 'Satellite CRM - GCL';
+            $telesurveymaster->Updatedon = date("Y-m-d H:i:s");
+            $telesurveymaster->AgentID = $agent_id;
+            $telesurveymaster->Verifier = Auth::user()->name;
+            $telesurveymaster->Revenue = $gross;
+            $telesurveymaster->AgeBracket = $age_bracket;
+            $telesurveymaster->CivilStatus = $marital_status;
+            $telesurveymaster->Gender = $gender;
+            $telesurveymaster->LivingStatus = $home_status;
+            $telesurveymaster->WorkStatus = $work_status;
+            $telesurveymaster->save();
+
+          
 
             if($qacrm->save())
             {
                 $lastInsertId = intval($qacrm->id);
+                $trackingurn = QaCrm::find($lastInsertId);
+
+                /* For 248 Insertion */
+                
+
+                /* END For 248 Insertion */
+
                 $questions = new QaResponse();
               
                 foreach ($questions->getResponsesByCrm(intval($id)) as $key => $value) 
@@ -151,11 +192,22 @@ class QaController extends Controller {
                     $columnheader = $value->columnheader; 
                     $id_question = Question::where('columnheader', '=', $columnheader)->get();
 
-                    $qa_response =new QaResponse();
+                    $qa_response = new QaResponse();
                     $qa_response->qa_forms_id = $lastInsertId;
                     $qa_response->question_id = intval($id_question[0]->id);
                     $qa_response->response = Input::get($columnheader);
+                    $qa_response->trackingurn = $trackingurn->trackingurn;
                     $qa_response->save();
+
+
+                    /* For 248 Insertion */
+                    //Get question columnheader based on id
+                    $colheader = Question::find(intval($id_question[0]->id));
+
+                    $affectedRows = Telesurveymaster::where('TrackingURN', '=', $tracking_urn)->update([$colheader->columnheader => Input::get($columnheader)]);
+                    /* END For 248 Insertion */
+
+
                 }
 
                 Session::flash('alert-info', 'Form and responses has been saved.');

@@ -189,10 +189,10 @@ return [
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host'     => '203.76.195.194,61433',
+            'database' => 'SatCRM',
+            'username' => 'Joene',
+            'password' => 'password',
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
