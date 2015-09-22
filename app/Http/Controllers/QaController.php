@@ -29,8 +29,16 @@ class QaController extends Controller {
 
     public function verifylist()
     {
-        $this->middleware('admin');
-        return view('qa.verifylist');
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 )
+        {
+            $this->middleware('admin');
+            return view('qa.verifylist');
+        }
+        else
+        {
+            return Response::view('errors.404', array(), 404);
+        }
+        
     }
 
     public function getCrmList()
@@ -41,11 +49,18 @@ class QaController extends Controller {
 
     public function showVerifyForm($crmid)
     {
-        $this->middleware('admin');
-        $crm = Crm::find($crmid);
-        $agent_name = User::find($crm->agent_id);
-        $responses = new Response();
-        return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        {
+            $crm = Crm::find($crmid);
+            $agent_name = User::find($crm->agent_id);
+            $responses = new Response();
+            return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+        }
+        else
+        {
+            return Response::view('errors.404', array(), 404);
+        }
+        
     }
 
     public function postVerify($id)
@@ -224,8 +239,14 @@ class QaController extends Controller {
 
     public function updateVerifiedForms()
     {
-        $this->middleware('admin');
-        return view('qa.updateverfied');
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        {
+            return view('qa.updateverfied');
+        }
+        else
+        {
+            return Response::view('errors.404', array(), 404);
+        }
     }
 
     public function getCrmReverify()
@@ -236,11 +257,18 @@ class QaController extends Controller {
 
     public function showReVerifyForm($crmid)
     {
-        $this->middleware('admin');
-        $crm = QaCrm::find($crmid);
-        $agent_name = User::find($crm->agent_id);
-        $responses = new QaResponse();
-        return View::make('qa.reverifyform')->with(array('crm' => $crm, 'responses' => $responses->getQaResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        {
+            $crm = QaCrm::find($crmid);
+            $agent_name = User::find($crm->agent_id);
+            $responses = new QaResponse();
+            return View::make('qa.reverifyform')->with(array('crm' => $crm, 'responses' => $responses->getQaResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+        }
+        else
+        {
+            return Response::view('errors.404', array(), 404);
+        }
+        
     }
 
     public function postReVerify($id)

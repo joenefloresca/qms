@@ -142,9 +142,6 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> Reports <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
-									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
-									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
-									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
 									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
 							</li>

@@ -7,6 +7,8 @@ use Session;
 use View;
 use \App\Http\Models\Question;
 use App;
+use Auth;
+use Response;
 
 class QuestionController extends Controller {
 
@@ -92,14 +94,28 @@ class QuestionController extends Controller {
 
 	public function index()
 	{
-        $this->middleware('admin');
-		return view('question.index');
+        if(Auth::user()->isAdmin == 1)
+        {
+            return view('question.index');
+        }
+        else
+        {
+            return Response::view('errors.404', array(), 404);
+        }
+		
 	}
 
 	public function create()
 	{
-        $this->middleware('admin');
-		return view('question.create');
+        if(Auth::user()->isAdmin == 1)
+        {
+            return view('question.create');
+        }
+        else
+        {   
+            return Response::view('errors.404', array(), 404);
+        }
+		
 	}
 
 	public function store()

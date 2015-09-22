@@ -2,6 +2,9 @@
 
 use DB;
 use Input;
+use Auth;
+use App;
+use Response;
 
 class ReportController extends Controller {
 
@@ -18,12 +21,28 @@ class ReportController extends Controller {
 
 	public function agentperformance()
 	{
-		return view('reports.agentperformance');
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		{
+			return view('reports.agentperformance');
+		}
+		else
+		{
+			return Response::view('errors.404', array(), 404);
+		}
+		
 	}
 
 	public function charityresponses()
 	{
-		return view('reports.charityresponses');
+		if(Auth::user()->isAdmin == 1)
+		{
+			return view('reports.charityresponses');
+		}
+		else
+		{
+			return Response::view('errors.404', array(), 404);
+		}
+		
 	}
 
 	public function apiagentperformance()

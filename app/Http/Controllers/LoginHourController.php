@@ -3,6 +3,7 @@
 use \App\Http\Models\LoginHour;
 use Input;
 use DB;
+use Auth;
 
 class LoginHourController extends Controller {
 
@@ -19,8 +20,15 @@ class LoginHourController extends Controller {
 
 	public function index()
 	{	
-		$this->middleware('admin');
-		return view('loginhours.index');
+		
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		{
+			return view('reports.agentperformance');
+		}
+		else
+		{
+			return Response::view('errors.404', array(), 404);
+		}
 	}
 
 	public function getLoginHoursAll()
@@ -38,9 +46,5 @@ class LoginHourController extends Controller {
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);	
 	}
-
-	
-	
-
 
 }
