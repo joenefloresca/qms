@@ -6,9 +6,12 @@ use Redirect;
 use Session;
 use View;
 use \App\Http\Models\Question;
+use \App\Http\Models\Telesurveymaster;
 use App;
 use Auth;
 use Response;
+use DB;
+
 
 class QuestionController extends Controller {
 
@@ -123,6 +126,8 @@ class QuestionController extends Controller {
         // $verifier = App::make('validation.presence');
         // $verifier->setConnection('mcssurvey_main');
 
+
+
 		$rules = array(
             'Question'  			=> 'required',
             'CostPerLead'    		=> 'required',
@@ -141,9 +146,9 @@ class QuestionController extends Controller {
         }
         else
         {
-            if(Input::get("numGenerate") == "") // For Single Questions
+            
+            if(Input::get("numGenerate") == "" || Input::get("numGenerate") == "0") // For Single Questions
             {
-               
                 $question = new Question();
                 $question->question             = Input::get('Question');
                 $question->parent_enable_response   = Input::get('lead_response');
@@ -167,12 +172,20 @@ class QuestionController extends Controller {
                 $question->sortorder = $question->id;
                 $question->save();
 
+                if($question->save())
+                {
+                    /*Add new column header to 248 SatCRM Telesurvey*/
+                    $query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
+                    $data = DB::connection('sqlsrv')->update($query);
+                }
+
                 Session::flash('alert-success', 'Form Submitted Successfully.');
 
                 return Redirect::to('question/create');
             }
             else // For multi-part Questions
             {
+                var_dump("multipart"); exit;
                 $numChild = intval(Input::get("numGenerate"));
 
                 // Save the main question first
@@ -220,11 +233,16 @@ class QuestionController extends Controller {
 
                     $question_sort = Question::find($questionChild->id);
                     $question_sort->sortorder = $questionChild->id;
-                    $question_sort->save();
+
+                    if($question_sort->save())
+                    {
+                        /*Add new column header to 248 SatCRM Telesurvey*/
+                        $query = "ALTER TABLE TelesurveyMaster ADD ".$colheader." varchar(MAX) NULL";
+                        $data = DB::connection('sqlsrv')->update($query);
+                    }
                 }
 
                 Session::flash('alert-success', 'Multi Question Form Submitted Successfully.');
-
                 return Redirect::to('question/create');
 
             }
