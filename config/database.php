@@ -189,7 +189,7 @@ return [
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
-            'host'     => '203.76.195.194,61433',
+            'host'     => '203.76.195.194:61433',
             'database' => 'SatCRM',
             'username' => 'Joene',
             'password' => 'password',
