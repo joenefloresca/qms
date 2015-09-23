@@ -96,6 +96,7 @@ class QaController extends Controller {
         else
         {
             $gross                  = Input::get("gross");
+            $rev                    = Input::get("new_gross");
             $disposition            = Input::get("disposition");
             $gender                 = Input::get("gender");
             $title                  = Input::get("title");
@@ -128,6 +129,7 @@ class QaController extends Controller {
             $qacrm = new QaCrm();
             $qacrm->disposition = $disposition;
             $qacrm->gross = $gross;
+            $qacrm->revenue = $rev;
             $qacrm->ispermanentresident = $agent_id;
             $qacrm->postcode = $postcode;
             $qacrm->addr1 = $addr1;
@@ -184,7 +186,8 @@ class QaController extends Controller {
                 $telesurveymaster->Updatedon = date("Y-m-d H:i:s");
                 $telesurveymaster->AgentID = $agent_id;
                 $telesurveymaster->Verifier = Auth::user()->name;
-                $telesurveymaster->Revenue = $gross;
+                $telesurveymaster->Revenue = $rev;
+                $telesurveymaster->Gross_Revenue = $gross;
                 $telesurveymaster->AgeBracket = $age_bracket;
                 $telesurveymaster->CivilStatus = $marital_status;
                 $telesurveymaster->Gender = $gender;
@@ -293,6 +296,7 @@ class QaController extends Controller {
         else
         {
             $gross                  = Input::get("gross");
+            $rev                    = Input::get("new_gross");
             $disposition            = Input::get("disposition");
             $gender                 = Input::get("gender");
             $title                  = Input::get("title");
@@ -324,6 +328,7 @@ class QaController extends Controller {
             $crm = QaCrm::find($id);
             $crm->disposition = $disposition;
             $crm->gross = $gross;
+            $crm->revenue = $rev;
             $crm->ispermanentresident = $agent_id;
             $crm->postcode = $postcode;
             $crm->addr1 = $addr1;
@@ -355,6 +360,7 @@ class QaController extends Controller {
             $crm->verified_by = Auth::user()->name;
             $crm->verifier_id = Auth::user()->id;
             $trackingurn = $crm->trackingurn;
+
             if($crm->save())
             {
                 /* For 248 update */
@@ -375,7 +381,9 @@ class QaController extends Controller {
                     'CivilStatus' => $marital_status,
                     'Gender' => $gender,
                     'LivingStatus' => $home_status,
-                    'WorkStatus' => $work_status
+                    'WorkStatus' => $work_status,
+                    'Revenue' => $rev,
+                    'Gross_Revenue' => $gross,
                 ]);
                 /* END For 248 update */
 
@@ -407,6 +415,13 @@ class QaController extends Controller {
 
         }
 
+    }
+
+    public function getQuestionCplResponse()
+    {
+        $columnheader = Input::get("colheader");
+        $data = DB::table('questions')->where('columnheader', $columnheader)->value('costperlead');
+        return $data;
     }
 
 }

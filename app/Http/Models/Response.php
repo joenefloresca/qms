@@ -17,7 +17,7 @@ class Response extends \Eloquent
 
     public function getResponsesByCrmId($crmid)
     {
-    	$query = "SELECT a.id, a.question_id, b.columnheader, b.question, a.response, b.child_lead_respponse, b.parent_enable_response FROM responses a INNER JOIN questions b ON a.question_id = b.id WHERE a.crm_id = '$crmid' ORDER BY a.id ASC ; ";
+    	$query = "SELECT a.id, a.question_id, b.columnheader, b.question, a.response, b.child_lead_respponse, b.parent_enable_response, b.costperlead FROM responses a INNER JOIN questions b ON a.question_id = b.id WHERE a.crm_id = '$crmid' ORDER BY a.id ASC ; ";
     	$data = DB::connection('pgsql')->select($query);
 		return $data;
     }

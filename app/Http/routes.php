@@ -96,6 +96,8 @@ Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
 Route::get('qa/api/crm/reverify', 'QaController@getCrmReverify');
+Route::get('qa/verify/qa/api/crm/getquestion', 'QaController@getQuestionCplResponse');
+Route::get('qa/reverify/qa/api/crm/getquestion', 'QaController@getQuestionCplResponse');
 
 /* Users / Agents Routes */
 Route::get('crm/api/agent/loginhours', 'UserController@getAgentLoginHours');

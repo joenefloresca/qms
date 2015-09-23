@@ -184,6 +184,13 @@
 									</div>
 								</div>
 
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label">Revenue</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" name="new_gross" id="new_gross" value="{{$crm->gross}}" readonly>
+									</div>
+								</div> 
+
 				        	</div> 
 			        	</div>
 
@@ -266,7 +273,7 @@
 												<td>{{ $response->question }}</td>
 												<td>
 													<!-- <input type="text" class="form-control" name="{{$response->columnheader}}" value="{{$response->response}}"> -->
-													<select class="form-control" name="{{$response->columnheader}}">
+													<select class="form-control myselectbox" name="{{$response->columnheader}}" id="{{$response->columnheader}}">
 														<option value="{{$response->response}}" selected>{{$response->response}}</option>
 														<?php  
 															if($response->child_lead_respponse == "" || $response->child_lead_respponse == NULL)
@@ -285,7 +292,6 @@
 															}
 														?>
 														<option value="">N/A</option>
-												
 													</select>
 												</td>
 											</tr>

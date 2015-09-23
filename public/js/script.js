@@ -69,8 +69,6 @@ $(document).ready(function() {
 			});
 			
 		}});
-
-
 });
 
 
@@ -154,8 +152,6 @@ $("#sortLoginHours").click(function() {
 	        	] ).draw();
 			});
 		}});
-
-
 	}
     else 
     {
@@ -1364,8 +1360,6 @@ function enable_next(id)
 
 }
 
-
-
 $("#CRMPostcodeBtn").click(function() { 
 	$("#CRMPostcode").val($("#CRMPostcodeNew").val());
 });
@@ -1578,8 +1572,6 @@ $("#re_verified_status").change(function() {
 	{
 		$('#re_reject_c_status').prop("disabled", true); 
 	}
-
-
 });
 
 $("#re_passwithchanges_status").change(function() { $("#passwithchanges_status").val($("#re_passwithchanges_status").val()); });
@@ -1613,4 +1605,128 @@ $("#NotAns").click(function() {
 	$('#OwnHomeOptions').val(function(i,val) { 
      	return val + (!val ? '' : ',') + value;
 	});
+});
+
+
+// $("#checkUpdateRevenue").change(function() {
+	// var updated_response = $("#checkUpdateRevenue").val();
+	// var colheader = $('#checkUpdateRevenue').attr('name');
+	// $('#new_gross').val("Joene"); 
+	// console.log(colheader);
+
+	// $.ajax({
+	// url: "qa/api/crm/getquestion", 
+	// type: 'GET',
+	// data: {'colheader':colheader},
+	// success: function(result){
+	// 	//var myObj = $.parseJSON(result);
+	// 	console.log(result);
+		
+	// }});
+// });
+
+function verifyUpdateResponseGross(val)
+{
+	// var updated_response = val.value;
+	// var colheader = val.name
+	// var before_gross = $('#new_gross').val(); 
+
+	// $.ajax({
+	// url: "qa/api/crm/getquestion", 
+	// type: 'GET',
+	// data: {'colheader':colheader},
+	// success: function(result){
+
+	// 	$("#"+colheader).on("focus",function(){  
+ //     		$(this).data('previous',$(this).val());
+	// 	});
+
+	// 	var previous = $("#"+colheader).data('previous');
+
+
+	// 	console.log(previous);
+	// 	console.log(updated_response);
+
+	// 	var costperlead = result;
+	// 	if(updated_response != "")
+	// 	{
+	// 		var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
+	// 		$('#new_gross').val(new_gross_amount);
+	// 	}
+	// 	else
+	// 	{
+	// 		var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
+	// 		$('#new_gross').val(new_gross_amount);
+	// 	}
+	// 	console.log(costperlead);
+	// }});
+}
+
+$(document).ready(function(){
+    var previous;
+     $(".myselectbox").on("focus click",function () {
+        previous = this.value; // Old vaue 
+
+    }).change(function(e) {
+
+    	var before_gross = $('#new_gross').val(); 
+    	var value =  this.value; // New Value
+    	var colheader = e.target.id;
+    	var new_prev = previous;
+      	
+
+		$.ajax({
+		url: "qa/api/crm/getquestion", 
+		type: 'GET',
+		data: {'colheader':colheader},
+		success: function(result){
+			var costperlead = result;
+			if(new_prev == "" && value != "")
+			{
+				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			else if(new_prev =! "" && value == "")
+			{	
+				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			
+		}});
+    });
+
+});
+
+$(document).ready(function(){
+    var previous;
+     $(".myselectbox2").on("focus click",function () {
+        previous = this.value; // Old vaue 
+
+    }).change(function(e) {
+
+    	var before_gross = $('#new_gross').val(); 
+    	var value =  this.value; // New Value
+    	var colheader = e.target.id;
+    	var new_prev = previous;
+      	
+		$.ajax({
+		url: "qa/api/crm/getquestion", 
+		type: 'GET',
+		data: {'colheader':colheader},
+		success: function(result){
+			var costperlead = result;
+			if(new_prev == "" && value != "")
+			{
+				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			else if(new_prev =! "" && value == "")
+			{	
+				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			
+		}});
+    });
+
 });
