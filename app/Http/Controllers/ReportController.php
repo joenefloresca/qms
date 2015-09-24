@@ -19,7 +19,7 @@ class ReportController extends Controller {
 	}
 
 
-	public function agentperformance()
+	public function showAgentPerformance()
 	{
 		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
 		{
@@ -32,7 +32,7 @@ class ReportController extends Controller {
 		
 	}
 
-	public function charityresponses()
+	public function showCharityResponses()
 	{
 		if(Auth::user()->isAdmin == 1)
 		{
@@ -247,6 +247,30 @@ class ReportController extends Controller {
 		$query = "SELECT a.question_id, a.response, b.columnheader FROM qa_responses a INNER JOIN questions b ON a.question_id = b.id WHERE qa_forms_id = '$id';";
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);
+	}
+
+	public function showCampaignGross()
+	{
+		return view('reports.campaigngrossperformance');
+	}
+
+	public function apicampaigngrossperformance()
+	{
+		$from = Input::get("from");
+		$to   = Input::get("to");
+
+		$ts1 = strtotime($from);
+		$ts2 = strtotime($to);
+
+		$seconds_diff = $ts2 - $ts1;
+
+		for($x = 0; $x < $seconds_diff; $x++)
+		{
+			
+		}
+
+
+		return floor($seconds_diff/3600/24);
 	}
 
 

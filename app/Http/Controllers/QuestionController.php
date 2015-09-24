@@ -126,8 +126,6 @@ class QuestionController extends Controller {
         // $verifier = App::make('validation.presence');
         // $verifier->setConnection('mcssurvey_main');
 
-
-
 		$rules = array(
             'Question'  			=> 'required',
             'CostPerLead'    		=> 'required',
@@ -185,7 +183,6 @@ class QuestionController extends Controller {
             }
             else // For multi-part Questions
             {
-                var_dump("multipart"); exit;
                 $numChild = intval(Input::get("numGenerate"));
 
                 // Save the main question first

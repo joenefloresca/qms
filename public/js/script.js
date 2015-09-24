@@ -113,6 +113,14 @@ jQuery('#toVerifierReport').datetimepicker({
   format:'Y-m-d H:i:s',
 });
 
+jQuery('#fromCGP').datetimepicker({
+  format:'Y-m-d H:i:s',
+});
+
+jQuery('#toCGP').datetimepicker({
+  format:'Y-m-d H:i:s',
+});
+
 jQuery('#birthdate').datetimepicker({
   format:'Y-m-d',
   timepicker:false,
@@ -326,6 +334,74 @@ $("#btnDateAgentPer").click(function() {
 		var tt = new $.fn.dataTable.TableTools( table );
 	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
 	}
+	
+});
+
+$("#btnCGP").click(function() {
+	$.ajax({
+		url: "api/crm/apicampaigngrossperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromCGP").val(), "to" :  $("#toCGP").val()},
+		success: function(result){
+		//var myObj = $.parseJSON(result);
+		console.log(result);
+	    	
+		}});
+	// var sph = 0;
+	// if($.fn.dataTable.isDataTable('#AgentPerformance')) 
+	// {
+ //    	table.destroy();
+ //    	table = $('#AgentPerformance').DataTable();
+ //    	table.clear().draw();
+ //    	var tt = new $.fn.dataTable.TableTools( table );
+	//     $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	//     $.ajax({
+	// 	url: "api/crm/agentperformance", 
+	// 	type: 'GET',
+	// 	data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
+	// 	success: function(result){
+	// 	var myObj = $.parseJSON(result);
+	//     	$.each(myObj, function(key,value) {
+	//     		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
+	//     		table.row.add( [
+	// 	            value.name,	
+	// 	            value.totalloginhours,
+	// 	            value.completedsurvey,
+	// 	            value.partial_survey,
+	// 	            value.applicationperhour,
+	// 	            value.rph,
+	// 	            sph.toFixed(2),
+	//         	] ).draw();
+	// 		});
+	// 	}});
+
+	// }
+ //    else 
+ //    {
+	//     table = $('#AgentPerformance').DataTable();
+	//     $.ajax({
+	// 	url: "api/crm/agentperformance", 
+	// 	type: 'GET',
+	// 	data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
+	// 	success: function(result){
+	// 	var myObj = $.parseJSON(result);
+	//     	$.each(myObj, function(key,value) {
+	//     		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
+	//     		table.row.add( [
+	// 	            value.name,	
+	// 	            value.totalloginhours,
+	// 	            value.completedsurvey,
+	// 	            value.partial_survey,
+	// 	            value.applicationperhour,
+	// 	            value.rph,
+	// 	            sph.toFixed(2),
+	//         	] ).draw();
+	// 		});
+	// 	}});
+
+	// 	var tt = new $.fn.dataTable.TableTools( table );
+	//     $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	// }
 	
 });
 
