@@ -208,7 +208,13 @@ class QuestionController extends Controller {
 
                 $question = Question::find($question->id);
                 $question->sortorder = $question->id;
-                $question->save();
+                if($question->save())
+                {
+                    /*Add new column header to 248 SatCRM Telesurvey*/
+                    $query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
+                    $data = DB::connection('sqlsrv')->update($query);
+                }
+
 
                 // Then the child questions
                 for($x = 1; $x <= $numChild; $x++)
