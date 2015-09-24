@@ -259,18 +259,40 @@ class ReportController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
-		$ts1 = strtotime($from);
-		$ts2 = strtotime($to);
+		$query = "SELECT created_at::date AS start_date,
+				created_at::date + 1 AS end_date,
+				COUNT(case when disposition = 'Completed Survey' then id end) AS completedsurvey, 
+				COUNT(case when disposition = 'Partial Survey' then id end) AS partialsurvey, 
+				SUM(gross) AS revenue 
+				FROM forms 
+				WHERE created_at >= '$from'::date AND created_at <= '$to'::date
+				GROUP BY created_at::date ORDER BY start_date;";
+		$data = DB::connection('pgsql')->select($query);		
 
-		$seconds_diff = $ts2 - $ts1;
+		return json_encode($data);
+	}
 
-		for($x = 0; $x < $seconds_diff; $x++)
-		{
-			
-		}
+	public function showCampaignNet()
+	{
+		return view('reports.campaignnetperformance');
+	}
 
+	public function apicampaignnetperformance()
+	{
+		$from = Input::get("from");
+		$to   = Input::get("to");
 
-		return floor($seconds_diff/3600/24);
+		$query = "SELECT created_at::date AS start_date,
+				created_at::date + 1 AS end_date,
+				COUNT(case when disposition = 'Completed Survey' then id end) AS completedsurvey, 
+				COUNT(case when disposition = 'Partial Survey' then id end) AS partialsurvey, 
+				SUM(revenue) AS revenue 
+				FROM qa_forms 
+				WHERE created_at >= '$from'::date AND created_at <= '$to'::date
+				GROUP BY created_at::date ORDER BY start_date;";
+		$data = DB::connection('pgsql')->select($query);		
+
+		return json_encode($data);
 	}
 
 

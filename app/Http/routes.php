@@ -73,10 +73,12 @@ Route::get('reports/charityresponses', 'ReportController@showCharityResponses');
 Route::get('reports/verifierreport', 'ReportController@showVerifierReport');
 Route::get('reports/qasummary', 'ReportController@showQaSummaryReport');
 Route::get('reports/campaigngrossperformance', 'ReportController@showCampaignGross');
+Route::get('reports/campaignnetperformance', 'ReportController@showCampaignNet');
 
 /* Reports Ajax Calls */
 Route::get('reports/api/crm/agentperformance', 'ReportController@apiagentperformance');
 Route::get('reports/api/crm/apicampaigngrossperformance', 'ReportController@apicampaigngrossperformance');
+Route::get('reports/api/crm/apiCampaignNetPerformance', 'ReportController@apicampaignnetperformance');
 Route::get('reports/api/crm/charityresponses', 'ReportController@apicharityresponses');
 Route::get('reports/api/crm/verifierreport', 'ReportController@apiverifierreport');
 Route::get('reports/api/crm/qasummary', 'ReportController@apiqasummary');

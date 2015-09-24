@@ -114,12 +114,25 @@ jQuery('#toVerifierReport').datetimepicker({
 });
 
 jQuery('#fromCGP').datetimepicker({
-  format:'Y-m-d H:i:s',
+  format:'Y-m-d',
+  timepicker:false,
 });
 
 jQuery('#toCGP').datetimepicker({
-  format:'Y-m-d H:i:s',
+  format:'Y-m-d',
+  timepicker:false,
 });
+
+jQuery('#fromCNP').datetimepicker({
+  format:'Y-m-d',
+  timepicker:false,
+});
+
+jQuery('#toCNP').datetimepicker({
+  format:'Y-m-d',
+  timepicker:false,
+});
+
 
 jQuery('#birthdate').datetimepicker({
   format:'Y-m-d',
@@ -338,70 +351,110 @@ $("#btnDateAgentPer").click(function() {
 });
 
 $("#btnCGP").click(function() {
-	$.ajax({
+	if($.fn.dataTable.isDataTable('#CampaignGrossPerformance')) 
+	{
+    	table.destroy();
+    	table = $('#CampaignGrossPerformance').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	    $.ajax({
 		url: "api/crm/apicampaigngrossperformance", 
 		type: 'GET',
 		data: {"from" : $("#fromCGP").val(), "to" :  $("#toCGP").val()},
 		success: function(result){
-		//var myObj = $.parseJSON(result);
-		console.log(result);
-	    	
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
 		}});
-	// var sph = 0;
-	// if($.fn.dataTable.isDataTable('#AgentPerformance')) 
-	// {
- //    	table.destroy();
- //    	table = $('#AgentPerformance').DataTable();
- //    	table.clear().draw();
- //    	var tt = new $.fn.dataTable.TableTools( table );
-	//     $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-	//     $.ajax({
-	// 	url: "api/crm/agentperformance", 
-	// 	type: 'GET',
-	// 	data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
-	// 	success: function(result){
-	// 	var myObj = $.parseJSON(result);
-	//     	$.each(myObj, function(key,value) {
-	//     		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
-	//     		table.row.add( [
-	// 	            value.name,	
-	// 	            value.totalloginhours,
-	// 	            value.completedsurvey,
-	// 	            value.partial_survey,
-	// 	            value.applicationperhour,
-	// 	            value.rph,
-	// 	            sph.toFixed(2),
-	//         	] ).draw();
-	// 		});
-	// 	}});
+	}
+    else 
+    {
+	    table = $('#CampaignGrossPerformance').DataTable();
+	    $.ajax({
+		url: "api/crm/apicampaigngrossperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromCGP").val(), "to" :  $("#toCGP").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
+		}});
 
-	// }
- //    else 
- //    {
-	//     table = $('#AgentPerformance').DataTable();
-	//     $.ajax({
-	// 	url: "api/crm/agentperformance", 
-	// 	type: 'GET',
-	// 	data: {"from" : $("#fromDateAgentPer").val(), "to" :  $("#toDateAgentPer").val()},
-	// 	success: function(result){
-	// 	var myObj = $.parseJSON(result);
-	//     	$.each(myObj, function(key,value) {
-	//     		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
-	//     		table.row.add( [
-	// 	            value.name,	
-	// 	            value.totalloginhours,
-	// 	            value.completedsurvey,
-	// 	            value.partial_survey,
-	// 	            value.applicationperhour,
-	// 	            value.rph,
-	// 	            sph.toFixed(2),
-	//         	] ).draw();
-	// 		});
-	// 	}});
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
+	
+});
 
-	// 	var tt = new $.fn.dataTable.TableTools( table );
-	//     $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-	// }
+$("#btnCNP").click(function() {
+	if($.fn.dataTable.isDataTable('#CampaignNetPerformance')) 
+	{
+    	table.destroy();
+    	table = $('#CampaignNetPerformance').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	    $.ajax({
+		url: "api/crm/apiCampaignNetPerformance", 
+		type: 'GET',
+		data: {"from" : $("#fromCNP").val(), "to" :  $("#toCNP").val()},
+		success: function(result){
+			console.log(result);
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
+		}});
+	}
+    else 
+    {
+	    table = $('#CampaignNetPerformance').DataTable();
+	    $.ajax({
+		url: "api/crm/apiCampaignNetPerformance", 
+		type: 'GET',
+		data: {"from" : $("#fromCNP").val(), "to" :  $("#toCNP").val()},
+		success: function(result){
+			console.log(result);
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
+		}});
+
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
 	
 });
 

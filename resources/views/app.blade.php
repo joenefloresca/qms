@@ -96,6 +96,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
 									<li><a href="{{ url('reports/campaigngrossperformance') }}">Campaign Gross Performance</a></li>
+									<li><a href="{{ url('reports/campaignnetperformance') }}">Campaign Net Performance</a></li>
 									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses</a></li>
 									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
 									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
