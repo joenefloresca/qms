@@ -85,7 +85,7 @@ class ReportController extends Controller {
 				     SELECT b.user_id as agent_id
 				          , SUM(b.loginhours) as TotalLoginHours
 				     FROM loginhours b 
-				     WHERE  created_at >= '$from' AND created_at <= '$to'
+				     WHERE  date >= '$from'::date AND date <= '$to'::date
 				     GROUP BY b.user_id
 				 ) as b 
 				     ON a.agent_id = b.agent_id
