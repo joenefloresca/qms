@@ -11,13 +11,13 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">From Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="fromCGP" id="fromCGP" required>
+								<input type="text" class="form-control" name="fromDateAll" id="fromDateAll" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">To Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="toCGP" id="toCGP" required>
+								<input type="text" class="form-control" name="toDateAll" id="toDateAll" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -59,4 +59,60 @@
 		</div>
 	</div>
 </div>
+@endsection
+@section('campaigngrossperformance')
+<script type="text/javascript">
+$("#btnCGP").click(function() {
+	if($.fn.dataTable.isDataTable('#CampaignGrossPerformance')) 
+	{
+    	table.destroy();
+    	table = $('#CampaignGrossPerformance').DataTable();
+    	table.clear().draw();
+    	var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	    $.ajax({
+		url: "api/crm/apicampaigngrossperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromDateAll").val(), "to" :  $("#toDateAll").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
+		}});
+	}
+    else 
+    {
+	    table = $('#CampaignGrossPerformance').DataTable();
+	    $.ajax({
+		url: "api/crm/apicampaigngrossperformance", 
+		type: 'GET',
+		data: {"from" : $("#fromDateAll").val(), "to" :  $("#toDateAll").val()},
+		success: function(result){
+		var myObj = $.parseJSON(result);
+	    	var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) {
+	    		table.row.add( [
+		            value.start_date,	
+		            value.end_date,
+		            value.completedsurvey,
+		            value.partialsurvey,
+		            value.revenue,
+	        	] ).draw();
+			});
+		}});
+
+		var tt = new $.fn.dataTable.TableTools( table );
+	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
+	
+});
+</script>
 @endsection

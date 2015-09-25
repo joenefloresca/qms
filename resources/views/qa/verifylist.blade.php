@@ -39,3 +39,27 @@
 	</div>
 </div>
 @endsection
+@section('verifylist')
+<script type="text/javascript">
+$.ajax({
+    url: "api/crm/all", 
+    type: 'GET',
+    success: function(result){
+    var myObj = $.parseJSON(result);
+        $.each(myObj, function(key,value) {
+            var t = $('#VerifyList').DataTable();
+            t.row.add( [
+                value.crmid,    
+                value.name,
+                value.title+" "+value.firstname+" "+value.surname,
+                value.disposition,
+                value.gross,
+                value.phone_num,
+                value.created_at,
+                "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+            ] ).draw();
+            
+        });
+    }});
+</script>
+@endsection

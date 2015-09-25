@@ -40,3 +40,30 @@
 	</div>
 </div>
 @endsection
+@section('reverifylist')
+<script type="text/javascript">
+$.ajax({
+    url: "api/crm/reverify", 
+    type: 'GET',
+    success: function(result){
+    var myObj = $.parseJSON(result);
+    console.log(myObj);
+        $.each(myObj, function(key,value) {
+            var t = $('#ReVerifyList').DataTable();
+            t.row.add( [
+                value.verfiedcrmid, 
+                value.agentname,
+                value.title+" "+value.firstname+" "+value.surname,
+                value.disposition,
+                value.gross,
+                value.verified_status,
+                value.created_at,
+                value.verified_by,
+                "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/reverify/';?>"+value.verfiedcrmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+            ] ).draw();
+            
+        });
+    }});
+</script>
+@endsection
+

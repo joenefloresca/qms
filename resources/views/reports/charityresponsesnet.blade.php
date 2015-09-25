@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-success">
-				<div class="panel-heading">Charity Responses Gross</div>
+				<div class="panel-heading">Charity Responses Net</div>
 				<div class="panel-body">
 					<div class="col-md-12 form-horizontal" style="padding-bottom: 5px">
 						<div class="form-group">
@@ -22,7 +22,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="button" class="btn btn-primary" id="btnDateCharityRes">
+								<button type="button" class="btn btn-primary" id="btnDateCharityResNet">
 									Submit
 								</button>
 							</div>
@@ -39,9 +39,9 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-success"> 
-				<div class="panel-heading">Charity Responses Gross</div>
+				<div class="panel-heading">Charity Responses Net</div>
 				<div class="panel-body">
-					<table id="CharityResponses" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<table id="CharityResponsesNet" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <!-- <th>ID</th> -->
@@ -77,23 +77,23 @@
 	</div>
 </div>
 @endsection
-@section('charityresponses')
+@section('charityresponsesnet')
 <script type="text/javascript">
-$("#btnDateCharityRes").click(function() {
+$("#btnDateCharityResNet").click(function() {
 	var totalyes = 0;
 	var totalno = 0;
 	var totalpossibly = 0;
 	var totalrev = 0;
 
-	if($.fn.dataTable.isDataTable('#CharityResponses')) 
+	if($.fn.dataTable.isDataTable('#CharityResponsesNet')) 
 	{	
     	table.destroy();
-    	table = $('#CharityResponses').DataTable();
+    	table = $('#CharityResponsesNet').DataTable();
     	table.clear().draw();
     	var tt = new $.fn.dataTable.TableTools( table );
 	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
 	    $.ajax({
-		url: "api/crm/charityresponses", 
+		url: "api/crm/charityresponsesnet", 
 		type: 'GET',
 		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val()},
 		success: function(result){
@@ -123,9 +123,9 @@ $("#btnDateCharityRes").click(function() {
 	}
     else 
     {
-	    table = $('#CharityResponses').DataTable();
+	    table = $('#CharityResponsesNet').DataTable();
 	    $.ajax({
-		url: "api/crm/charityresponses", 
+		url: "api/crm/charityresponsesnet", 
 		type: 'GET',
 		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val()},
 		success: function(result){

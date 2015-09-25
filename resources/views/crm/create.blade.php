@@ -526,89 +526,748 @@
 
 @section('CrmCreate')
 <script type="text/javascript">
-	checkAgentLoginHoursLive();
-	function checkAgentLoginHoursLive(){
+var data = <?php if(isset($questions)) {echo $questions; } else {echo '"";';} ?> 
+var records = [];
+$(document).ready(function() {
+/* Load the active questions to be used to check details and logic */
 		$.ajax({
-			url: "api/agent/loginhourslive",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-			},
-			complete: function() {
-	                setTimeout(checkAgentLoginHoursLive,300000); //After completion of request, time to redo it after a second
-	        }
+		url: "api/questions/getallactive", 
+		type: 'GET',
+		success: function(result){
+			
+			var myObj = $.parseJSON(result);
+			//console.log(myObj);
+			$.each(myObj, function(key,value) {
+				records.push({
+	                agebracket: value.agebracket,
+	                agerestriction: value.agerestriction,
+	                child_count: value.child_count,
+	                child_enable_response: value.child_enable_response,
+	                child_sort_num: value.child_sort_num,
+	                columnheader: value.columnheader,
+	                costperlead: value.costperlead,
+	                created_at: value.created_at,
+	                deliveryassignment: value.deliveryassignment,
+	                id: value.id,
+	                is_child: value.is_child,
+	                isenabled: value.isenabled,
+	                ownhomeoptions: value.ownhomeoptions,
+	                ownhomerestriction: value.ownhomerestriction,
+	                parent_colheader: value.parent_colheader,
+	                po_num: value.po_num,
+	                postcodeexclusion: value.postcodeexclusion,
+	                postcodeinclusion: value.postcodeinclusion,
+	                postcoderestriction: value.postcoderestriction,
+	                question: value.question,
+	                sortorder: value.sortorder,
+	                telephoneoptions: value.telephoneoptions,
+	                telephonerestriction: value.telephonerestriction,
+	                updated_at: value.updated_at,
+	                parent_enable_response: value.parent_enable_response,
+	                child_lead_respponse: value.child_lead_respponse,
+				});
+			});
+			
+		}});
+});
 
-		});
+function get_response(id)
+{
+	var lastIndex = records.length - 1;
+	// console.log(lastIndex);
+	// console.log(records);
+	var currentheader = $(id).attr('id');
+	var current_gross = parseFloat($("#CRMGross").val());
+	var cost 	 = $("#hidden_val_"+currentheader).attr('value');
+	var response = $("#"+currentheader).val();
+	var counter  = 1;
+	var parent_response_enable = records[0].parent_enable_response.split(',');
+	//console.log(parent_response_enable);
+
+    var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
+
+
+    if (result.length == 1)
+    {
+    	//console.log("Child count is "+result[0].child_count)
+    	if(result[0].child_count > 0)
+    	{
+    		 //console.log("Has child questions.");
+    		 var childresponse = $.grep(records, function(e){ return e.columnheader == currentheader+"_1"; });
+    		 var child_response_enable = childresponse[0].child_enable_response.split(',');
+    		
+    		 if(childresponse.length == 1)
+    		 {
+	 			if($.inArray($("#"+currentheader).val(), child_response_enable) >= 0)
+				{
+					
+					$('#'+currentheader+"_1").prop("disabled", false);
+
+					if($.inArray(response, parent_response_enable) >= 0)
+					{
+						current_gross = current_gross + parseFloat(cost);
+						$("#CRMGross").val(current_gross.toFixed(2));
+						$("#"+currentheader+"block").css("display","none");
+					}
+					else
+					{
+						$("#"+currentheader+"block").css("display","none");
+					}
+				}
+				else
+				{
+					$('#'+currentheader+"_1").prop("disabled", true);
+
+					if($.inArray(response, parent_response_enable) >= 0)
+					{
+						current_gross = current_gross + parseFloat(cost);
+						$("#CRMGross").val(current_gross.toFixed(2));
+						$("#"+currentheader+"block").css("display","none");
+					}
+					else
+					{
+						$("#"+currentheader+"block").css("display","none");
+					}
+				}
+    		 }
+    	}
+    	else
+    	{
+    		//console.log("No child questions.");
+    		var childsort = $.grep(records, function(e){ return e.columnheader == currentheader; });
+    		
+    		//console.log(childsort[0].is_child);
+    		if(childsort[0].is_child == 0) // Check if the current question is a parent question with no child
+    		{
+    			var parent_lead_response = childsort[0].parent_enable_response.split(",");
+   
+    			if($.inArray(response, parent_lead_response) >= 0)
+				{
+					current_gross = current_gross + parseFloat(cost);
+					$("#CRMGross").val(current_gross.toFixed(2));
+					$("#"+currentheader+"block").css("display","none");
+				}
+				else
+				{
+					$("#"+currentheader+"block").css("display","none");
+				}
+
+    		}
+    		else
+    		{
+    			if(childsort.length == 1)
+	    		{
+	    			var nextChildSort = parseInt(childsort[0].child_sort_num)+1;
+	    			// console.log("##");
+	    			// console.log(nextChildSort);
+	    			var parent = childsort[0].parent_colheader;
+	    			var nextcolheader2 = parent+"_"+nextChildSort;
+	    			var nextcolheader = parent+"_"+childsort[0].child_sort_num;
+
+	    			// console.log(parent);
+	    			// console.log(nextcolheader);
+	    			// console.log(records);
+	    			// console.log(childsort[0].child_sort_num);
+	    			// console.log("^");
+
+	    			var checkchild = $.grep(records, function(e){ return e.parent_colheader == parent && e.columnheader == nextcolheader; });
+	    			var child_lead_respponse = checkchild[0].child_lead_respponse.split(',');
+	    			//console.log(checkchild);
+	    			//console.log(child_lead_respponse);
+
+	    		
+	    			
+	    			if(checkchild.length == 1)
+	    		    {
+			    		
+			    		if($.inArray($("#"+currentheader).val(), child_lead_respponse) >= 0)
+						{
+							$('#'+nextcolheader2).prop("disabled", false);
+
+							if($.inArray(response, child_lead_respponse) >= 0)
+							{
+								current_gross = current_gross + parseFloat(cost);
+								$("#CRMGross").val(current_gross.toFixed(2));
+								$("#"+currentheader+"block").css("display","none");
+							}
+							else
+							{
+								$("#"+currentheader+"block").css("display","none");
+							}
+						}
+						else
+						{
+							$('#'+nextcolheader2).prop("disabled", true);
+
+							if($.inArray(response, parent_response_enable) >= 0)
+							{
+								current_gross = current_gross + parseFloat(cost);
+								$("#CRMGross").val(current_gross.toFixed(2));
+								$("#"+currentheader+"block").css("display","none");
+							}
+							else
+							{
+								$("#"+currentheader+"block").css("display","none");
+							}
+						}
+	    		    }
+	    		    else
+	    		    {
+			    		if($.inArray(response, child_lead_respponse) >= 0)
+						{
+							current_gross = current_gross + parseFloat(cost);
+							$("#CRMGross").val(current_gross.toFixed(2));
+							$("#"+currentheader+"block").css("display","none");
+						}
+						else
+						{
+							$("#"+currentheader+"block").css("display","none");
+						}
+	    		    }
+	    		}
+    		}
+    	
+    		
+    	}
+    }
+
+    //console.log(lastItem);
+    // if($("#"+lastItem).val() != "")
+    // {
+    // 	//$("#DispositionDiv").css("display","block");
+    // 	$('#CrmDisposition').append($('<option>', {value: 'Completed Survey', text:'Completed Survey'}));
+    // 	console.log("last last last");
+    // }
+}
+
+
+$("#CrmShallWeStart").change(function() {
+	var choosen = $("#CrmShallWeStart").val();
+	if(choosen == "Yes")
+	{
+		$('#CRMGross').val(0.20);
 	}
-
-	checkAgentLoginHours();
-	function checkAgentLoginHours(){
-		$.ajax({
-			url: "api/agent/loginhours",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentLoginHours").val(result);
-			},
-			complete: function() {
-	                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
+	else
+	{
+		var current_gross = $('#CRMGross').val();
+		var newgross = current_gross - 0.20;
+		$('#CRMGross').val(newgross);
 	}
+});
 
-	getCompletedSurvey();
-	function getCompletedSurvey(){
-		$.ajax({
-			url: "api/agent/completedsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentCompletedSurvey").val(result);
-				var gross = parseInt(result) * 1.75;
-				$("#agentCompletedSurveyGross").val(gross);
-
-			},
-			complete: function() {
-	                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
+$("#CrmIsUKPermanentResident").change(function() {
+	var choosen = $("#CrmIsUKPermanentResident").val();
+	if(choosen == "Yes")
+	{
+		$('#continueModal').modal('toggle');
 	}
-
-	getPartitalSurvey();
-	function getPartitalSurvey(){
-		$.ajax({
-			url: "api/agent/partialsurvey",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentPartialSurvey").val(result);
-				var gross = parseInt(result) * 0.40;
-				$("#agentPartialSurveyGross").val(gross);
-
-			},
-			complete: function() {
-	                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
+	else
+	{
+		$('#continueModal').modal('hide');
 	}
+});
 
-	checkAgentDayGross();
-	function checkAgentDayGross(){
-		$.ajax({
-			url: "api/agent/daygross",  
-			type: 'GET',
-			data: {'agent_id':agent_id},
-			success: function(result){
-				$("#agentTodayGross").val(result);
-			},
-			complete: function() {
-	                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
-	        }
-
-		});
+$("#CrmDisposition").change(function() {
+	var choosen = $("#CrmDisposition").val();
+	if(choosen != "")
+	{
+		$("#CrmSubmitDiv").css("display","block");
 	}
+	else
+	{
+		$("#CrmSubmitDiv").css("display","none");
+	}
+});
+
+var lastItem = "";
+var enabled_questions = [];
+var check_questions = [];
+$("#trigger").click(function() {
+var isPermanentResident = $('#CrmIsUKPermanentResident').val();	
+var phoneType = $('#CRMTelephoneOptions').val();	
+var ageBracket = $('#CrmAge').val();	
+var workStatus = $('#CRMWorkStatus').val();	
+var homeStatus = $('#CRMOwnHomeOptions').val();	
+var civilStatus = $('#CRMMaritalStatus').val();
+
+if(phoneType == "" || ageBracket == "" || workStatus == "" || homeStatus == "" || civilStatus == "")
+{
+	alert("Please select answer on the required fields.");
+}
+else
+{
+	$("#CRMTable").css("display","block");		
+var age = $("#CrmAge").val();
+var CRMPostcode = $("#CRMPostcode").val();
+var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
+var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
+
+	$.each(data, function(key,value) {
+		// Make an array variable where you will store the Restriction Name and Loop thru it
+		var getRestrictions = [];
+		var count = 0;
+		var flag = 0; 
+
+		if(value.is_child == 0) // Check if parent question
+		{
+			//console.log(value.columnheader+" is a parent question.");
+			//console.log(value.agerestriction+" is agerestriction");
+
+			if(value.postcoderestriction == "PostCodeInclusion" || value.postcoderestriction == "PostCodeExclusion" || value.postcoderestriction == "Both")
+			{
+				if(value.postcoderestriction == "Both")
+				{
+					count += 2;
+					getRestrictions.push("postcodeinclusion");
+					getRestrictions.push("postcodeexclusion");
+				}
+				if(value.postcoderestriction == "PostCodeInclusion")
+				{
+					count++;
+					getRestrictions.push("postcodeinclusion");
+				}
+				if(value.postcoderestriction == "PostCodeExclusion")
+				{
+					count++;
+					getRestrictions.push("postcodeexclusion");
+				}
+
+			}
+			if(value.agerestriction == "Yes")
+			{
+				count++;
+				getRestrictions.push("agebracket");
+			}
+			if(value.ownhomerestriction == "Yes")
+			{
+				count++;
+				getRestrictions.push("ownhomeoptions");
+			}
+			if(value.telephonerestriction == "Yes")
+			{
+				count++;
+				getRestrictions.push("telephoneoptions");
+			}
+             
+           
+
+			if(getRestrictions.length == 0) // If has no restriction then enable the question
+			{
+				$('#'+value.columnheader).prop("disabled", false);
+			}
+			else
+			{
+				//console.log(getRestrictions);
+				// Apply restriction rule
+				$.each(getRestrictions, function(key2, value2)
+				{
+					//console.log("Loop on "+ value2);
+					if(value2 == "agebracket")
+					{
+						var QuesAge = value.agebracket.split('-');
+						var minQuesAge = QuesAge[0];
+						var maxQuesAge = QuesAge[1];
+
+						var CustomerAge = age.split('-');
+						var minCusAge = CustomerAge[0];
+						var maxCusAge = CustomerAge[1];
+
+						
+						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
+						{
+							flag++;
+							//console.log("age is satisfied, flag value is "+flag+ ", while count is "+count);
+							if(flag == count)
+							{
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+						}
+
+					}
+					if(value2 == "telephoneoptions")
+					{
+						if(value.telephoneoptions == CRMTelephoneOptions)
+						{
+							flag++;
+							if(flag == count)
+							{
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+						}
+					}
+					if(value2 == "ownhomeoptions")
+					{	
+						var ownHomeRestrictions = value.ownhomeoptions.split(',');
+						var find = $.inArray(CRMOwnHomeOptions, ownHomeRestrictions);
+
+						if(find >= 0)
+						{
+							
+							flag++;
+							//console.log("own home, flag value is "+flag+ ", while count is "+count);
+							if(flag == count)
+							{
+								
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+						}
+					}
+					if(value2 == "postcodeinclusion")
+					{
+
+						var postcodeinclusion = value.postcodeinclusion.split(',');
+						var postcodes = CRMPostcode.split('/');
+						var numMatches = 0;
+
+						for (var i = 0; i < postcodes.length; i++) 
+						{
+							for(var x = 0; x < postcodeinclusion.length; x++)
+							{
+								var checkspace = (postcodeinclusion[x].indexOf(' ') >= 0);
+								// console.log(checkspace);
+								if(checkspace == true)
+								{
+									// console.log("Has space satisfied");
+									if ($.inArray(postcodes[i], postcodeinclusion) == -1)
+									{
+										//console.log("Postcode " + postcodes[i] + " is not allowed");
+									}
+									else
+									{
+										numMatches++;
+									}
+								}
+								else
+								{
+									var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
+
+									if(checkspacePostcodeIn == true)
+									{
+										var newpostcodein = postcodes[i].split(' ');
+										if(newpostcodein[0] == postcodeinclusion[x])
+										{
+										numMatches++;
+										}
+									}
+								}
+							}
+						}
+
+					    if(numMatches > 0)
+					    {
+					    	$('#'+value.columnheader).prop("disabled", false);
+					    }
+					    else
+					    {	
+							$('#'+value.columnheader).prop("disabled", true);
+
+					    }
+					}
+					if(value2 == "postcodeexclusion")
+					{
+						//console.log("it goes into exclusion");
+						var postcodeexclusion = value.postcodeexclusion.split(',');
+						var postcodes = CRMPostcode.split('/');
+						var numMatches2 = 0;
+
+						for (var i = 0; i < postcodes.length; i++) 
+						{
+							for(var x = 0; x < postcodeexclusion.length; x++)
+							{
+								var checkspace = (postcodeexclusion[x].indexOf(' ') >= 0);
+								
+								if(checkspace == true)
+								{
+									if ($.inArray(postcodes[i], postcodeexclusion) == -1)
+									{
+										//console.log("Postcode " + postcodes[i] + " is not allowed");
+									}
+									else
+									{
+										numMatches2++;
+									}
+								}
+								else
+								{
+									var checkspacePostcodeIn = (postcodes[i].indexOf(' ') >= 0);
+									if(checkspacePostcodeIn == true)
+									{
+										var newpostcodein = postcodes[i].split(' ');
+										if(newpostcodein[0] == postcodeexclusion[x])
+										{
+											numMatches2++;
+										}
+									}
+								}
+							}
+						}
+
+						if(numMatches2 > 0)
+					    {
+					    	$('#'+value.columnheader).prop("disabled", true);
+					    }
+					    else
+					    {
+					    	flag++;
+							if(flag == count)
+							{
+								
+								$('#'+value.columnheader).prop("disabled", false);
+							}
+					    }
+					}
+
+				});
+
+			}
+		}
+		
+	});
+
+	/* Remove restricted questions on the table */
+	$.each(data, function(key,value) {
+		var colheader = value.columnheader;
+		var child_count = value.child_count;
+		var is_child = value.is_child;
+		var isDisabled = $("#"+colheader).is(':disabled');
+		if (isDisabled && child_count > 0) 
+		{
+			if(child_count > 0 && is_child == 0)
+			{
+				// console.log("Has child questions");
+				// console.log("Parent question.");
+				// console.log(child_count);
+				$('table#CRMTable tr#'+colheader+"block").remove();
+				//console.log(colheader+" is removed. Tier 1a.");
+				for(var g = 1; g <= child_count; g++)
+				{
+					$('table#CRMTable tr#'+colheader+"_"+g+"block").remove();
+					//console.log(colheader+"_"+g+" is in the child loop.");
+					arr = data.filter(function(e) { return e.columnheader !== colheader+"_"+g });
+					check_questions.push(colheader+"_"+g);
+					//console.log(arr);
+				}
+			}
+			else
+			{
+				$('table#CRMTable tr#'+colheader+"block").remove();
+				//console.log(colheader+" is removed. Tier 2.");
+			}
+	    }
+	    else if(isDisabled && is_child == 0)
+	    {
+	    	$('table#CRMTable tr#'+colheader+"block").remove();
+	    	//console.log(colheader+" is removed. Tier 3.");
+	    }
+	    else
+	    {
+	    	var checkRemove = $.grep(check_questions, function(e){ return e == colheader; });
+	    	if(checkRemove != colheader)
+	    	{
+	    		enabled_questions.push(colheader);
+	    	}
+	    	//lastItem = colheader;
+	    } 
+	});
+
+	//console.log("Last item is "+lastItem)
+	//console.log(enabled_questions)
+	var len = enabled_questions.length;
+	$.each(enabled_questions, function(key,value) {
+		if(key > 0)
+		{
+			//console.log(value);
+			$('#'+value).prop("disabled", true);
+		}
+
+		if (key == len - 1) {
+              lastItem = value;
+              //console.log("Last item is "+lastItem);
+          }
+		
+	});
+}	
+
+
+});
+
+function enable_next(id)
+{
+	var currentheader = $(id).attr('id');
+	var response = $("#"+currentheader).val();
+	var current_index = $.inArray( currentheader, enabled_questions );
+	var next_index = parseInt(current_index) + 1;
+	// console.log("Enabling "+enabled_questions[next_index]);
+	// console.log(enabled_questions)
+	$('#'+enabled_questions[next_index]).prop("disabled", false);
+}
+
+$("#searchCustomer").click(function() { 
+	var customer_num = $("#customer_number").val();
+
+	$.ajax({
+	url: "api/customer/number", 
+	type: 'GET',
+	data: {'number':customer_num},
+	success: function(result){
+		var myObj = $.parseJSON(result);
+		if(myObj != null)
+		{
+			$("#CRMPostcode").val(myObj.postcode);
+			$("#CRMPostcodeNew").val(myObj.postcode);
+			$("#CrmAddr1").val(myObj.addr1);
+			$("#CrmAddr1New").val(myObj.addr1);
+			$("#CrmAddr2").val(myObj.addr2);
+			$("#CrmAddr2New").val(myObj.addr2);
+			$("#CrmAddr3").val(myObj.addr3);
+			$("#CrmAddr3New").val(myObj.addr3);
+			$("#CrmAddr4").val(myObj.addr4);
+			$("#CrmAddr4New").val(myObj.addr4);
+			$("#CrmTown").val(myObj.town);
+			$("#CrmTownNew").val(myObj.town);
+			$("#CrmCountry").val(myObj.country);
+			$("#CrmCountryNew").val(myObj.country);
+			$("#CrmFirstName").val(myObj.firstname);
+			$("#CrmFirstNameNew").val(myObj.firstname);
+			$("#CrmSurname").val(myObj.lastname);
+			$("#CrmSurnameNew").val(myObj.lastname);
+			$("#Title").val(myObj.title);
+			$("#Gender").val(myObj.gender);
+			$("#CRMTelephoneOptions").val(myObj.phone_type);
+			$("#CRMTelephoneNo").val(myObj.phone_num);
+			$("#CrmAge").val(myObj.agebracket);
+			$("#CRMWorkStatus").val(myObj.work_status);
+			$("#CRMOwnHomeOptions").val(myObj.home_status);
+			$("#CRMMaritalStatus").val(myObj.marital_status);
+			$("#customer_id").val(myObj.id);
+
+			alert("Record found for "+myObj.title+" "+myObj.firstname+" "+myObj.lastname);
+			//console.log("Record found for "+myObj.title+" "+myObj.firstname+" "+myObj.lastname);
+		}
+		else
+		{
+			alert("No result found.")
+		}
+		
+	}});
+	
+});
+
+$("#CRMPostcodeBtn").click(function() { 
+	$("#CRMPostcode").val($("#CRMPostcodeNew").val());
+});
+$("#CrmAddr1Btn").click(function() { 
+	$("#CrmAddr1").val($("#CrmAddr1New").val());
+});
+$("#CrmAddr2Btn").click(function() { 
+	$("#CrmAddr2").val($("#CrmAddr2New").val());
+});
+$("#CrmAddr3Btn").click(function() { 
+	$("#CrmAddr3").val($("#CrmAddr3New").val());
+});
+$("#CrmAddr4Btn").click(function() { 
+	$("#CrmAddr4").val($("#CrmAddr4New").val());
+});
+$("#CrmTownBtn").click(function() { 
+	$("#CrmTown").val($("#CrmTownNew").val());
+});
+$("#CrmCountryBtn").click(function() { 
+	$("#CrmCountry").val($("#CrmCountryNew").val());
+});
+$("#CrmFirstNameBtn").click(function() { 
+	$("#CrmFirstName").val($("#CrmFirstNameNew").val());
+});
+$("#CrmSurnameBtn").click(function() { 
+	$("#CrmSurname").val($("#CrmSurnameNew").val());
+});	
+
+
+
+checkAgentLoginHoursLive();
+function checkAgentLoginHoursLive(){
+	$.ajax({
+		url: "api/agent/loginhourslive",  
+		type: 'GET',
+		data: {'agent_id':agent_id},
+		success: function(result){
+		},
+		complete: function() {
+                setTimeout(checkAgentLoginHoursLive,300000); //After completion of request, time to redo it after a second
+        }
+
+	});
+}
+
+checkAgentLoginHours();
+function checkAgentLoginHours(){
+	$.ajax({
+		url: "api/agent/loginhours",  
+		type: 'GET',
+		data: {'agent_id':agent_id},
+		success: function(result){
+			$("#agentLoginHours").val(result);
+		},
+		complete: function() {
+                setTimeout(checkAgentLoginHours,1000); //After completion of request, time to redo it after a second
+        }
+
+	});
+}
+
+getCompletedSurvey();
+function getCompletedSurvey(){
+	$.ajax({
+		url: "api/agent/completedsurvey",  
+		type: 'GET',
+		data: {'agent_id':agent_id},
+		success: function(result){
+			$("#agentCompletedSurvey").val(result);
+			var gross = parseInt(result) * 1.75;
+			$("#agentCompletedSurveyGross").val(gross);
+
+		},
+		complete: function() {
+                setTimeout(getCompletedSurvey,1000); //After completion of request, time to redo it after a second
+        }
+
+	});
+}
+
+getPartitalSurvey();
+function getPartitalSurvey(){
+	$.ajax({
+		url: "api/agent/partialsurvey",  
+		type: 'GET',
+		data: {'agent_id':agent_id},
+		success: function(result){
+			$("#agentPartialSurvey").val(result);
+			var gross = parseInt(result) * 0.40;
+			$("#agentPartialSurveyGross").val(gross);
+
+		},
+		complete: function() {
+                setTimeout(getPartitalSurvey,1000); //After completion of request, time to redo it after a second
+        }
+
+	});
+}
+
+checkAgentDayGross();
+function checkAgentDayGross(){
+	$.ajax({
+		url: "api/agent/daygross",  
+		type: 'GET',
+		data: {'agent_id':agent_id},
+		success: function(result){
+			$("#agentTodayGross").val(result);
+		},
+		complete: function() {
+                setTimeout(checkAgentDayGross,1000); //After completion of request, time to redo it after a second
+        }
+
+	});
+}
+
+
 </script>
 @endsection

@@ -193,6 +193,7 @@ class QaController extends Controller {
                 $telesurveymaster->Gender = $gender;
                 $telesurveymaster->LivingStatus = $home_status;
                 $telesurveymaster->WorkStatus = $work_status;
+                $telesurveymaster->Status = $verified_status;
                 $telesurveymaster->save();
                 /* END For 248 Insertion */
 
@@ -384,6 +385,7 @@ class QaController extends Controller {
                     'WorkStatus' => $work_status,
                     'Revenue' => $rev,
                     'Gross_Revenue' => $gross,
+                    'Status' => $verified_status,
                 ]);
                 /* END For 248 update */
 

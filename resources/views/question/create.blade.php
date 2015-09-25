@@ -243,3 +243,138 @@
 	</div>
 </div>
 @endsection
+@section('questioncreate')
+<script type="text/javascript">
+$("#btnGenerate").click(function() {
+     var num = parseInt($("#numGenerate").val());
+     var html = '';
+     var columnheader = $("#ColumnHeader").val();
+
+     for(var i = 1; i <= num ; i++)
+     {
+     	html = '<tr><td>'+columnheader+'_'+i+'</td><td><textarea name="'+columnheader+'_'+i+'" id="'+columnheader+'_'+i+'"> Content here.. </textarea></td><td><input type="text" class="form-control" placeholder="Enter Cost" name="'+columnheader+'_'+i+'_cost'+'"></td><td><div><input type="text" class="form-control" name="'+columnheader+'_'+i+'_response'+'" placeholder="Response Activation" ><input type="text" class="form-control" name="'+columnheader+'_'+i+'_response_activate'+'" placeholder="Lead Response"></td></tr>';
+     	$('#scripts').append(html);
+     }
+
+     for(var x = 1; x <= num ; x++)
+     {
+     	$('#'+columnheader+'_'+x).summernote();
+     }
+     
+    $('#NumberOfScripts').val(num);
+});
+
+$("#PostCodeRestriction").change(function() {
+
+	var choosen = $("#PostCodeRestriction").val();
+
+	if(choosen == "PostCodeInclusion")
+	{
+		$("#DivPostCodeInclusion").css("display","block");
+		$("#DivPostCodeExclusion").css("display","none");
+	}
+	else if(choosen == "PostCodeExclusion")
+	{
+		$("#DivPostCodeExclusion").css("display","block");
+		$("#DivPostCodeInclusion").css("display","none");
+	}
+	else if(choosen == "Both")
+	{
+		$("#DivPostCodeInclusion").css("display","block");
+		$("#DivPostCodeExclusion").css("display","block");
+	}
+	else
+	{
+		$("#DivPostCodeInclusion").css("display","none");
+		$("#DivPostCodeExclusion").css("display","none");
+	}
+	  	
+});
+
+$("#AgeRestriction").change(function() {
+
+	var choosen = $("#AgeRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivAgeBracket").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivAgeBracket").css("display","none");
+	}
+	else
+	{
+		$("#DivAgeBracket").css("display","none");
+	}
+	  	
+});
+
+$("#OwnHomeRestriction").change(function() {
+
+	var choosen = $("#OwnHomeRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivOwnHomeOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivOwnHomeOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivOwnHomeOptions").css("display","none");
+	}
+	  	
+});
+
+$("#TelephoneRestriction").change(function() {
+
+	var choosen = $("#TelephoneRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivTelephoneOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	  	
+});
+
+$("#OwnHome").click(function() {
+	var value = $("#OwnHome").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#Renting").click(function() {
+	var value = $("#Renting").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#LivWithFamFrnd").click(function() {
+	var value = $("#LivWithFamFrnd").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+
+$("#NotAns").click(function() {
+	var value = $("#NotAns").val();
+	$('#OwnHomeOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+	});
+});
+</script>
+@endsection
+

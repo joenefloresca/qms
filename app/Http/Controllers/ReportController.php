@@ -45,6 +45,19 @@ class ReportController extends Controller {
 		
 	}
 
+	public function showCharityResponsesNet()
+	{
+		if(Auth::user()->isAdmin == 1)
+		{
+			return view('reports.charityresponsesnet');
+		}
+		else
+		{
+			//return Response::view('errors.404', array(), 404);
+		}
+		
+	}
+
 	public function apiagentperformance()
 	{
 		$from = Input::get("from");
@@ -110,7 +123,27 @@ class ReportController extends Controller {
 				   WHERE  created_at >= '$from' AND created_at <= '$to'
 				   GROUP  BY 1
 				   ) r
-				JOIN questions q ON q.id = r.question_id;";
+				JOIN questions q ON q.id = r.question_id ORDER BY q.columnheader ASC;";
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);		
+	}
+
+	public function apicharityresponsesnet()
+	{
+		$from = Input::get("from");
+		$to   = Input::get("to");
+
+		$query = "SELECT question_id, q.columnheader, ct_yes, ct_no, ct_maybe, q.costperlead, q.costperlead * (r.ct_yes + r.ct_maybe) AS revenue
+				FROM  (
+				   SELECT question_id
+				        , count(response = 'Yes' OR NULL) AS ct_yes
+				        , count(response = 'No' OR NULL) AS ct_no
+				        , count(response = 'Possbily' OR NULL) AS ct_maybe
+				   FROM   qa_responses
+				   WHERE  created_at >= '$from' AND created_at <= '$to'
+				   GROUP  BY 1
+				   ) r
+				JOIN questions q ON q.id = r.question_id ORDER BY q.columnheader ASC;";
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
 	}
@@ -263,7 +296,7 @@ class ReportController extends Controller {
 				created_at::date + 1 AS end_date,
 				COUNT(case when disposition = 'Completed Survey' then id end) AS completedsurvey, 
 				COUNT(case when disposition = 'Partial Survey' then id end) AS partialsurvey, 
-				SUM(gross) AS revenue 
+				(COUNT(case when disposition = 'Partial Survey' then id end) * 0.40 ) + (COUNT(case when disposition = 'Completed Survey' then id end) * 1.75) AS revenue  
 				FROM forms 
 				WHERE created_at >= '$from'::date AND created_at <= '$to'::date
 				GROUP BY created_at::date ORDER BY start_date;";
@@ -286,7 +319,7 @@ class ReportController extends Controller {
 				created_at::date + 1 AS end_date,
 				COUNT(case when disposition = 'Completed Survey' then id end) AS completedsurvey, 
 				COUNT(case when disposition = 'Partial Survey' then id end) AS partialsurvey, 
-				SUM(revenue) AS revenue 
+				(COUNT(case when disposition = 'Partial Survey' then id end) * 0.40 ) + (COUNT(case when disposition = 'Completed Survey' then id end) * 1.75) AS revenue 
 				FROM qa_forms 
 				WHERE created_at >= '$from'::date AND created_at <= '$to'::date
 				GROUP BY created_at::date ORDER BY start_date;";

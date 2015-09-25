@@ -397,3 +397,80 @@
 	</div>
 </div>
 @endsection
+@section('verifyform')
+<script type="text/javascript">
+$(document).ready(function(){
+    var previous;
+     $(".myselectbox").on("focus click",function () {
+        previous = this.value; // Old vaue 
+
+    }).change(function(e) {
+
+    	var before_gross = $('#new_gross').val(); 
+    	var value =  this.value; // New Value
+    	var colheader = e.target.id;
+    	var new_prev = previous;
+      	
+
+		$.ajax({
+		url: "qa/api/crm/getquestion", 
+		type: 'GET',
+		data: {'colheader':colheader},
+		success: function(result){
+			var costperlead = result;
+			if(new_prev == "" && value != "")
+			{
+				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			else if(new_prev =! "" && value == "")
+			{	
+				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			
+		}});
+    });
+
+});
+
+$("#verified_status").change(function() {
+	if($("#verified_status").val() == "Passed-With Changes")
+	{
+		$('#passwithchanges_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#passwithchanges_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject A")
+	{
+		$('#reject_a_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_a_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject B")
+	{
+		$('#reject_b_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_b_status').prop("disabled", true); 
+	}
+
+	if($("#verified_status").val() == "Reject C")
+	{
+		$('#reject_c_status').prop("disabled", false); 
+	}
+	else
+	{
+		$('#reject_c_status').prop("disabled", true); 
+	}
+
+});
+</script>
+@endsection

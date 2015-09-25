@@ -11,13 +11,13 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">From</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="fromQaSummary" id="fromQaSummary" required>
+								<input type="text" class="form-control" name="fromDatetimeAll" id="fromDatetimeAll" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">To</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="toQaSummary" id="toQaSummary" required>
+								<input type="text" class="form-control" name="toDatetimeAll" id="toDatetimeAll" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -127,4 +127,122 @@
 		
 	</div>
 </div>
+@endsection
+@section('qasummary')
+<script type="text/javascript">
+$("#submitQaSummary").click(function() {
+	if($.fn.dataTable.isDataTable('#SummaryReportA')) 
+	{
+		table.destroy();
+    	table = $('#SummaryReportA').DataTable();
+    	table2.destroy();
+    	table2 = $('#SummaryReportB').DataTable();
+    	table.clear().draw();
+    	table2.clear().draw();
+    	// var tt = new $.fn.dataTable.TableTools( table );
+    	// var tt2 = new $.fn.dataTable.TableTools( table2 );
+    	$.ajax({
+		url: "api/crm/qasummary", 
+		type: 'GET',
+		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+		success: function(result){
+			var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) { 
+				table.row.add( [
+		            value.disposition,	
+		            value.verified_status,
+		            value.totalcount
+	    		] ).draw();
+			});
+
+			$.ajax({
+			url: "api/crm/qasummary2", 
+			type: 'GET',
+			data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result2){
+				var myObj2 = $.parseJSON(result2);
+				$.each(myObj2, function(key,value2) { 
+					table2.row.add( [
+					  value2.verified_by,
+			          value2.verified_status,
+			          value2.passwithchanges_status,
+			          value2.comments,
+			          value2.gross,
+			          value2.title,
+			          value2.firstname,
+			          value2.surname,
+			          '<button type="button" class="btn btn-info" data-toggle="collapse" id="showBtnFullDetails" data-target="#showFullDetails" value="'+value2.id+'">Show Responses</button>'
+		    		] ).draw();
+				});	
+			}});
+
+		}});
+	}
+	else
+	{
+		table = $('#SummaryReportA').DataTable();
+		table2 = $('#SummaryReportB').DataTable();
+		$.ajax({
+			url: "api/crm/qasummary", 
+			type: 'GET',
+			data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result){
+			var myObj = $.parseJSON(result);
+			$.each(myObj, function(key,value) { 
+				table.row.add( [
+		            value.disposition,	
+		            value.verified_status,
+		            value.totalcount
+	    		] ).draw();
+			});
+
+			$.ajax({
+			url: "api/crm/qasummary2", 
+			type: 'GET',
+			data: {"from" : $("#fromQaSummary").val(), "to" :  $("#toQaSummary").val(), "agent" :  $("#agent_nameQaSummary").val(), "disposition" :  $("#dispositionQaSummary").val(), "verifiedstatus" :  $("#verified_statusQaSummary").val()},
+			success: function(result2){
+				var myObj2 = $.parseJSON(result2);
+				$.each(myObj2, function(key,value2) { 
+					table2.row.add( [
+			          value2.verified_by,
+			          value2.verified_status,
+			          value2.passwithchanges_status,
+			          value2.comments,
+			          value2.gross,
+			          value2.title,
+			          value2.firstname,
+			          value2.surname,
+			          '<button type="button" class="btn btn-info" data-toggle="collapse" id="showBtnFullDetails" data-target="#showFullDetails" value="'+value2.id+'">Show Responses</button>'
+		    		] ).draw();
+				});	
+			}});
+
+
+		}});
+
+		// var tt = new $.fn.dataTable.TableTools( table );
+	 //    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	 //    var tt2 = new $.fn.dataTable.TableTools( table2 );
+	 //    $( tt2.fnContainer() ).insertBefore('div.dataTables_wrapper');
+	}
+});
+
+$(document).on("click", "#showBtnFullDetails", function() {
+	var id = $("#showBtnFullDetails").val();
+	table = $('#SummaryReportResponses').DataTable();
+	$.ajax({
+	url: "api/crm/getqaresponses/"+id, 
+	type: 'GET',
+	success: function(result){
+		var myObj = $.parseJSON(result);
+		$.each(myObj, function(key,value) { 
+			table.row.add( [
+		        value.columnheader,	
+		        value.response
+			] ).draw();
+		});	
+	}});
+
+});
+</script>
 @endsection

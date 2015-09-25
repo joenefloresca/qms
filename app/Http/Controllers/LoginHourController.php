@@ -23,7 +23,7 @@ class LoginHourController extends Controller {
 		
 		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
 		{
-			return view('reports.agentperformance');
+			return view('loginhours.index');
 		}
 		else
 		{

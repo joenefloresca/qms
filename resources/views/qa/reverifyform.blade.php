@@ -311,3 +311,123 @@
 	</div>
 </div>
 @endsection
+@section('reverifyform')
+<script type="text/javascript">
+
+$(document).ready(function(){
+    var previous;
+     $(".myselectbox2").on("focus click",function () {
+        previous = this.value; // Old vaue 
+
+    }).change(function(e) {
+
+    	var before_gross = $('#new_gross').val(); 
+    	var value =  this.value; // New Value
+    	var colheader = e.target.id;
+    	var new_prev = previous;
+      	
+		$.ajax({
+		url: "qa/api/crm/getquestion", 
+		type: 'GET',
+		data: {'colheader':colheader},
+		success: function(result){
+			var costperlead = result;
+			if(new_prev == "" && value != "")
+			{
+				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			else if(new_prev =! "" && value == "")
+			{	
+				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
+				$('#new_gross').val(new_gross_amount);
+			}
+			
+		}});
+    });
+
+});
+
+$("#re_verified_status").change(function() {
+	var re_ver_status = $("#re_verified_status").val();
+
+	if(re_ver_status == "On The Proccess" || re_ver_status == "Unverified" || re_ver_status == "Passed" || re_ver_status == "Passed-Approved" || re_ver_status == "Passed-Unverified" || re_ver_status == "Pending")
+	{
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+		$("#passwithchanges_status").val("");
+	}
+
+
+	$("#verified_status").val(re_ver_status);
+	if(re_ver_status == "Passed-With Changes")
+	{
+		$('#re_passwithchanges_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_b_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+
+	}
+	else
+	{
+		$('#re_passwithchanges_status').prop("disabled", true); 
+	}
+
+
+	if(re_ver_status == "Reject A")
+	{
+		$('#re_reject_a_status').prop("disabled", false); 
+
+		$("#re_reject_b_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_b_status").val("");
+		$("#reject_c_status").val("");
+	}
+	else
+	{
+		$('#re_reject_a_status').prop("disabled", true); 
+	}
+
+	if(re_ver_status == "Reject B")
+	{
+		$('#re_reject_b_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_c_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_a_status").val("");
+		$("#reject_c_status").val("");
+	}
+	else
+	{
+		$('#re_reject_b_status').prop("disabled", true); 
+	}
+
+	if(re_ver_status == "Reject C")
+	{
+		$('#re_reject_c_status').prop("disabled", false); 
+		$("#re_reject_a_status").val(0);
+		$("#re_reject_b_status").val(0);
+		$("#re_passwithchanges_status").val(0);
+		$("#passwithchanges_status").val("");
+		$("#reject_a_status").val("");
+		$("#reject_b_status").val("");
+	}
+	else
+	{
+		$('#re_reject_c_status').prop("disabled", true); 
+	}
+});
+
+$("#re_passwithchanges_status").change(function() { $("#passwithchanges_status").val($("#re_passwithchanges_status").val()); });
+$("#re_reject_a_status").change(function() { $("#reject_a_status").val($("#re_reject_a_status").val()); });
+$("#re_reject_b_status").change(function() { $("#reject_b_status").val($("#re_reject_b_status").val()); });
+$("#re_reject_c_status").change(function() { $("#reject_c_status").val($("#re_reject_c_status").val()); });
+</script>
+@endsection
