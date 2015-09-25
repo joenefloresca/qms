@@ -53,7 +53,7 @@ class ReportController extends Controller {
 		}
 		else
 		{
-			//return Response::view('errors.404', array(), 404);
+			return Response::view('errors.404', array(), 404);
 		}
 		
 	}
@@ -284,6 +284,15 @@ class ReportController extends Controller {
 
 	public function showCampaignGross()
 	{
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		{
+			return view('reports.campaigngrossperformance');
+		}
+		else
+		{
+			return Response::view('errors.404', array(), 404);
+		}
+
 		return view('reports.campaigngrossperformance');
 	}
 
@@ -307,6 +316,14 @@ class ReportController extends Controller {
 
 	public function showCampaignNet()
 	{
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		{
+			return view('reports.campaignnetperformance');
+		}
+		else
+		{
+			return Response::view('errors.404', array(), 404);
+		}
 		return view('reports.campaignnetperformance');
 	}
 
