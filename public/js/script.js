@@ -1,26 +1,26 @@
-// var themes = {
-//     "default": "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css",
-//     "amelia" : "//bootswatch.com/amelia/bootstrap.min.css",
-//     "cerulean" : "//bootswatch.com/cerulean/bootstrap.min.css",
-//     "cosmo" : "//bootswatch.com/cosmo/bootstrap.min.css",
-//     "cyborg" : "//bootswatch.com/cyborg/bootstrap.min.css",
-//     "flatly" : "//bootswatch.com/flatly/bootstrap.min.css",
-//     "journal" : "//bootswatch.com/journal/bootstrap.min.css",
-//     "readable" : "//bootswatch.com/readable/bootstrap.min.css",
-//     "simplex" : "//bootswatch.com/simplex/bootstrap.min.css",
-//     "slate" : "//bootswatch.com/slate/bootstrap.min.css",
-//     "spacelab" : "//bootswatch.com/spacelab/bootstrap.min.css",
-//     "united" : "//bootswatch.com/united/bootstrap.min.css"
-// }
+var themes = {
+    "default": "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css",
+    "amelia" : "//bootswatch.com/amelia/bootstrap.min.css",
+    "cerulean" : "//bootswatch.com/cerulean/bootstrap.min.css",
+    "cosmo" : "//bootswatch.com/cosmo/bootstrap.min.css",
+    "cyborg" : "//bootswatch.com/cyborg/bootstrap.min.css",
+    "flatly" : "//bootswatch.com/flatly/bootstrap.min.css",
+    "journal" : "//bootswatch.com/journal/bootstrap.min.css",
+    "readable" : "//bootswatch.com/readable/bootstrap.min.css",
+    "simplex" : "//bootswatch.com/simplex/bootstrap.min.css",
+    "slate" : "//bootswatch.com/slate/bootstrap.min.css",
+    "spacelab" : "//bootswatch.com/spacelab/bootstrap.min.css",
+    "united" : "//bootswatch.com/united/bootstrap.min.css"
+}
 
-// $(function(){
-//    var themesheet = $('<link href="'+themes['cosmo']+'" rel="stylesheet" />');
-//     themesheet.appendTo('head');
-//     $('.theme-link').click(function(){
-//        var themeurl = themes[$(this).attr('data-theme')]; 
-//         themesheet.attr('href',themeurl);
-//     });
-// });
+$(function(){
+   var themesheet = $('<link href="'+themes['simplex']+'" rel="stylesheet" />');
+    themesheet.appendTo('head');
+    $('.theme-link').click(function(){
+       var themeurl = themes[$(this).attr('data-theme')]; 
+        themesheet.attr('href',themeurl);
+    });
+});
 
 var progress = $(".loading-progress").progressTimer({
 	  timeLimit: 10,
@@ -87,3 +87,31 @@ jQuery('#birthdate').datetimepicker({
 // 			progress.progressTimer('complete');
 // 			$( "#progressbar" ).fadeOut( "slow" );
 // 	});
+
+$("#btnYesterday").click(function() {
+	var yesterday = moment().subtract(1, 'days').format("YYYY-MM-DD");
+	var yesterday2 = moment().format("YYYY-MM-DD");
+	$("#fromDateAll").val(yesterday);
+	$("#toDateAll").val(yesterday2);
+});
+
+$("#btnToday").click(function() {
+	var today = moment().format("YYYY-MM-DD");
+	var today2 = moment().add(1, 'days').format("YYYY-MM-DD");
+	$("#fromDateAll").val(today);
+	$("#toDateAll").val(today2);
+});
+
+$("#btnLast7Days").click(function() {
+	var last7days = moment().subtract(6, 'days').format("YYYY-MM-DD");
+	var today = moment().add(1, 'days').format("YYYY-MM-DD");
+	$("#fromDateAll").val(last7days);
+	$("#toDateAll").val(today);
+});
+
+$("#btnLast30Days").click(function() {
+	var last30days = moment().subtract(30, 'days').format("YYYY-MM-DD");
+	var today = moment().add(1, 'days').format("YYYY-MM-DD");
+	$("#fromDateAll").val(last30days);
+	$("#toDateAll").val(today);
+});

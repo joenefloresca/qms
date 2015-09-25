@@ -11,13 +11,29 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">From Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="fromDateAll" id="fromDateAll" required>
+								<input type="text" class="form-control" name="fromDateAll" id="fromDateAll" required disabled="disabled">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">To Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="toDateAll" id="toDateAll" required>
+								<input type="text" class="form-control" name="toDateAll" id="toDateAll" required disabled="disabled">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="button" class="btn btn-info" id="btnYesterday">
+									Yesterday
+								</button>
+								<button type="button" class="btn btn-info" id="btnToday">
+									Today
+								</button>
+								<button type="button" class="btn btn-info" id="btnLast7Days">
+									Last 7 days
+								</button>
+								<button type="button" class="btn btn-info" id="btnLast30Days">
+									Last 30 days
+								</button>
 							</div>
 						</div>
 						<div class="form-group">

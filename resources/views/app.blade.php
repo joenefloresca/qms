@@ -104,7 +104,7 @@
 									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
 							</li>
-							<!-- <li class="dropdown">
+							<li class="dropdown">
 								<ul class="nav navbar-nav">
 						            <li class="dropdown">
 						              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Themes <b class="caret"></b></a>
@@ -124,7 +124,7 @@
 						              </ul>
 						            </li>
 						          </ul>
-							</li> -->
+							</li>
 						@endif	
 						@if(Auth::user()->isAdmin == 0) <!-- Agent -->
 						   	<li class="dropdown">
@@ -194,6 +194,7 @@
 	<script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="{{ asset('js/jquery.progressTimer.js') }}"></script>
 	<script src="{{ asset('js/summernote.js') }}"></script>
+	<script src="{{ asset('js/moment.js') }}"></script>
 	<script src="{{ asset('js/jquery.rowsorter.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-timepicker.js') }}"></script>
 	<script src="{{ asset('js/jquery.datetimepicker.js') }}"></script>

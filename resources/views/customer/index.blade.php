@@ -82,8 +82,6 @@
     //  });
     // }});
 
-    
-
     $(document).ready(function() {
         $('#CustomerList').DataTable( {
             "processing": true,
