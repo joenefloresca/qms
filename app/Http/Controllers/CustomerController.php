@@ -81,82 +81,66 @@ class CustomerController extends Controller {
 
     public function apiGetCustomers()
     {
-        
-        //$customers = Customer::all()->get();
-        //  $query = "SELECT id, firstname, lastname, gender, phone_num, postcode, country FROM customers ORDER BY id ASC LIMIT 500;";
-        //  $data = DB::connection('pgsql')->select($query);
-
-        // $count = "SELECT COUNT(id) as count FROM customers LIMIT 500";
-        // $data_count = DB::connection('pgsql')->select($count);
-
-        // $dataset = array(
-        //     array(
-        //         'sEcho' => 3,
-        //         'iTotalDisplay' => intval($data_count[0]->count),
-        //         'iTotalDisplayRecords' => intval(5),
-        //     )
-        // );
-
-        // foreach ($data as $key => $value) {
-        //     $dataset['aaData'][] = array(
-        //         $value->id, 
-        //         $value->firstname, 
-        //         $value->lastname, 
-        //         $value->gender, 
-        //         $value->phone_num, 
-        //         $value->postcode, 
-        //         $value->country
-        //     );
-        // }
-
-        // return json_encode($dataset);
-
-        // $table = 'customers';
-        // $primaryKey = 'id';
-
-        // $columns = array(
-        //     array( 'db' => 'id', 'dt' => 0 ),
-        //     array( 'db' => 'firstname',  'dt' => 1 ),
-        //     array( 'db' => 'lastname',   'dt' => 2 ),
-        //     array( 'db' => 'gender',     'dt' => 3 ),
-        //     array( 'db' => 'phone_num',  'dt' => 4 ),
-        //     array( 'db' => 'country',   'dt' => 5 ),
-        //     array( 'db' => 'postcode', 'dt' => 6 )
-        // );
-
-        // $sql_details = array(
-        //     'user' => 'postgres',
-        //     'pass' => 'postgres',
-        //     'db'   => 'qms',
-        //     'host' => 'localhost'
-        // );
-
-        // echo json_encode(
-        //     SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-        // );
-
-        $aColumns = array( 'id', 'firstname', 'lastname', 'gender', 'phone_num', 'country', 'postcode' );
-        $sIndexColumn = "id";
+        /*=================================================================*/
+        /*
+         * Script:    DataTables server-side script for PHP and PostgreSQL
+         * Copyright: 2010 - Allan Jardine
+         * License:   GPL v2 or BSD (3-point)
+         */
+         
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Easy set variables
+         */
+         
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        $aColumns = array('id', 'firstname', 'lastname', 'gender', 'phone_num', 'country', 'postcode' );
+         
+        /* Indexed column (used for fast and accurate table cardinality) */
+        $sIndexColumn = "phone_num";
+         
+        /* DB table to use */
         $sTable = "customers";
+         
+        /* Database connection information */
         $gaSql['user']       = "postgres";
         $gaSql['password']   = "postgres";
         $gaSql['db']         = "qms";
         $gaSql['server']     = "localhost";
-
+         
+         
+         
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP server-side, there is
+         * no need to edit below this line
+         */
+         
+        /*
+         * DB connection
+         */
         $gaSql['link'] = pg_connect(
             " host=".$gaSql['server'].
             " dbname=".$gaSql['db'].
             " user=".$gaSql['user'].
             " password=".$gaSql['password']
         ) or die('Could not connect: ' . pg_last_error());
-
+         
+         
+        /*
+         * Paging
+         */
         $sLimit = "";
         if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
         {
             $sLimit = "LIMIT ".intval( $_GET['iDisplayLength'] )." OFFSET ".
                 intval( $_GET['iDisplayStart'] );
         }
-
+         
+         
+        /*
+         * Ordering
+         */
         if ( isset( $_GET['iSortCol_0'] ) )
         {
             $sOrder = "ORDER BY  ";
@@ -175,7 +159,13 @@ class CustomerController extends Controller {
                 $sOrder = "";
             }
         }
-
+         
+         
+        /*
+         * Filtering
+         * NOTE This assumes that the field that is being searched on is a string typed field (ie. one
+         * on which ILIKE can be used). Boolean fields etc will need a modification here.
+         */
         $sWhere = "";
         if ( $_GET['sSearch'] != "" )
         {
@@ -184,13 +174,17 @@ class CustomerController extends Controller {
             {
                 if ( $_GET['bSearchable_'.$i] == "true" )
                 {
-                    $sWhere .= $aColumns[$i]." ILIKE '%".pg_escape_string( $_GET['sSearch'] )."%' OR ";
+                    if($aColumns[$i] != 'id') // Exclude ID for filtering
+                    {
+                        $sWhere .= $aColumns[$i]." ILIKE '%".pg_escape_string( $_GET['sSearch'] )."%' OR ";
+                    }
                 }
             }
             $sWhere = substr_replace( $sWhere, "", -3 );
             $sWhere .= ")";
         }
-
+         
+        /* Individual column filtering */
         for ( $i=0 ; $i<count($aColumns) ; $i++ )
         {
             if ( $_GET['bSearchable_'.$i] == "true" && $_GET['sSearch_'.$i] != '' )
@@ -206,14 +200,16 @@ class CustomerController extends Controller {
                 $sWhere .= $aColumns[$i]." ILIKE '%".pg_escape_string($_GET['sSearch_'.$i])."%' ";
             }
         }
-
+        
+         
         $sQuery = "
-        SELECT ".str_replace(" , ", " ", implode(", ", $aColumns))."
-        FROM   $sTable
-        $sWhere
-        $sOrder
-        $sLimit
+            SELECT ".str_replace(" , ", " ", implode(", ", $aColumns))."
+            FROM   $sTable
+            $sWhere
+            $sOrder
+            $sLimit
         ";
+
         $rResult = pg_query( $gaSql['link'], $sQuery ) or die(pg_last_error());
          
         $sQuery = "
@@ -239,7 +235,12 @@ class CustomerController extends Controller {
         {
             $iFilteredTotal = $iTotal;
         }
-
+         
+         
+         
+        /*
+         * Output
+         */
         $output = array(
             "sEcho" => intval($_GET['sEcho']),
             "iTotalRecords" => $iTotal,
@@ -265,9 +266,9 @@ class CustomerController extends Controller {
             }
             $output['aaData'][] = $row;
         }
-
-         echo json_encode( $output );
-     
+         
+        echo json_encode( $output );
+         
         // Free resultset
         pg_free_result( $rResult );
          

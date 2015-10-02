@@ -27,8 +27,8 @@
                                 <th>Last Name</th>
                                 <th>Gender</th>
                                 <th>Phone Number</th>
-                                <th>Postcode</th>
                                 <th>Country</th>
+                                <th>Postcode</th>
                             <!--     <th>Edit</th>
                                 <th>Delete</th> -->
                             </tr>
@@ -53,46 +53,19 @@
 @endsection
 @section('customer')
 <script type="text/javascript">
-// $.ajax({
-    // url: "api/customer/all", 
-    // type: 'GET',
-    // success: function(result){
-    // var myObj = $.parseJSON(result);
- //     $.each(myObj, function(key,value) {
- //         var t = $('#CustomerList').DataTable(
-    //          {
-    //              "processing": true,
-    //              "scrollY" : 400
-    //          }
- //         );
- //         t.row.add( [
-    //             value.id,    
-    //             value.firstname,
-    //             value.lastname,
-    //             value.gender,
-    //             value.phone_num,
-    //             value.postcode,
-    //             value.country,
-    //             // "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+value.id+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
-    //             // "<form method='POST' action='<?php echo URL::to('customer').'/';?>"+value.id+"' accept-charset='UTF-8' class='pull-left' >"+
-    //             // "<input name='_method' type='hidden' value='DELETE'>"+
-    //             // "<button type='submit' class='btn btn-warning'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>"+"</form>",
- //         ] ).draw();
-            
-    //  });
-    // }});
-
     $(document).ready(function() {
+        $.fn.dataTable.ext.legacy.ajax = true;
         $('#CustomerList').DataTable( {
             "processing": true,
             "serverSide": true,
             "ajax": "api/customer/all",
-            //"paging" : true,
-            //"scrollY" : 400,
-           // "searching" : true,
-            //"ordering" :  true,
-            //"pagingType" : "full_numbers" 
+            "paging" : true,
+            "searching" : true,
+            "ordering" :  true,
         } );
+
+        var tt = new $.fn.dataTable.TableTools( $('#CustomerList').DataTable() );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     });
 </script>
 @endsection
