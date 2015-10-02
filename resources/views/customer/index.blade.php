@@ -19,7 +19,7 @@
                         <thead>
                             <tr>
                             	<th colspan="7"> <center>Customer Information<center></th>
-                                <!-- <th colspan="2"> <center>Actions<center></th> -->
+                                <th colspan="1"> <center>Actions<center></th>
                             </tr>
                             <tr>
                                 <th>ID</th>
@@ -29,19 +29,13 @@
                                 <th>Phone Number</th>
                                 <th>Country</th>
                                 <th>Postcode</th>
+                                <th>Edit</th>
                             <!--     <th>Edit</th>
                                 <th>Delete</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                        
                         </tbody>
-                        <!-- <tfoot>
-							<tr>
-                                <td colspan="9">&nbsp;</td>
-								<td colspan="7">&nbsp;</td>
-							</tr>
-						</tfoot> -->
                     </table>
                   
                     
@@ -55,15 +49,20 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $.fn.dataTable.ext.legacy.ajax = true;
-        $('#CustomerList').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "ajax": "api/customer/all",
-            "paging" : true,
-            "searching" : true,
-            "ordering" :  true,
-        } );
-
+        var table = $('#CustomerList').DataTable( {
+           "processing": true,
+           "serverSide": true,
+           "ajax": "api/customer/all",
+           "columnDefs": [
+                { 
+                    "targets": 7,
+                    "render": function(data, type, row, meta){
+                       // return '<a href="/qms/public/customer/' + row[0] + '/edit">Edit</a>';  
+                       return "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+row[0]+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>";  
+                    }
+                }            
+            ]        
+        });
         var tt = new $.fn.dataTable.TableTools( $('#CustomerList').DataTable() );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     });

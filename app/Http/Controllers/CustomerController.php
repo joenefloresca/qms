@@ -160,7 +160,6 @@ class CustomerController extends Controller {
             }
         }
          
-         
         /*
          * Filtering
          * NOTE This assumes that the field that is being searched on is a string typed field (ie. one
@@ -235,8 +234,6 @@ class CustomerController extends Controller {
         {
             $iFilteredTotal = $iTotal;
         }
-         
-         
          
         /*
          * Output
