@@ -31,7 +31,7 @@ class CrmController extends Controller {
 
 	public function create()
 	{
-		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
 			$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
 			return view('crm.create')->with(array('questions' => $questions));

@@ -158,6 +158,35 @@
 								</ul>
 							</li>
 						@endif	
+						@if(Auth::user()->isAdmin == 4) <!-- Auditor -->
+						   	<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> QA Tools <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('qa/verifylist') }}">Verify</a></li>
+									<li><a href="{{ url('qa/reverifylist') }}">Re-Verify Forms</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-file"></i> CRM <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<!-- <li><a href="{{ url('crm') }}">Column Header List</a></li> -->
+									<li><a href="{{ url('crm/create') }}">CRM Form</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> Reports <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
+									<li><a href="{{ url('reports/campaigngrossperformance') }}">Campaign Gross Performance</a></li>
+									<li><a href="{{ url('reports/campaignnetperformance') }}">Campaign Net Performance</a></li>
+									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses Gross</a></li>
+									<li><a href="{{ url('reports/charityresponsesnet') }}">Charity Responses Net</a></li>
+									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
+									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
+									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
+								</ul>
+							</li>
+						@endif	
 					@endif 
 
 				</ul>

@@ -29,7 +29,7 @@ class QaController extends Controller {
 
     public function verifylist()
     {
-        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 )
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4 )
         {
             $this->middleware('admin');
             return view('qa.verifylist');
@@ -251,7 +251,7 @@ class QaController extends Controller {
 
     public function showVerifyForm($crmid)
     {
-        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
             $crm = Crm::find($crmid);
             $agent_name = User::find($crm->agent_id);
@@ -435,7 +435,7 @@ class QaController extends Controller {
 
     public function updateVerifiedForms()
     {
-        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
             return view('qa.updateverfied');
         }
@@ -453,7 +453,7 @@ class QaController extends Controller {
 
     public function showReVerifyForm($crmid)
     {
-        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3)
+        if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
             $crm = QaCrm::find($crmid);
             $agent_name = User::find($crm->agent_id);

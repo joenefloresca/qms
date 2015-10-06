@@ -21,7 +21,7 @@ class ReportController extends Controller {
 
 	public function showAgentPerformance()
 	{
-		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
 			return view('reports.agentperformance');
 		}
@@ -34,7 +34,7 @@ class ReportController extends Controller {
 
 	public function showCharityResponses()
 	{
-		if(Auth::user()->isAdmin == 1)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 4)
 		{
 			return view('reports.charityresponses');
 		}
@@ -47,7 +47,7 @@ class ReportController extends Controller {
 
 	public function showCharityResponsesNet()
 	{
-		if(Auth::user()->isAdmin == 1)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 4)
 		{
 			return view('reports.charityresponsesnet');
 		}
@@ -284,7 +284,7 @@ class ReportController extends Controller {
 
 	public function showCampaignGross()
 	{
-		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
 			return view('reports.campaigngrossperformance');
 		}
@@ -316,7 +316,7 @@ class ReportController extends Controller {
 
 	public function showCampaignNet()
 	{
-		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
 			return view('reports.campaignnetperformance');
 		}

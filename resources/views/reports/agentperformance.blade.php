@@ -48,7 +48,7 @@
                                 <th>Agent Name</th>
                                 <th>Total Login Hours</th>
                                 <th>Total Completed Surveys</th>
-                                <th>Total Partital Surveys</th>
+                                <th>Total Partial Surveys</th>
                                 <th>APH</th>
                                 <th>RPH</th>
                                 <th>SPH</th>

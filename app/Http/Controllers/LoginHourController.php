@@ -4,6 +4,8 @@ use \App\Http\Models\LoginHour;
 use Input;
 use DB;
 use Auth;
+use Response;
+
 
 class LoginHourController extends Controller {
 
@@ -21,7 +23,7 @@ class LoginHourController extends Controller {
 	public function index()
 	{	
 		
-		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2)
+		if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
 			return view('loginhours.index');
 		}
