@@ -37,8 +37,6 @@
                         <tbody>
                         </tbody>
                     </table>
-                  
-                    
 				</div>
 			</div>
 		</div>
@@ -56,8 +54,7 @@
            "columnDefs": [
                 { 
                     "targets": 7,
-                    "render": function(data, type, row, meta){
-                       // return '<a href="/qms/public/customer/' + row[0] + '/edit">Edit</a>';  
+                    "render": function(data, type, row, meta){ 
                        return "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+row[0]+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>";  
                     }
                 }            
