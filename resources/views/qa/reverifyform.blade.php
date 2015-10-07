@@ -237,7 +237,7 @@
 														?>
 														<option value="">N/A</option>
 														<option value="No">No/option>
-												
+														<option value="Reject">Reject</option>
 													</select>
 												</td>
 											</tr>
