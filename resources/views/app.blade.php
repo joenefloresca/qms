@@ -104,7 +104,7 @@
 									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
 							</li>
-							<li class="dropdown">
+							<!-- <li class="dropdown">
 								<ul class="nav navbar-nav">
 						            <li class="dropdown">
 						              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Themes <b class="caret"></b></a>
@@ -124,7 +124,7 @@
 						              </ul>
 						            </li>
 						          </ul>
-							</li>
+							</li> -->
 						@endif	
 						@if(Auth::user()->isAdmin == 0) <!-- Agent -->
 						   	<li class="dropdown">
