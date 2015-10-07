@@ -41,43 +41,43 @@
 @endsection
 @section('verifylist')
 <script type="text/javascript">
-$.ajax({
-    url: "api/crm/all", 
-    type: 'GET',
-    success: function(result){
-    var myObj = $.parseJSON(result);
-        $.each(myObj, function(key,value) {
-            var t = $('#VerifyList').DataTable();
-            t.row.add( [
-                value.crmid,    
-                value.name,
-                value.title+" "+value.firstname+" "+value.surname,
-                value.disposition,
-                value.gross,
-                value.phone_num,
-                value.created_at,
-                "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
-            ] ).draw();
+// $.ajax({
+//     url: "api/crm/all", 
+//     type: 'GET',
+//     success: function(result){
+//     var myObj = $.parseJSON(result);
+//         $.each(myObj, function(key,value) {
+//             var t = $('#VerifyList').DataTable();
+//             t.row.add( [
+//                 value.crmid,    
+//                 value.name,
+//                 value.title+" "+value.firstname+" "+value.surname,
+//                 value.disposition,
+//                 value.gross,
+//                 value.phone_num,
+//                 value.created_at,
+//                 "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>",
+//             ] ).draw();
             
-        });
-    }});
-// $(document).ready(function() {
-//     $.fn.dataTable.ext.legacy.ajax = true;
-//     var table = $('#VerifyList').DataTable( {
-//        "processing": true,
-//        "serverSide": true,
-//        "ajax": "api/crm/all",
-//        "columnDefs": [
-//             { 
-//                 "targets": 8,
-//                 "render": function(data, type, row, meta){ 
-//                    return "<a class='btn btn-small btn-info' href='<?php echo URL::to('customer').'/';?>"+row[0]+"/edit'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>";  
-//                 }
-//             }            
-//         ]        
-//     });
-    // var tt = new $.fn.dataTable.TableTools( $('#VerifyList').DataTable() );
-    // $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-//});
+//         });
+//     }});
+$(document).ready(function() {
+    $.fn.dataTable.ext.legacy.ajax = true;
+    var table = $('#VerifyList').DataTable( {
+       "processing": true,
+       "serverSide": true,
+       "ajax": "api/crm/all",
+       "columnDefs": [
+            { 
+                "targets": 7,
+                "render": function(data, type, row, meta){ 
+                   return "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+row[0]+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>";  
+                }
+            }            
+        ]        
+    });
+    var tt = new $.fn.dataTable.TableTools( $('#VerifyList').DataTable() );
+    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
+});
 </script>
 @endsection
