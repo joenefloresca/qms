@@ -432,7 +432,7 @@ class QaController extends Controller {
                 Session::flash('alert-danger', 'Error in saving client information and responses.');
             }
 
-            return Redirect::to('qa/verifylist/'.$id);
+            return Redirect::to('qa/verifylist');
 
         }
     }
@@ -619,7 +619,7 @@ class QaController extends Controller {
                 Session::flash('alert-danger', 'Error in saving client information and responses.');
             }
 
-            return Redirect::to('qa/reverifylist/'.$id)->withErrors($validator);
+            return Redirect::to('qa/reverifylist')->withErrors($validator);
 
         }
 
