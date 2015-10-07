@@ -292,6 +292,7 @@
 															}
 														?>
 														<option value="">N/A</option>
+														<option value="No">No</option>
 													</select>
 												</td>
 											</tr>
