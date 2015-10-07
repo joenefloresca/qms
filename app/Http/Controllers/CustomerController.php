@@ -104,9 +104,13 @@ class CustomerController extends Controller {
         $sTable = "customers";
          
         /* Database connection information */
+        // $gaSql['user']       = "postgres";
+        // $gaSql['password']   = "postgres";
+        // $gaSql['db']         = "qms";
+        // $gaSql['server']     = "localhost";
         $gaSql['user']       = "postgres";
-        $gaSql['password']   = "postgres";
-        $gaSql['db']         = "qms";
+        $gaSql['password']   = "CheRambil27";
+        $gaSql['db']         = "gcl";
         $gaSql['server']     = "localhost";
          
          
