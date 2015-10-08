@@ -79,7 +79,7 @@ class QaController extends Controller {
         $sTable = "( 
               SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at
               FROM forms a 
-              INNER JOIN users b ON a.agent_id = b.id 
+              INNER JOIN users b ON a.agent_id = b.id WHERE isverified = 0
             ) as q";
 
         /* Database connection information */
@@ -424,6 +424,10 @@ class QaController extends Controller {
                     /* END For 248 Insertion */
 
                 }
+
+                $updateCRM = Crm::find($id);
+                $updateCRM->isverified = 1;
+                $updateCRM->save();
 
                 Session::flash('alert-info', 'Form and responses has been saved.');
             }

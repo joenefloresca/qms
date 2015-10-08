@@ -50,8 +50,9 @@
                                 <th>Total Completed Surveys</th>
                                 <th>Total Partial Surveys</th>
                                 <th>APH</th>
-                                <th>RPH</th>
+                                <th>Total Rev</th>
                                 <th>SPH</th>
+                                <th>RPH</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,6 +69,7 @@
 <script type="text/javascript">
 $("#btnDateAgentPer").click(function() {
 	var sph = 0;
+	var revperhour = 0;
 	if($.fn.dataTable.isDataTable('#AgentPerformance')) 
 	{
     	table.destroy();
@@ -82,6 +84,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+                revperhour = parseFloat(value.rph) / parseFloat(value.totalloginhours);
 	    		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
 	    		table.row.add( [
 		            value.name,	
@@ -91,6 +94,7 @@ $("#btnDateAgentPer").click(function() {
 		            value.applicationperhour,
 		            value.rph,
 		            sph.toFixed(2),
+		            revperhour.toFixed(2),
 	        	] ).draw();
 			});
 		}});
@@ -106,6 +110,7 @@ $("#btnDateAgentPer").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
+	    		revperhour = parseFloat(value.rph) / parseFloat(value.totalloginhours);
 	    		sph = Math.round((parseInt(value.completedsurvey) + parseInt(value.partial_survey)) / parseFloat(value.totalloginhours));
 	    		table.row.add( [
 		            value.name,	
@@ -115,6 +120,7 @@ $("#btnDateAgentPer").click(function() {
 		            value.applicationperhour,
 		            value.rph,
 		            sph.toFixed(2),
+		            revperhour.toFixed(2),
 	        	] ).draw();
 			});
 		}});
