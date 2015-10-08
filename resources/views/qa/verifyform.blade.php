@@ -420,12 +420,14 @@ $(document).ready(function(){
 		data: {'colheader':colheader},
 		success: function(result){
 			var costperlead = result;
-			if(new_prev == "" && value != "")
+			console.log(new_prev);
+			console.log(value);
+			if(new_prev == "" && value != "" && value != "No" && value != "Reject")
 			{
 				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
 				$('#new_gross').val(new_gross_amount);
 			}
-			else if(new_prev =! "" && value == "")
+			else if(new_prev =! "" && value == "" || value == "No" | value == "Reject")
 			{	
 				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
 				$('#new_gross').val(new_gross_amount);

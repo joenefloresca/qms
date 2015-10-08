@@ -236,7 +236,7 @@
 															}
 														?>
 														<option value="">N/A</option>
-														<option value="No">No/option>
+														<option value="No">No</option>
 														<option value="Reject">Reject</option>
 													</select>
 												</td>
@@ -333,12 +333,12 @@ $(document).ready(function(){
 		data: {'colheader':colheader},
 		success: function(result){
 			var costperlead = result;
-			if(new_prev == "" && value != "")
+			if(new_prev == "" && value != "" && value != "No" && value != "Reject")
 			{
 				var new_gross_amount = parseFloat(before_gross) + parseFloat(costperlead);
 				$('#new_gross').val(new_gross_amount);
 			}
-			else if(new_prev =! "" && value == "")
+			else if(new_prev =! "" && value == "" || value == "No" | value == "Reject")
 			{	
 				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
 				$('#new_gross').val(new_gross_amount);

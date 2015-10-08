@@ -47,6 +47,8 @@ class CrmController extends Controller {
 		$rules = array(
             'CrmDisposition'           => 'required',
             'CrmIsUKPermanentResident' => 'required',
+            'CrmIsUKPermanentResident' => 'required',
+			'phone_num' 		       => 'required|unique:forms'           
         );
 
         $validator = Validator::make(Input::all(), $rules);
@@ -74,7 +76,7 @@ class CrmController extends Controller {
 			$CrmFirstName 		  	  = Input::get("CrmFirstName");
 			$CrmSurname 			  = Input::get("CrmSurname");
 			$CRMTelephoneOptions      = Input::get("CRMTelephoneOptions");
-			$CRMTelephoneNo           = Input::get("CRMTelephoneNo");
+			$CRMTelephoneNo           = Input::get("phone_num");
 			$CrmAge                   = Input::get("CrmAge");
 			$CRMWorkStatus            = Input::get("CRMWorkStatus");
 			$CRMOwnHomeOptions        = Input::get("CRMOwnHomeOptions");

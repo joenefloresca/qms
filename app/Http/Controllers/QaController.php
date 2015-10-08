@@ -83,14 +83,14 @@ class QaController extends Controller {
             ) as q";
 
         /* Database connection information */
-        // $gaSql['user']       = "postgres";
-        // $gaSql['password']   = "postgres";
-        // $gaSql['db']         = "qms";
-        // $gaSql['server']     = "localhost";
         $gaSql['user']       = "postgres";
-        $gaSql['password']   = "CheRambil27";
-        $gaSql['db']         = "gcl";
+        $gaSql['password']   = "postgres";
+        $gaSql['db']         = "qms";
         $gaSql['server']     = "localhost";
+        // $gaSql['user']       = "postgres";
+        // $gaSql['password']   = "CheRambil27";
+        // $gaSql['db']         = "gcl";
+        // $gaSql['server']     = "localhost";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * If you just want to use the basic configuration for DataTables with PHP server-side, there is
