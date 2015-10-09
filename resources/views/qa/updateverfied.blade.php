@@ -17,7 +17,7 @@
                     <table id="ReVerifyList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                            	<th colspan="8"> <center>Form Information<center></th>
+                            	<th colspan="9"> <center>Form Information<center></th>
                                 <th colspan="1"> <center>Actions<center></th>
                             </tr>
                             <tr>
@@ -26,6 +26,7 @@
                                 <th>Customer</th>
                                 <th>Disposition</th>
                                 <th>Gross</th>
+                                <th>Phone</th>
                                 <th>Verified Status</th>
                                 <th>Date Verfied</th>
                                 <th>Verified By</th>
@@ -37,7 +38,7 @@
                         </tbody>
                         <tfoot>
 							<tr>
-								<td colspan="9">&nbsp;</td>
+								<td colspan="10">&nbsp;</td>
 							</tr>
 						</tfoot>
                     </table>
@@ -63,6 +64,7 @@ $.ajax({
                 value.title+" "+value.firstname+" "+value.surname,
                 value.disposition,
                 value.gross,
+                value.phone_num,
                 value.verified_status,
                 value.created_at,
                 value.verified_by,
