@@ -62,6 +62,7 @@ class CrmController extends Controller {
         else
         {
 
+        	$CrmAddr1 = (!empty(Input::get("CrmAddr1")  && Input::get("CrmAddr1") != 'NULL') ? Input::get("CrmAddr1") : '' );
         	$CrmAddr2 = (!empty(Input::get("CrmAddr2")  && Input::get("CrmAddr2") != 'NULL') ? Input::get("CrmAddr2") : '' );
         	$CrmAddr3 = (!empty(Input::get("CrmAddr3") && Input::get("CrmAddr3") != 'NULL') ? Input::get("CrmAddr3") : '' );
         	$CrmAddr4 = (!empty(Input::get("CrmAddr4")  && Input::get("CrmAddr4")  != 'NULL') ? Input::get("CrmAddr4") : '' );
@@ -72,7 +73,7 @@ class CrmController extends Controller {
 			$CRMGross                 = Input::get("CRMGross");
 			$CrmIsUKPermanentResident = Input::get("CrmIsUKPermanentResident");
 			$CRMPostcode 			  = Input::get("CRMPostcode");
-			$CrmAddr1 			  	  = Input::get("CrmAddr1");
+			//$CrmAddr1 			  	  = Input::get("CrmAddr1");
 			//$CrmAddr2 			  	  = Input::get("CrmAddr2");
 			//$CrmAddr3 			  	  = Input::get("CrmAddr3");
 			//$CrmAddr4 			  	  = Input::get("CrmAddr4");
