@@ -61,16 +61,23 @@ class CrmController extends Controller {
         }
         else
         {
+
+        	$CrmAddr2 = (!empty(Input::get("CrmAddr2")  && Input::get("CrmAddr2") != 'NULL') ? Input::get("CrmAddr2") : '' );
+        	$CrmAddr3 = (!empty(Input::get("CrmAddr3") && Input::get("CrmAddr3") != 'NULL') ? Input::get("CrmAddr3") : '' );
+        	$CrmAddr4 = (!empty(Input::get("CrmAddr4")  && Input::get("CrmAddr4")  != 'NULL') ? Input::get("CrmAddr4") : '' );
+        	$CrmTown = (!empty(Input::get("CrmTown")  && Input::get("CrmTown")  != 'NULL') ? Input::get("CrmTown") : '' );
+        	$CrmCountry = (!empty(Input::get("CrmCountry")  && Input::get("CrmCountry")  != 'NULL') ? Input::get("CrmCountry") : '' );
+
         	$CrmDisposition           = Input::get("CrmDisposition");
 			$CRMGross                 = Input::get("CRMGross");
 			$CrmIsUKPermanentResident = Input::get("CrmIsUKPermanentResident");
 			$CRMPostcode 			  = Input::get("CRMPostcode");
 			$CrmAddr1 			  	  = Input::get("CrmAddr1");
-			$CrmAddr2 			  	  = Input::get("CrmAddr2");
-			$CrmAddr3 			  	  = Input::get("CrmAddr3");
-			$CrmAddr4 			  	  = Input::get("CrmAddr4");
-			$CrmTown 			  	  = Input::get("CrmTown");
-			$CrmCountry 			  = Input::get("CrmCountry");
+			//$CrmAddr2 			  	  = Input::get("CrmAddr2");
+			//$CrmAddr3 			  	  = Input::get("CrmAddr3");
+			//$CrmAddr4 			  	  = Input::get("CrmAddr4");
+			//$CrmTown 			  	  = Input::get("CrmTown");
+			//$CrmCountry 			  = Input::get("CrmCountry");
 			$Title 			          = Input::get("Title");
 			$Gender 			      = Input::get("Gender");
 			$CrmFirstName 		  	  = Input::get("CrmFirstName");
