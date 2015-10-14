@@ -49,6 +49,7 @@
                                 <th>YES Count</th>
                                 <th>NO Count</th>
                                 <th>POSSIBLY Count</th>
+                                <th>Total Leads</th>
                                 <th>Cost Per Lead</th>
                                 <th>Revenue</th>
                             </tr>
@@ -58,15 +59,19 @@
                         </tbody>
                         <tfoot>
 						    <tr>
+						    	<th></th>
                                 <th colspan="1">Total YES Count</th>
-                                <th colspan="2">Total NO Count</th>
+                                <th>Total NO Count</th>
                                 <th>Total POSSIBLY Count</th>
+                                <th>Total Leads Count</th>
                                 <th colspan="2">Total Revenue </th>
 						    </tr>
 						     <tr>
+						     	<th></th>
                                 <td colspan="1" id="CharityRepTotalYes"></td>
-                                <td colspan="2" id="CharityRepTotalNo"></td>
+                                <td id="CharityRepTotalNo"></td>
                                 <td id="CharityRepTotalPossib"></td>
+                                <td id="CharityRepTotalLeads"></td>
                                 <td colspan="2" id="CharityRepTotalRev"></td>
 						    </tr>
 						</tfoot>
@@ -84,6 +89,8 @@ $("#btnDateCharityResNet").click(function() {
 	var totalno = 0;
 	var totalpossibly = 0;
 	var totalrev = 0;
+	var totalleads = 0;
+	var grandtotal_leads = 0;
 
 	if($.fn.dataTable.isDataTable('#CharityResponsesNet')) 
 	{	
@@ -103,6 +110,8 @@ $("#btnDateCharityResNet").click(function() {
 	    		totalno += parseInt(value.ct_no); 
 	    		totalpossibly += parseInt(value.ct_maybe); 
 	    		totalrev += parseFloat(value.revenue); 
+	    		totalleads = parseInt(value.ct_yes) + parseInt(value.ct_maybe); 
+	    		grandtotal_leads += totalleads;
 
 	    		table.row.add( [
 		           // value.question_id,	
@@ -110,6 +119,7 @@ $("#btnDateCharityResNet").click(function() {
 		            value.ct_yes,
 		            value.ct_no,
 		            value.ct_maybe,
+		            totalleads,
 		            value.costperlead,
 		            value.revenue,
 	        	] ).draw();
@@ -117,6 +127,7 @@ $("#btnDateCharityResNet").click(function() {
 			$("#CharityRepTotalYes").html(totalyes);
 			$("#CharityRepTotalNo").html(totalno);
 			$("#CharityRepTotalPossib").html(totalpossibly);
+			$("#CharityRepTotalLeads").html(grandtotal_leads);
 			$("#CharityRepTotalRev").html(totalrev.toFixed(2));
 		}});
 
@@ -135,6 +146,8 @@ $("#btnDateCharityResNet").click(function() {
 	    		totalno += parseInt(value.ct_no); 
 	    		totalpossibly += parseInt(value.ct_maybe); 
 	    		totalrev += parseInt(value.revenue); 
+	    		totalleads = parseInt(value.ct_yes) + parseInt(value.ct_maybe); 
+	    		grandtotal_leads += totalleads;
 
 	    		table.row.add( [
 		           // value.question_id,	
@@ -142,6 +155,7 @@ $("#btnDateCharityResNet").click(function() {
 		            value.ct_yes,
 		            value.ct_no,
 		            value.ct_maybe,
+		            totalleads,
 		            value.costperlead,
 		            value.revenue,
 	        	] ).draw();
@@ -149,6 +163,7 @@ $("#btnDateCharityResNet").click(function() {
 			$("#CharityRepTotalYes").html(totalyes);
 			$("#CharityRepTotalNo").html(totalno);
 			$("#CharityRepTotalPossib").html(totalpossibly);
+			$("#CharityRepTotalLeads").html(grandtotal_leads);
 			$("#CharityRepTotalRev").html(totalrev.toFixed(2));
 		}});
 

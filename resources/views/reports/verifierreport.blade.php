@@ -46,7 +46,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>QA Name</th>
-                                <th>Passed</th>
+                                <!-- <th>Passed</th> -->
                                 <th>Passed-Approved</th>
                                 <th>Passed with Changes</th>
                                 <th>Passed-Unverified</th>
@@ -61,7 +61,7 @@
                         <tfoot>
 							<tr>
 								<td colspan="2">Total</td>
-								<td id="totalPassed"></td>
+								<!-- <td id="totalPassed"></td> -->
 								<td id="totalPassedApprove"></td>
 								<td id="totalPassedChanges"></td>
 								<td id="totalPassedUnverified"></td>
@@ -119,7 +119,7 @@ $("#submitVerifierReport").click(function() {
 	    		table.row.add( [
 	    			ctr,
 		            value.verified_by,	
-		            value.passed,
+		            //value.passed,
 		            value.passed_approved,
 		            value.passed_changes,
 		            value.passed_unverified,
@@ -176,7 +176,7 @@ $("#submitVerifierReport").click(function() {
 	    		table.row.add( [
 	    			ctr,
 		            value.verified_by,	
-		            value.passed,
+		           // value.passed,
 		            value.passed_approved,
 		            value.passed_changes,
 		            value.passed_unverified,

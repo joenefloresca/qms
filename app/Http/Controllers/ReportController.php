@@ -133,17 +133,31 @@ class ReportController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
+		// $query = "SELECT question_id, q.columnheader, ct_yes, ct_no, ct_maybe, q.costperlead, q.costperlead * (r.ct_yes + r.ct_maybe) AS revenue
+		// 		FROM  (
+		// 		   SELECT question_id
+		// 		        , count(response = 'Yes' OR NULL) AS ct_yes
+		// 		        , count(response = 'No' OR NULL) AS ct_no
+		// 		        , count(response = 'Possbily' OR NULL) AS ct_maybe
+		// 		   FROM   qa_responses
+		// 		   WHERE  created_at >= '$from' AND created_at <= '$to'
+		// 		   GROUP  BY 1
+		// 		   ) r
+		// 		JOIN questions q ON q.id = r.question_id ORDER BY q.columnheader ASC;";
 		$query = "SELECT question_id, q.columnheader, ct_yes, ct_no, ct_maybe, q.costperlead, q.costperlead * (r.ct_yes + r.ct_maybe) AS revenue
 				FROM  (
 				   SELECT question_id
 				        , count(response = 'Yes' OR NULL) AS ct_yes
 				        , count(response = 'No' OR NULL) AS ct_no
 				        , count(response = 'Possbily' OR NULL) AS ct_maybe
-				   FROM   qa_responses
-				   WHERE  created_at >= '$from' AND created_at <= '$to'
+				   FROM   qa_responses 
+						INNER JOIN qa_forms ON qa_responses.qa_forms_id = qa_forms.id
+            INNER JOIN forms ON forms.id = qa_forms.orig_crm_id
+				   WHERE  forms.created_at >= '$from' AND forms.created_at <= '$to'
 				   GROUP  BY 1
 				   ) r
-				JOIN questions q ON q.id = r.question_id ORDER BY q.columnheader ASC;";
+				JOIN questions q ON q.id = r.question_id
+        ORDER BY q.columnheader ASC";
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
 	}
