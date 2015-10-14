@@ -11,13 +11,13 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">From Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="fromDateAll" id="fromDateAll" required disabled="disabled">
+								<input type="text" class="form-control" name="fromDateAll" id="fromDateAll" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">To Date</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="toDateAll" id="toDateAll" required disabled="disabled">
+								<input type="text" class="form-control" name="toDateAll" id="toDateAll" required>
 							</div>
 						</div>
 						<div class="form-group">
