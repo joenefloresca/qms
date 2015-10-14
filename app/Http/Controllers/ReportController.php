@@ -332,14 +332,16 @@ class ReportController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
-		$query = "SELECT created_at::date AS start_date,
-				created_at::date + 1 AS end_date,
-				COUNT(case when disposition = 'Completed Survey' then id end) AS completedsurvey, 
-				COUNT(case when disposition = 'Partial Survey' then id end) AS partialsurvey, 
-				(COUNT(case when disposition = 'Partial Survey' then id end) * 0.40 ) + (COUNT(case when disposition = 'Completed Survey' then id end) * 1.75) AS revenue 
-				FROM qa_forms 
-				WHERE created_at >= '$from'::date AND created_at <= '$to'::date
-				GROUP BY created_at::date ORDER BY start_date;";
+		$query = "SELECT b.created_at::date AS start_date,
+				b.created_at::date + 1 AS end_date,
+				COUNT(case when a.disposition = 'Completed Survey' then a.id end) AS completedsurvey, 
+				COUNT(case when a.disposition = 'Partial Survey' then a.id end) AS partialsurvey, 
+				(COUNT(case when a.disposition = 'Partial Survey' then a.id end) * 0.40 ) + (COUNT(case when a.disposition = 'Completed Survey' then a.id end) * 1.75) AS revenue 
+				FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
+				WHERE b.created_at >= '$from'::date AND b.created_at <= '$to'::date AND b.isverified = 1
+				GROUP BY b.created_at::date ORDER BY start_date;";
+
+
 		$data = DB::connection('pgsql')->select($query);		
 
 		return json_encode($data);
