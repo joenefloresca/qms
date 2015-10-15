@@ -77,7 +77,7 @@ class QaController extends Controller {
 
         /* DB table to use */
         $sTable = "( 
-              SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at
+                 SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at
               FROM forms a 
               INNER JOIN users b ON a.agent_id = b.id WHERE isverified = 0
             ) as q";
@@ -251,6 +251,20 @@ class QaController extends Controller {
         // Closing connection
         pg_close( $gaSql['link'] );
 
+    }
+
+    public function getCrmList2()
+    {
+        $from =  Input::get("from");
+        $to =   Input::get("to");
+
+        $query = "SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at, a.isverified
+            FROM forms a 
+            INNER JOIN users b ON a.agent_id = b.id 
+            WHERE a.created_at >= '$from' AND a.created_at <= '$to' 
+            ORDER BY a.id DESC";
+        $data = DB::connection('pgsql')->select($query);
+        return json_encode($data);
     }
 
     public function showVerifyForm($crmid)

@@ -101,6 +101,7 @@ Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
 
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
+Route::get('qa/api/crm/all2', 'QaController@getCrmList2'); // Verify List with Date Range
 Route::get('qa/api/crm/reverify', 'QaController@getCrmReverify');
 Route::get('qa/verify/qa/api/crm/getquestion', 'QaController@getQuestionCplResponse');
 Route::get('qa/reverify/qa/api/crm/getquestion', 'QaController@getQuestionCplResponse');
