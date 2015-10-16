@@ -261,7 +261,7 @@ class QaController extends Controller {
         $query = "SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at, a.isverified
             FROM forms a 
             INNER JOIN users b ON a.agent_id = b.id 
-            WHERE a.created_at >= '$from' AND a.created_at <= '$to' 
+            WHERE a.created_at >= '$from' AND a.created_at <= '$to' AND a.isverified = 0
             ORDER BY a.id DESC";
         $data = DB::connection('pgsql')->select($query);
         return json_encode($data);
