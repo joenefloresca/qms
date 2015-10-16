@@ -189,25 +189,26 @@ class ReportController extends Controller {
 	{
 		$from    = Input::get("from");
 		$to      = Input::get("to");
-		$qa_name = Input::get("qa_name");
+		$disposition = Input::get("disposition");
 
-		$qaname_query = "";
-		if($qa_name != "All")
+		$disposition_query = "";
+		if($disposition != "All")
 		{
-			$qaname_query = "AND verifier_id = '".$qa_name."'";
+			$disposition_query = "AND a.disposition = '".$disposition."'";
 		}
 
-		$query = "SELECT verifier_id, verified_by,
-			COUNT(verified_status = 'Passed' OR NULL) AS passed, 
-			COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
-			COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
-			COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
-			COUNT(verified_status = 'Pending' OR NULL) AS pending,
-			COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
-			COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
-			COUNT(verified_status = 'Reject C' OR NULL) AS reject_c 
-			FROM qa_forms WHERE created_at >= '$from' AND created_at <= '$to' $qaname_query
-			GROUP BY verifier_id, verified_by;";
+		$query = "SELECT a.verifier_id, a.verified_by,
+			COUNT(a.verified_status = 'Passed' OR NULL) AS passed, 
+			COUNT(a.verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
+			COUNT(a.verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
+			COUNT(a.verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
+			COUNT(a.verified_status = 'Pending' OR NULL) AS pending,
+			COUNT(a.verified_status = 'Reject A' OR NULL) AS reject_a,
+			COUNT(a.verified_status = 'Reject B' OR NULL) AS reject_b,
+			COUNT(a.verified_status = 'Reject C' OR NULL) AS reject_c 
+			FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
+			WHERE b.created_at >= '$from' AND b.created_at <= '$to' $disposition_query
+			GROUP BY a.verifier_id, a.verified_by;;";
 		
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
@@ -352,7 +353,7 @@ class ReportController extends Controller {
 				COUNT(case when a.disposition = 'Partial Survey' then a.id end) AS partialsurvey, 
 				(COUNT(case when a.disposition = 'Partial Survey' then a.id end) * 0.40 ) + (COUNT(case when a.disposition = 'Completed Survey' then a.id end) * 1.75) AS revenue 
 				FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
-				WHERE b.created_at >= '$from'::date AND b.created_at <= '$to'::date AND b.isverified = 1
+				WHERE b.created_at >= '$from'::date AND b.created_at <= '$to'::date AND b.isverified = 1 AND verified_status IN ('Passed-With Changes', 'Passed-Approved')
 				GROUP BY b.created_at::date ORDER BY start_date;";
 
 

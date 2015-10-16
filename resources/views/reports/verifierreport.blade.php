@@ -21,9 +21,13 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-4 control-label">QA Name</label>
+							<label class="col-md-4 control-label">Disposition</label>
 							<div class="col-md-6">
-								{!! Form::select('qa_name', $qa_names, '',array('class' => 'form-control', 'id' => 'qa_name')) !!}
+								<select class="form-control" name="disposition" id="disposition">
+									<option value="All">All</option>
+									<option value="Completed Survey">Completed Survey</option>
+									<option value="Partial Survey">Partial Survey</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -91,7 +95,7 @@ $("#submitVerifierReport").click(function() {
     	$.ajax({
 		url: "api/crm/verifierreport", 
 		type: 'GET',
-		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "qa_name" : $("#qa_name").val()},
+		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "disposition" : $("#disposition").val()},
 		success: function(result){
 		var myObj = $.parseJSON(result);
 		var allTotal = 0;
@@ -148,7 +152,7 @@ $("#submitVerifierReport").click(function() {
 		$.ajax({
 		url: "api/crm/verifierreport", 
 		type: 'GET',
-		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "qa_name" : $("#qa_name").val()},
+		data: {"from" : $("#fromDatetimeAll").val(), "to" :  $("#toDatetimeAll").val(), "disposition" : $("#disposition").val()},
 		success: function(result){
 		var myObj = $.parseJSON(result);
 		var allTotal = 0;

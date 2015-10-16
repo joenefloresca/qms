@@ -473,6 +473,12 @@ class QaController extends Controller {
         return json_encode($verifiedCrm->getVerifiedAll());
     }
 
+    public function getCrmReverify2()
+    {
+        $verifiedCrm = new QaCrm();
+        return json_encode($verifiedCrm->getVerifiedAll());
+    }
+
     public function showReVerifyForm($crmid)
     {
         if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)

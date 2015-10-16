@@ -28,8 +28,6 @@
                             </div>
 
                         </div>
-                        
-
                     </div>
                      
 
@@ -49,9 +47,9 @@
                           @endif
                         @endforeach
                     </div>
-                    <div id="loader" style="position: fixed; left: 50%; top: 50%; display: none;">
+                   <!--  <div id="loader" style="position: fixed; left: 50%; top: 50%; display: none;">
                             <img src="{{ asset('/js/loader.gif') }}"></img>
-                    </div>
+                    </div> -->
 
                     <table id="VerifyList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
@@ -137,11 +135,11 @@ jQuery(function ($){
 
 
 $("#btnDateVerifyList").click(function() {
-     $( "#loader" ).show();
+     // $( "#loader" ).show();
+     alert("Data will now load. Please wait.")
         var status = 'Unverfied';
     if($.fn.dataTable.isDataTable('#VerifyList')) 
     {
-       
         table.destroy();
         table = $('#VerifyList').DataTable();
         table.clear().draw();
@@ -165,11 +163,13 @@ $("#btnDateVerifyList").click(function() {
                     value.gross,
                     value.phone_num,
                     value.created_at,
-                    status,
+                   // status,
+                   'Dont mind me',
                     "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>"
                 ] ).draw();
             });
-            $( "#loader" ).hide();
+            // $( "#loader" ).hide();
+            alert("Data loading complete.");
         }});
     }
     else 
@@ -193,11 +193,13 @@ $("#btnDateVerifyList").click(function() {
                     value.gross,
                     value.phone_num,
                     value.created_at,
-                    status,
+                   // status,
+                   'Dont mind me',
                     "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>"
                 ] ).draw();
             });
-            $( "#loader" ).hide();
+            // $( "#loader" ).hide();
+            alert("Data loading complete.");
         }});
 
         var tt = new $.fn.dataTable.TableTools( table );
