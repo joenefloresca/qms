@@ -141,7 +141,11 @@ $("#btnDateVerifyList").click(function() {
     if($.fn.dataTable.isDataTable('#VerifyList')) 
     {
         table.destroy();
-        table = $('#VerifyList').DataTable();
+        table = $('#VerifyList').DataTable(
+                {
+                    "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+                }
+        );
         table.clear().draw();
         var tt = new $.fn.dataTable.TableTools( table );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
@@ -175,7 +179,9 @@ $("#btnDateVerifyList").click(function() {
     else 
     {
          $( "#loader" ).show();
-        table = $('#VerifyList').DataTable();
+        table = $('#VerifyList').DataTable({
+            "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+        });
         $.ajax({
         url: "api/crm/all2", 
         type: 'GET',

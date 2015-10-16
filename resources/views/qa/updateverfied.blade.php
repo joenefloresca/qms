@@ -116,7 +116,9 @@ $("#btnDateReVerifyList").click(function() {
     if($.fn.dataTable.isDataTable('#ReVerifyList')) 
     {
         table.destroy();
-        table = $('#ReVerifyList').DataTable();
+        table = $('#ReVerifyList').DataTable({
+            "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+        });
         table.clear().draw();
         var tt = new $.fn.dataTable.TableTools( table );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
@@ -148,7 +150,9 @@ $("#btnDateReVerifyList").click(function() {
     }
     else 
     {
-        table = $('#ReVerifyList').DataTable();
+        table = $('#ReVerifyList').DataTable({
+            "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+        });
         $.ajax({
         url: "api/crm/reverify2", 
         type: 'GET',
