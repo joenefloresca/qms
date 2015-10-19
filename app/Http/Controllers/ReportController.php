@@ -207,8 +207,8 @@ class ReportController extends Controller {
 			COUNT(a.verified_status = 'Reject B' OR NULL) AS reject_b,
 			COUNT(a.verified_status = 'Reject C' OR NULL) AS reject_c 
 			FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
-			WHERE b.created_at >= '$from' AND b.created_at <= '$to' $disposition_query
-			GROUP BY a.verifier_id, a.verified_by;;";
+			WHERE a.created_at >= '$from' AND a.created_at <= '$to' $disposition_query
+			GROUP BY a.verifier_id, a.verified_by;";
 		
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
