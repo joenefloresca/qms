@@ -211,7 +211,7 @@ class ReportController extends Controller {
 			COUNT(a.verified_status = 'Reject A' OR NULL) AS reject_a,
 			COUNT(a.verified_status = 'Reject B' OR NULL) AS reject_b,
 			COUNT(a.verified_status = 'Reject C' OR NULL) AS reject_c 
-			FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
+			FROM qa_forms a
 			WHERE a.created_at >= '$from' AND a.created_at <= '$to' $disposition_query
 			GROUP BY a.verifier_id, a.verified_by;";
 		
