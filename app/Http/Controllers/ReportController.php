@@ -185,6 +185,11 @@ class ReportController extends Controller {
 		return view('reports.verifierreport')->with(array('qa_names' => $qa_names));
 	}
 
+	public function showDailyVerifierReport()
+	{
+		return view('reports.dailyverifierreport');
+	}
+
 	public function apiverifierreport()
 	{
 		$from    = Input::get("from");
@@ -209,6 +214,37 @@ class ReportController extends Controller {
 			FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
 			WHERE a.created_at >= '$from' AND a.created_at <= '$to' $disposition_query
 			GROUP BY a.verifier_id, a.verified_by;";
+		
+		$data = DB::connection('pgsql')->select($query);
+		return json_encode($data);		
+	}
+
+	public function apidailyverifierreport()
+	{
+		$from    = Input::get("from");
+		$to      = Input::get("to");
+		$disposition = Input::get("disposition");
+
+		$disposition_query = "";
+		if($disposition != "All")
+		{
+			$disposition_query = "AND disposition = '".$disposition."'";
+		}
+
+		$query = "SELECT created_at::date AS start_date,
+				created_at::date + 1 AS end_date,
+				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
+				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
+				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
+				COUNT(verified_status = 'Pending' OR NULL) AS pending,
+				COUNT(verified_status = 'Reject A' OR NULL) AS reject_a,
+				COUNT(verified_status = 'Reject B' OR NULL) AS reject_b,
+				COUNT(verified_status = 'Reject C' OR NULL) AS reject_c, 
+				COUNT(verified_status = 'Unverified' OR NULL) AS unverified,
+				COUNT(verified_status = 'On The Proccess' OR NULL) AS on_the_process
+				FROM qa_forms 
+				WHERE created_at >= '$from'::date AND created_at <= '$to'::date $disposition_query
+				GROUP BY created_at::date ORDER BY start_date;";
 		
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
