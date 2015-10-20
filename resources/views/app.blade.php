@@ -100,7 +100,7 @@
 									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses Gross</a></li>
 									<li><a href="{{ url('reports/charityresponsesnet') }}">Charity Responses Net</a></li>
 									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
-									<li><a href="{{ url('reports/dailyverifierreport') }}">Daily Verifier Report</a></li>
+									<li><a href="{{ url('reports/dailyverifierreport') }}">Daily Verification Report</a></li>
 									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>
 									<li><a href="{{ url('loginhours') }}">View Login Hours</a></li>
 								</ul>
