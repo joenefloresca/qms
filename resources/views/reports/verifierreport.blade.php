@@ -58,6 +58,8 @@
                                 <th>Reject A</th>
                                 <th>Reject B</th>
                                 <th>Reject C</th>
+                                <th>Unverified</th>
+                                <th>On Process</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -73,6 +75,8 @@
 								<td id="totalRejectA"></td>
 								<td id="totalRejectB"></td>
 								<td id="totalRejectC"></td>
+								<td id="totalVerified"></td>
+								<td id="totalOnProcess"></td>
 								<td id="totalTotal"></td>
 							</tr>
 						</tfoot>
@@ -108,6 +112,8 @@ $("#submitVerifierReport").click(function() {
 		var totalRejectA = 0;
 		var totalRejectB = 0;
 		var totalRejectC = 0;
+		var totalUnverified = 0;
+		var totalOnProcess = 0;
 		var totalTotal = 0;
 	    	$.each(myObj, function(key,value) {
 	    		totalPassed += parseInt(value.passed);
@@ -118,6 +124,8 @@ $("#submitVerifierReport").click(function() {
 	    		totalRejectA += parseInt(value.reject_a);
 	    		totalRejectB += parseInt(value.reject_b);
 	    		totalRejectC += parseInt(value.reject_c);
+	    		totalUnverified += parseInt(value.unverified);
+	    		totalOnProcess += parseInt(value.onprocess);
 	    		allTotal = parseInt(value.passed) + parseInt(value.passed_approved) + parseInt(value.passed_changes) + parseInt(value.passed_unverified) + parseInt(value.pending) + parseInt(value.reject_a) + parseInt(value.reject_b) + parseInt(value.reject_c);
 	    		totalTotal += parseInt(allTotal);
 	    		table.row.add( [
@@ -131,6 +139,8 @@ $("#submitVerifierReport").click(function() {
 		            value.reject_a,
 		            value.reject_b,
 		            value.reject_c,
+		            value.unverified,
+		            value.onprocess,
 		            allTotal
 	        	] ).draw();
 	        	ctr++;
@@ -142,6 +152,9 @@ $("#submitVerifierReport").click(function() {
 			$('#totalPending').html(totalPending);
 			$('#totalRejectA').html(totalRejectA);
 			$('#totalRejectB').html(totalRejectB);
+			$('#totalRejectC').html(totalRejectC);
+			$('#totalVerified').html(totalUnverified);
+			$('#totalOnProcess').html(totalOnProcess);
 			$('#totalRejectC').html(totalRejectC);
 			$('#totalTotal').html(totalTotal);
 		}});
@@ -165,6 +178,8 @@ $("#submitVerifierReport").click(function() {
 		var totalRejectA = 0;
 		var totalRejectB = 0;
 		var totalRejectC = 0;
+		var totalUnverified = 0;
+		var totalOnProcess = 0;
 		var totalTotal = 0;
 	    	$.each(myObj, function(key,value) {
 	    		totalPassed += parseInt(value.passed);
@@ -175,6 +190,8 @@ $("#submitVerifierReport").click(function() {
 	    		totalRejectA += parseInt(value.reject_a);
 	    		totalRejectB += parseInt(value.reject_b);
 	    		totalRejectC += parseInt(value.reject_c);
+	    		totalUnverified += parseInt(value.unverified);
+	    		totalOnProcess += parseInt(value.onprocess);
 	    		allTotal = parseInt(value.passed) + parseInt(value.passed_approved) + parseInt(value.passed_changes) + parseInt(value.passed_unverified) + parseInt(value.pending) + parseInt(value.reject_a) + parseInt(value.reject_b) + parseInt(value.reject_c);
 	    		totalTotal += parseInt(allTotal);
 	    		table.row.add( [
@@ -188,6 +205,8 @@ $("#submitVerifierReport").click(function() {
 		            value.reject_a,
 		            value.reject_b,
 		            value.reject_c,
+		            value.unverified,
+		            value.onprocess,
 		            allTotal
 	        	] ).draw();
 	        	ctr++;
@@ -200,6 +219,8 @@ $("#submitVerifierReport").click(function() {
 			$('#totalRejectA').html(totalRejectA);
 			$('#totalRejectB').html(totalRejectB);
 			$('#totalRejectC').html(totalRejectC);
+			$('#totalVerified').html(totalUnverified);
+			$('#totalOnProcess').html(totalOnProcess);
 			$('#totalTotal').html(totalTotal);
 		}});
 

@@ -31,8 +31,7 @@
 							<div class="col-md-6">
 								<select name="dispositionQaSummary" id="dispositionQaSummary" class="form-control">
 									<option value="Completed Survey">Completed Survey</option>
-									<option value="MCS Record">MCS Record</option>
-									<option value="Hibernate">Hibernate</option>
+									<option value="Partial Survey">Partial Survey</option>
 									<option value="All" selected="">All</option>
 								</select>
 							</div>

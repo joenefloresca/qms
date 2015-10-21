@@ -152,8 +152,7 @@ class ReportController extends Controller {
 				        , count(response = 'Possbily' OR NULL) AS ct_maybe
 				   FROM   qa_responses 
 						INNER JOIN qa_forms ON qa_responses.qa_forms_id = qa_forms.id
-            INNER JOIN forms ON forms.id = qa_forms.orig_crm_id
-				   WHERE  forms.created_at >= '$from' AND forms.created_at <= '$to'
+				   WHERE  qa_forms.calldatetime >= '$from' AND qa_forms.calldatetime <= '$to'
 				   GROUP  BY 1
 				   ) r
 				JOIN questions q ON q.id = r.question_id
@@ -210,9 +209,11 @@ class ReportController extends Controller {
 			COUNT(a.verified_status = 'Pending' OR NULL) AS pending,
 			COUNT(a.verified_status = 'Reject A' OR NULL) AS reject_a,
 			COUNT(a.verified_status = 'Reject B' OR NULL) AS reject_b,
-			COUNT(a.verified_status = 'Reject C' OR NULL) AS reject_c 
+			COUNT(a.verified_status = 'Reject C' OR NULL) AS reject_c,
+			COUNT(a.verified_status = 'Unverified' OR NULL) AS unverified,
+			COUNT(a.verified_status = 'On The Proccess' OR NULL) AS onprocess
 			FROM qa_forms a
-			WHERE a.created_at >= '$from' AND a.created_at <= '$to' $disposition_query
+			WHERE a.calldatetime >= '$from' AND a.calldatetime <= '$to' $disposition_query
 			GROUP BY a.verifier_id, a.verified_by;";
 		
 		$data = DB::connection('pgsql')->select($query);
@@ -231,8 +232,8 @@ class ReportController extends Controller {
 			$disposition_query = "AND disposition = '".$disposition."'";
 		}
 
-		$query = "SELECT created_at::date AS start_date,
-				created_at::date + 1 AS end_date,
+		$query = "SELECT calldatetime::date AS start_date,
+				calldatetime::date + 1 AS end_date,
 				COUNT(verified_status = 'Passed-Approved' OR NULL) AS passed_approved,
 				COUNT(verified_status = 'Passed-With Changes' OR NULL) AS passed_changes,
 				COUNT(verified_status = 'Passed-Unverified' OR NULL) AS passed_unverified,
@@ -243,8 +244,8 @@ class ReportController extends Controller {
 				COUNT(verified_status = 'Unverified' OR NULL) AS unverified,
 				COUNT(verified_status = 'On The Proccess' OR NULL) AS on_the_process
 				FROM qa_forms 
-				WHERE created_at >= '$from'::date AND created_at <= '$to'::date $disposition_query
-				GROUP BY created_at::date ORDER BY start_date;";
+				WHERE calldatetime >= '$from'::date AND calldatetime <= '$to'::date $disposition_query
+				GROUP BY calldatetime::date ORDER BY start_date asc;";
 		
 		$data = DB::connection('pgsql')->select($query);
 		return json_encode($data);		
@@ -383,15 +384,36 @@ class ReportController extends Controller {
 		$from = Input::get("from");
 		$to   = Input::get("to");
 
-		$query = "SELECT b.created_at::date AS start_date,
-				b.created_at::date + 1 AS end_date,
+		$query = "SELECT a.calldatetime::date AS start_date,
+				a.calldatetime::date + 1 AS end_date,
 				COUNT(case when a.disposition = 'Completed Survey' then a.id end) AS completedsurvey, 
 				COUNT(case when a.disposition = 'Partial Survey' then a.id end) AS partialsurvey, 
 				(COUNT(case when a.disposition = 'Partial Survey' then a.id end) * 0.40 ) + (COUNT(case when a.disposition = 'Completed Survey' then a.id end) * 1.75) AS revenue 
-				FROM qa_forms a INNER JOIN forms b ON b.id = a.orig_crm_id
-				WHERE b.created_at >= '$from'::date AND b.created_at <= '$to'::date AND b.isverified = 1 AND verified_status IN ('Passed-With Changes', 'Passed-Approved')
-				GROUP BY b.created_at::date ORDER BY start_date;";
+				FROM qa_forms a
+				WHERE a.calldatetime >= '$from'::date AND a.calldatetime <= '$to'::date AND verified_status IN ('Passed-With Changes', 'Passed-Approved')
+				GROUP BY a.calldatetime::date ORDER BY start_date;";
 
+
+		$data = DB::connection('pgsql')->select($query);		
+
+		return json_encode($data);
+	}
+
+	public function showDetailedSummary()
+	{
+		return view('reports.detailedsummary');
+	}
+
+	public function apidetailedsummary()
+	{
+		$from = Input::get("from");
+		$to   = Input::get("to");
+
+		$query = "select a.calldatetime, a.phone_num, c.name as agent, b.disposition as gross_disposition, a.disposition as net_disposition, a.verified_status,
+		a.passwithchanges_status, a.reject_a_status, a.reject_b_status, a.reject_c_status, a.verified_by, a.created_at as verified_date, a.comments
+		from qa_forms a inner join forms b on a.phone_num = b.phone_num inner join users c on c.id = a.agent_id 
+		where a.calldatetime >= '$from' and a.calldatetime <= '$to'
+		order by a.calldatetime asc;";
 
 		$data = DB::connection('pgsql')->select($query);		
 
@@ -400,4 +422,3 @@ class ReportController extends Controller {
 
 
 }
-
