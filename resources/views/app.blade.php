@@ -97,8 +97,8 @@
 									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
 									<li><a href="{{ url('reports/campaigngrossperformance') }}">Campaign Gross Performance</a></li>
 									<li><a href="{{ url('reports/campaignnetperformance') }}">Campaign Net Performance</a></li>
-									<li><a href="{{ url('reports/charityresponses') }}">Charity Responses Gross</a></li>
-									<li><a href="{{ url('reports/charityresponsesnet') }}">Charity Responses Net</a></li>
+									<li><a href="{{ url('reports/charityresponses') }}">Questionnaire Responses Gross</a></li>
+									<li><a href="{{ url('reports/charityresponsesnet') }}">Questionnaire Responses Net</a></li>
 									<li><a href="{{ url('reports/verifierreport') }}">Verifier Report</a></li>
 									<li><a href="{{ url('reports/dailyverifierreport') }}">Daily Verification Report</a></li>
 									<li><a href="{{ url('reports/qasummary') }}">Qa Summary Report</a></li>

@@ -285,6 +285,8 @@ class QaController extends Controller {
 
     public function postVerify($id)
     {
+
+
         $rules = array(
             'disposition'    => 'required',
             'gender'         => 'required',
@@ -315,6 +317,8 @@ class QaController extends Controller {
         }
         else
         {
+            
+            $formid                 = $id;
             $gross                  = Input::get("gross");
             $rev                    = Input::get("new_gross");
             $disposition            = Input::get("disposition");
@@ -345,6 +349,7 @@ class QaController extends Controller {
             $reject_b_status        = Input::get("reject_b_status");
             $reject_c_status        = Input::get("reject_c_status");
             $tracking_urn           = md5($phone_num.date("Y-m-d H:i:s"));
+            $calldatetime           = Input::get("calldatetime");
 
             $qacrm = new QaCrm();
             $qacrm->disposition = $disposition;
@@ -371,7 +376,7 @@ class QaController extends Controller {
             $qacrm->ispermanentresident = $isukresident;
             $qacrm->agent_id = $agent_id;
             $qacrm->customer_id = $customer_id;
-            $qacrm->orig_crm_id = $id;
+            $qacrm->orig_crm_id = $formid;
             $qacrm->comments = $comments;
             $qacrm->verified_status = $verified_status;
             $qacrm->passwithchanges_status = $passwithchanges_status;
@@ -381,6 +386,7 @@ class QaController extends Controller {
             $qacrm->verified_by = Auth::user()->name;
             $qacrm->verifier_id = Auth::user()->id;
             $qacrm->trackingurn = $tracking_urn;
+            $qacrm->calldatetime = $calldatetime;
 
             if($qacrm->save())
             {

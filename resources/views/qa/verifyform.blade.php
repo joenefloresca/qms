@@ -191,6 +191,13 @@
 									</div>
 								</div> 
 
+								<div class="form-group col-md-6">
+									<label class="col-md-4 control-label">Call Date</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" name="calldatetime" id="calldatetime" value="{{$crm->created_at}}" readonly>
+									</div>
+								</div> 
+
 				        	</div> 
 			        	</div>
 
