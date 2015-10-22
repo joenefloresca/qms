@@ -63,7 +63,7 @@ var progress = $(".loading-progress").progressTimer({
 });
 
 $('#Question').summernote();
-$('#comments').summernote();
+// $('#comments').summernote();
 $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
 

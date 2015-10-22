@@ -410,7 +410,7 @@ class ReportController extends Controller {
 		$to   = Input::get("to");
 
 		$query = "select a.calldatetime, a.phone_num, c.name as agent, b.disposition as gross_disposition, a.disposition as net_disposition, a.verified_status,
-		a.passwithchanges_status, a.reject_a_status, a.reject_b_status, a.reject_c_status, a.verified_by, a.created_at as verified_date, a.comments
+		a.passwithchanges_status, concat(a.reject_a_status, a.reject_b_status, a.reject_c_status) as reject_status, a.verified_by, a.created_at as verified_date, a.comments
 		from qa_forms a inner join forms b on a.phone_num = b.phone_num inner join users c on c.id = a.agent_id 
 		where a.calldatetime >= '$from' and a.calldatetime <= '$to'
 		order by a.calldatetime asc;";

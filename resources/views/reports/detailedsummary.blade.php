@@ -52,9 +52,7 @@
                                 <th>Net Disposition</th>
                                 <th>Verified Status</th>
                                 <th>Passed-Changes Status</th>
-                                <th>Reject A Status</th>
-                                <th>Reject B Status</th>
-                                <th>Reject C Status</th>
+                                <th>Reject Status</th>
                                 <th>Verified By</th>
                                 <th>Verified Date</th>
                                 <th>Remarks</th>
@@ -78,7 +76,12 @@ $("#btnDateDetailedSummary").click(function() {
 	if($.fn.dataTable.isDataTable('#DetailedSummary')) 
 	{
     	table.destroy();
-    	table = $('#DetailedSummary').DataTable();
+    	//table = $('#DetailedSummary').DataTable();
+    	table = $('#DetailedSummary').DataTable(
+                {
+                    "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+                }
+        );
     	table.clear().draw();
     	var tt = new $.fn.dataTable.TableTools( table );
 	    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
@@ -98,9 +101,7 @@ $("#btnDateDetailedSummary").click(function() {
 		            value.net_disposition,	
 		            value.verified_status,	
 		            value.passwithchanges_status,	
-		            value.reject_a_status,	
-		            value.reject_b_status,	
-		            value.reject_c_status,	
+		            value.reject_status,	
 		            value.verified_by,	
 		            value.verified_date,	
 		            value.comments
@@ -112,7 +113,12 @@ $("#btnDateDetailedSummary").click(function() {
 	}
     else 
     {
-	    table = $('#DetailedSummary').DataTable();
+	    //table = $('#DetailedSummary').DataTable();
+	    table = $('#DetailedSummary').DataTable(
+                {
+                    "lengthMenu": [ [10, 25, 50, 500, -1], [10, 25, 50, 500, "All"] ]
+                }
+        );
 	    $.ajax({
 		url: "api/crm/detailedsummary", 
 		type: 'GET',
@@ -128,9 +134,7 @@ $("#btnDateDetailedSummary").click(function() {
 		            value.net_disposition,	
 		            value.verified_status,	
 		            value.passwithchanges_status,	
-		            value.reject_a_status,	
-		            value.reject_b_status,	
-		            value.reject_c_status,	
+		            value.reject_status,		
 		            value.verified_by,	
 		            value.verified_date,	
 		            value.comments
