@@ -269,13 +269,38 @@ class QaController extends Controller {
 
     public function showVerifyForm($crmid)
     {
-        Crm::where('id', '=', $crmid)->update(['verify_status' => 1]);
+        
+
         if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
-            $crm = Crm::find($crmid);
-            $agent_name = User::find($crm->agent_id);
-            $responses = new Response();
-            return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+
+            $checkCrmAssigned = Crm::find($crmid);
+            $verifer = Auth::user()->name;
+
+            if($checkCrmAssigned->assigned_verifier == '' && $checkCrmAssigned->verify_status == 0)
+            {   
+                Crm::where('id', '=', $crmid)->update(['verify_status' => 1, 'assigned_verifier' => $verifer]);
+
+                $crm = Crm::find($crmid);
+                $agent_name = User::find($crm->agent_id);
+                $responses = new Response();
+                return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+            }
+            else if($checkCrmAssigned->assigned_verifier != '' && $checkCrmAssigned->verify_status == 1 && $checkCrmAssigned->assigned_verifier == $verifer)
+            {
+                $crm = Crm::find($crmid);
+                $agent_name = User::find($crm->agent_id);
+                $responses = new Response();
+                return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
+            }
+            else
+            {   
+                Session::flash('alert-danger', 'This record is already opened for '.$checkCrmAssigned->assigned_verifier);
+                return Redirect::to('qa/verifylist');
+            }
+
+
+            
         }
         else
         {
