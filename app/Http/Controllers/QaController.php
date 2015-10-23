@@ -258,7 +258,7 @@ class QaController extends Controller {
         $from =  Input::get("from");
         $to =   Input::get("to");
 
-        $query = "SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at, a.isverified
+        $query = "SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at, a.isverified, a.verify_status
             FROM forms a 
             INNER JOIN users b ON a.agent_id = b.id 
             WHERE a.created_at >= '$from' AND a.created_at <= '$to' AND a.isverified = 0
@@ -269,6 +269,7 @@ class QaController extends Controller {
 
     public function showVerifyForm($crmid)
     {
+        Crm::where('id', '=', $crmid)->update(['verify_status' => 1]);
         if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
             $crm = Crm::find($crmid);

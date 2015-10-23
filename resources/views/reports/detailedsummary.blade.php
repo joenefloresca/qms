@@ -92,7 +92,6 @@ $("#btnDateDetailedSummary").click(function() {
 		success: function(result){
 		var myObj = $.parseJSON(result);
 	    	$.each(myObj, function(key,value) {
-       
 	    		table.row.add( [
 		            value.calldatetime,	
 		            value.phone_num,	
@@ -104,8 +103,7 @@ $("#btnDateDetailedSummary").click(function() {
 		            value.reject_status,	
 		            value.verified_by,	
 		            value.verified_date,	
-		            value.comments
-		           
+		            value.comment.replace(/(<([^>]+)>)/ig,"")
 	        	] ).draw();
 			});
 		}});
@@ -137,8 +135,7 @@ $("#btnDateDetailedSummary").click(function() {
 		            value.reject_status,		
 		            value.verified_by,	
 		            value.verified_date,	
-		            value.comments
-		           
+		            value.comments.replace(/(<([^>]+)>)/ig,"")
 	        	] ).draw();
 			});
 		}});

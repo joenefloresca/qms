@@ -455,6 +455,18 @@
                                     <tr id="{{ $value->columnheader }}block" class="{{$class}}">
                                         <td>{!! $value->question !!}</td>
                                         <td>
+                                        	<?php
+                                        		// if($value->is_child == 0)
+                                        		// {	
+                                        		// 	$options = explode(",",$value->parent_enable_response);
+                                        		// }
+                                        		// else
+                                        		// {
+                                        		// 	$options = explode(",",$value->child_lead_respponse);
+                                        		// }
+
+                                        		// var_dump($options);
+                                        	?>
                                         	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
                                         		<option value=""></option>
 	                                        	<?php

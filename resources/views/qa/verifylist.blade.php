@@ -137,7 +137,7 @@ jQuery(function ($){
 $("#btnDateVerifyList").click(function() {
      // $( "#loader" ).show();
      alert("Data will now load. Please wait.")
-        var status = 'Unverfied';
+     var verify_status = '';
     if($.fn.dataTable.isDataTable('#VerifyList')) 
     {
         table.destroy();
@@ -157,7 +157,7 @@ $("#btnDateVerifyList").click(function() {
         success: function(result){
         var myObj = $.parseJSON(result);
             $.each(myObj, function(key,value) {
-                if(value.isverified == 1) {status = 'On the process'}
+                if(value.verify_status == 1) {verify_status = 'On the process';}else{verify_status = 'Unverified';}
 
                 table.row.add( [
                     value.crmid, 
@@ -167,8 +167,9 @@ $("#btnDateVerifyList").click(function() {
                     value.gross,
                     value.phone_num,
                     value.created_at,
+                    verify_status,
                    // status,
-                   'Dont mind me',
+                  // 'Dont mind me',
                     "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>"
                 ] ).draw();
             });
@@ -189,7 +190,7 @@ $("#btnDateVerifyList").click(function() {
         success: function(result){
         var myObj = $.parseJSON(result);
             $.each(myObj, function(key,value) {
-                if(value.isverified == 1) {status = 'On the process'}
+                if(value.verify_status == 1) {verify_status = 'On the process';}else{verify_status = 'Unverified';}
 
                 table.row.add( [
                     value.crmid, 
@@ -199,8 +200,9 @@ $("#btnDateVerifyList").click(function() {
                     value.gross,
                     value.phone_num,
                     value.created_at,
+                    verify_status,
                    // status,
-                   'Dont mind me',
+                   //'Dont mind me',
                     "<a class='btn btn-small btn-info' href='<?php echo URL::to('qa').'/verify/';?>"+value.crmid+"'><span class='glyphicon glyphicon glyphicon-edit' aria-hidden='true'></span></a>"
                 ] ).draw();
             });
