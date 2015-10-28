@@ -299,6 +299,8 @@ class QuestionController extends Controller {
             $question->columnheader = Input::get('ColumnHeader');
             $question->deliveryassignment = Input::get('DeliveryAssignment');
             $question->isenabled = Input::get('IsEnabled');
+            $question->status = Input::get('status');
+            $question->old_question = Input::get('QuestionOld');
             //$question->sortorder = Input::get('sortorder');
         	$question->save();
 

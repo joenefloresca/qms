@@ -37,6 +37,13 @@
 						</div>
 
 						<div class="form-group">
+							<label class="col-md-4 control-label">Old Question</label>
+							<div class="col-md-6">
+								<textarea name="QuestionOld" id="QuestionOld" class="form-control" row="7">{!! $question->old_question !!}</textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
 							<label class="col-md-4 control-label">Lead Reponse</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="lead_response" id="lead_response" value="{!! $question->parent_enable_response !!}" placeholder="Ex. Yes,Possibly">
@@ -166,6 +173,13 @@
 							<label class="col-md-4 control-label">Is Enabled</label>
 							<div class="col-md-6">
 								{!! Form::select('IsEnabled', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $question->isenabled, array('class' => 'form-control')) !!}
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Status</label>
+							<div class="col-md-6">
+								{!! Form::select('status', ['' => 'Choose One', 'Re-Activate' => 'Re-Activate', 'New Question' => 'New Question', 'Updated Question' => 'Updated Question'], $question->status, array('class' => 'form-control')) !!}
 							</div>
 						</div>
 

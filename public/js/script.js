@@ -63,6 +63,7 @@ var progress = $(".loading-progress").progressTimer({
 });
 
 $('#Question').summernote();
+$('#QuestionOld').summernote();
 // $('#comments').summernote();
 $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
@@ -91,6 +92,10 @@ jQuery('#toDatetimeAll').datetimepicker({
 jQuery('#birthdate').datetimepicker({
   format:'Y-m-d',
   timepicker:false,
+});
+
+jQuery('.time-input').datetimepicker({
+  format:'Y-m-d H:i:s',
 });
 
 // $.ajax({

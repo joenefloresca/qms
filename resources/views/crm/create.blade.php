@@ -115,7 +115,7 @@
                     			</div>
 							</div>
 						</div> -->
-						<div class="form-group" style="visibility: hidden">
+						<div class="form-group" style="">
 							<label class="col-md-5 control-label text-success">Gross Revenue</label>
 							<div class="col-md-6">
 								<div class="input-group">
@@ -456,45 +456,64 @@
                                         <td>{!! $value->question !!}</td>
                                         <td>
                                         	<?php
-                                        		// if($value->is_child == 0)
-                                        		// {	
-                                        		// 	$options = explode(",",$value->parent_enable_response);
-                                        		// }
-                                        		// else
-                                        		// {
-                                        		// 	$options = explode(",",$value->child_lead_respponse);
-                                        		// }
+                                        		if($value->is_child == 0)
+                                        		{	
+                                        			$options = explode(",",$value->parent_enable_response);
+                                        		}
+                                        		else
+                                        		{
+                                        			$options = explode(",",$value->child_lead_respponse);
+                                        		}
 
-                                        		// var_dump($options);
+                                        		$isTime = $options[0];
+
+                                        		if($isTime != 'Time')
+                                        		{
+
+                                        		  
+
+                                        		//var_dump($options[0]);
                                         	?>
-                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
-                                        		<option value=""></option>
-	                                        	<?php
-	                                        	
-	                                        		if($value->is_child == 0)
-	                                        		{	
-	                                        			$options = explode(",",$value->parent_enable_response);
-	                                        		}
-	                                        		else
-	                                        		{
-	                                        			$options = explode(",",$value->child_lead_respponse);
-	                                        		}
-	                                        		
+		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
+		                                        		<option value=""></option>
+			                                        	<?php
+			                                        	
+			                                        		if($value->is_child == 0)
+			                                        		{	
+			                                        			$options = explode(",",$value->parent_enable_response);
+			                                        		}
+			                                        		else
+			                                        		{
+			                                        			$options = explode(",",$value->child_lead_respponse);
+			                                        		}
+			                                        		
 
-	                                        		foreach ($options as $key) {
-	                                        			echo "<option value='$key'>".$key."</option>";
-	                                        		}
-	                                        	?>
-	                                        	<option value="">N/A</option>
-                                        	</select>
-                                        	<!-- <input type="text" class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" onblur="return get_response(this);" placeholder="Ex. Yes, No, Possibly" disabled> -->
-                                        	<input type="hidden" class="form-control" name="hidden_val_{{ $value->columnheader }}" id="hidden_val_{{ $value->columnheader }}" value="{{ $value->costperlead }}">
-                                        	<!-- <select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
-                                        		<option value=""></option>
-                                        		<option value="Yes">Yes</option>
-                                        		<option value="No">No</option>
-                                        		<option value="Possibly">Possibly</option>
-                                        	</select> -->
+			                                        		foreach ($options as $key) {
+			                                        			echo "<option value='$key'>".$key."</option>";
+			                                        		}
+			                                        	?>
+			                                        	<option value="">N/A</option>
+		                                        	</select>
+		                                        	<!-- <input type="text" class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" onblur="return get_response(this);" placeholder="Ex. Yes, No, Possibly" disabled> -->
+		                                        	<input type="hidden" class="form-control" name="hidden_val_{{ $value->columnheader }}" id="hidden_val_{{ $value->columnheader }}" value="{{ $value->costperlead }}">
+		                                        	<!-- <select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this);" disabled>
+		                                        		<option value=""></option>
+		                                        		<option value="Yes">Yes</option>
+		                                        		<option value="No">No</option>
+		                                        		<option value="Possibly">Possibly</option>
+		                                        	</select> -->
+                                        	<?php 
+                                        			}
+                                        			else
+                                        			{
+                                        	?>		
+                                        			<input type="text" class="form-control time-input" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" onfocusout="return get_response(this), enable_next(this);" disabled>
+                                        			<input type="hidden" class="form-control" name="hidden_val_{{ $value->columnheader }}" id="hidden_val_{{ $value->columnheader }}" value="{{ $value->costperlead }}">	
+
+                                        	<?php
+                                        			}
+                                        	?>		
+                                        	
                                         </td>
                                     </tr>
                                 @endforeach
@@ -599,10 +618,13 @@ function get_response(id)
 
     var result = $.grep(records, function(e){ return e.columnheader == currentheader; });
 
+    //console.log(result);
+    //console.log(parent_response_enable);
+
 
     if (result.length == 1)
     {
-    	//console.log("Child count is "+result[0].child_count)
+    	console.log("Child count is "+result[0].child_count)
     	if(result[0].child_count > 0)
     	{
     		 //console.log("Has child questions.");
@@ -686,56 +708,75 @@ function get_response(id)
 	    			var checkchild = $.grep(records, function(e){ return e.parent_colheader == parent && e.columnheader == nextcolheader; });
 	    			var child_lead_respponse = checkchild[0].child_lead_respponse.split(',');
 	    			//console.log(checkchild);
-	    			//console.log(child_lead_respponse);
+	    			console.log(child_lead_respponse);
 
 	    		
 	    			
 	    			if(checkchild.length == 1)
 	    		    {
+			    		if(child_lead_respponse == 'Time')
+			    		{
+		    				current_gross = current_gross + parseFloat(cost);
+							$("#CRMGross").val(current_gross.toFixed(2));
+							$("#"+currentheader+"block").css("display","none");
+			    		}
+			    		else
+			    		{
+			    			if($.inArray($("#"+currentheader).val(), child_lead_respponse) >= 0)
+							{
+								$('#'+nextcolheader2).prop("disabled", false);
+
+								if($.inArray(response, child_lead_respponse) >= 0)
+								{
+									current_gross = current_gross + parseFloat(cost);
+									$("#CRMGross").val(current_gross.toFixed(2));
+									$("#"+currentheader+"block").css("display","none");
+								}
+								else
+								{
+									$("#"+currentheader+"block").css("display","none");
+								}
+							}
+							else
+							{
+								$('#'+nextcolheader2).prop("disabled", true);
+
+								if($.inArray(response, parent_response_enable) >= 0)
+								{
+									current_gross = current_gross + parseFloat(cost);
+									$("#CRMGross").val(current_gross.toFixed(2));
+									$("#"+currentheader+"block").css("display","none");
+								}
+								else
+								{
+									$("#"+currentheader+"block").css("display","none");
+								}
+							}
+			    		}
 			    		
-			    		if($.inArray($("#"+currentheader).val(), child_lead_respponse) >= 0)
-						{
-							$('#'+nextcolheader2).prop("disabled", false);
-
-							if($.inArray(response, child_lead_respponse) >= 0)
-							{
-								current_gross = current_gross + parseFloat(cost);
-								$("#CRMGross").val(current_gross.toFixed(2));
-								$("#"+currentheader+"block").css("display","none");
-							}
-							else
-							{
-								$("#"+currentheader+"block").css("display","none");
-							}
-						}
-						else
-						{
-							$('#'+nextcolheader2).prop("disabled", true);
-
-							if($.inArray(response, parent_response_enable) >= 0)
-							{
-								current_gross = current_gross + parseFloat(cost);
-								$("#CRMGross").val(current_gross.toFixed(2));
-								$("#"+currentheader+"block").css("display","none");
-							}
-							else
-							{
-								$("#"+currentheader+"block").css("display","none");
-							}
-						}
 	    		    }
 	    		    else
 	    		    {
-			    		if($.inArray(response, child_lead_respponse) >= 0)
-						{
-							current_gross = current_gross + parseFloat(cost);
+	    		    	if(child_lead_respponse == 'Time')
+	    		    	{
+	    		    		current_gross = current_gross + parseFloat(cost);
 							$("#CRMGross").val(current_gross.toFixed(2));
 							$("#"+currentheader+"block").css("display","none");
-						}
-						else
-						{
-							$("#"+currentheader+"block").css("display","none");
-						}
+	    		    	}
+	    		    	else
+	    		    	{
+	    		    		if($.inArray(response, child_lead_respponse) >= 0)
+							{
+								current_gross = current_gross + parseFloat(cost);
+								$("#CRMGross").val(current_gross.toFixed(2));
+								$("#"+currentheader+"block").css("display","none");
+							}
+							else
+							{
+								$("#"+currentheader+"block").css("display","none");
+							}
+	    		    	}
+			    		
 	    		    }
 	    		}
     		}
@@ -1211,7 +1252,7 @@ function checkAgentLoginHoursLive(){
 	});
 }
 
-checkAgentLoginHours();
+//checkAgentLoginHours();
 function checkAgentLoginHours(){
 	$.ajax({
 		url: "api/agent/loginhours",  
@@ -1227,7 +1268,7 @@ function checkAgentLoginHours(){
 	});
 }
 
-getCompletedSurvey();
+//getCompletedSurvey();
 function getCompletedSurvey(){
 	$.ajax({
 		url: "api/agent/completedsurvey",  
@@ -1246,7 +1287,7 @@ function getCompletedSurvey(){
 	});
 }
 
-getPartitalSurvey();
+//getPartitalSurvey();
 function getPartitalSurvey(){
 	$.ajax({
 		url: "api/agent/partialsurvey",  
@@ -1265,7 +1306,7 @@ function getPartitalSurvey(){
 	});
 }
 
-checkAgentDayGross();
+//checkAgentDayGross();
 function checkAgentDayGross(){
 	$.ajax({
 		url: "api/agent/daygross",  
