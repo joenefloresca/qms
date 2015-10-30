@@ -94,7 +94,8 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> Reports <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance</a></li>
+									<li><a href="{{ url('reports/agentperformance') }}">Agent Performance Gross</a></li>
+									<li><a href="{{ url('reports/agentperformancenet') }}">Agent Performance Net</a></li>
 									<li><a href="{{ url('reports/campaigngrossperformance') }}">Campaign Gross Performance</a></li>
 									<li><a href="{{ url('reports/campaignnetperformance') }}">Campaign Net Performance</a></li>
 									<li><a href="{{ url('reports/charityresponses') }}">Questionnaire Responses Gross</a></li>
@@ -237,6 +238,7 @@
 	</script>
 	@yield('CrmCreate')
 	@yield('agentperformance')
+	@yield('agentperformancenet')
 	@yield('campaigngrossperformance')
 	@yield('campaignnetperformance')
 	@yield('charityresponses')
