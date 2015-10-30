@@ -3080,7 +3080,7 @@ TableTools.classes_themeroller = {
  */
 TableTools.DEFAULTS = {
 	// "sSwfPath":        "../swf/copy_csv_xls_pdf.swf",
-	"sSwfPath":        "http://qdf-satcrm.cloudapp.net/copy_csv_xls_pdf.swf",
+	"sSwfPath":        "http://qdfcrm.cloudapp.net/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
 	"sRowSelector":    "tr",
 	"sSelectedClass":  null,
