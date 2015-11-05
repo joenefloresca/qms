@@ -25,23 +25,23 @@
 				          @endif
 				        @endforeach
 			        </div>
-                    
+
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('qa/postverify/'.$crm->id) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="agent_id" id="agent_id" value="{{ $crm->agent_id }}">
 						<input type="hidden" name="customer_id" id="customer_id" value="{{ $crm->customer_id }}">
 						<input type="hidden" class="form-control" name="orig_crm_id" id="orig_crm_id" value="{{$crm->id}}">
 
-						<div class="panel panel-info"> 
+						<div class="panel panel-info">
 				        	<div class="panel-heading">Client Information</div>
-				        	<div class="panel-body"> 
+				        	<div class="panel-body">
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Gross</label>
 									<div class="col-md-6">
 										<input type="text" class="form-control" name="gross" id="gross" value="{{$crm->gross}}" readonly>
 									</div>
-								</div> 
+								</div>
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Disposition</label>
@@ -147,7 +147,7 @@
 										{!! Form::select('age_bracket', ['' => 'Choose One', '18-29' => '18-29', '30-39' => '30-39', '40-49' => '40-49', '50-59' => '50-59', '60-64'=>'60-64', '65-75'=>'65-75', '75+' => '75+'], $crm->age_bracket, array('class' => 'form-control')) !!}
 									</div>
 								</div>
-								
+
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Work Status</label>
@@ -159,21 +159,21 @@
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Home Status</label>
 									<div class="col-md-4">
-										{!! Form::select('home_status', ['' => 'Choose One', 'Own Home' => 'Own Home', 'Renting' => 'Renting', 'Living with Family/Friend' => 'Living with Family/Friend', 'Not Answered' => 'Not Answered'], $crm->home_status, array('class' => 'form-control')) !!}						
+										{!! Form::select('home_status', ['' => 'Choose One', 'Own Home' => 'Own Home', 'Renting' => 'Renting', 'Living with Family/Friend' => 'Living with Family/Friend', 'Not Answered' => 'Not Answered'], $crm->home_status, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Marital Status</label>
 									<div class="col-md-4">
-										{!! Form::select('marital_status', ['' => 'Choose One', 'Married or Co-Habiting' => 'Married or Co-Habiting', 'Single or Never Married' => 'Single or Never Married', 'Married or Co-habiting' => 'Married or Co-habiting', 'Widowed' => 'Widowed', 'Divorced' => 'Divorced', 'Separated' => 'Separated', 'Others' => 'Others'], $crm->marital_status, array('class' => 'form-control')) !!}		
+										{!! Form::select('marital_status', ['' => 'Choose One', 'Married or Co-Habiting' => 'Married or Co-Habiting', 'Single or Never Married' => 'Single or Never Married', 'Married or Co-habiting' => 'Married or Co-habiting', 'Widowed' => 'Widowed', 'Divorced' => 'Divorced', 'Separated' => 'Separated', 'Others' => 'Others'], $crm->marital_status, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Is UK Permanent Resident?</label>
 									<div class="col-md-4">
-										{!! Form::select('ispermanentresident', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $crm->ispermanentresident, array('class' => 'form-control')) !!}		
+										{!! Form::select('ispermanentresident', ['' => 'Choose One', 'Yes' => 'Yes', 'No' => 'No'], $crm->ispermanentresident, array('class' => 'form-control')) !!}
 									</div>
 								</div>
 
@@ -189,16 +189,16 @@
 									<div class="col-md-6">
 										<input type="text" class="form-control" name="new_gross" id="new_gross" value="{{$crm->gross}}" readonly>
 									</div>
-								</div> 
+								</div>
 
 								<div class="form-group col-md-6">
 									<label class="col-md-4 control-label">Call Date</label>
 									<div class="col-md-6">
 										<input type="text" class="form-control" name="calldatetime" id="calldatetime" value="{{$crm->created_at}}" readonly>
 									</div>
-								</div> 
+								</div>
 
-				        	</div> 
+				        	</div>
 			        	</div>
 
 			        	<!-- <div style="padding-bottom: 6px; padding-top: 6px">
@@ -245,7 +245,7 @@
 													@endforeach
 												</tbody>
 										   </table>
-										</div> 
+										</div>
 									</div>
 						      </div>
 						      <div class="modal-footer">
@@ -258,7 +258,7 @@
 
 						<div style="padding-bottom: 8px">
 							<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showReponse">Show Responses</button>
-						</div> 
+						</div>
 						<div id="showReponse" class="collapse out">
 				        	<div class="panel panel-info">
 								<div class="panel-heading">Question Responses</div>
@@ -282,7 +282,7 @@
 													<!-- <input type="text" class="form-control" name="{{$response->columnheader}}" value="{{$response->response}}"> -->
 													<select class="form-control myselectbox" name="{{$response->columnheader}}" id="{{$response->columnheader}}">
 														<option value="{{$response->response}}" selected>{{$response->response}}</option>
-														<?php  
+														<?php
 															if($response->child_lead_respponse == "" || $response->child_lead_respponse == NULL)
 															{
 																$options = explode(",",$response->parent_enable_response);
@@ -300,6 +300,7 @@
 														?>
 														<option value="">N/A</option>
 														<option value="No">No</option>
+														<option value="Yes">Yes</option>
 														<option value="Reject">Reject</option>
 													</select>
 												</td>
@@ -307,11 +308,11 @@
 											@endforeach
 										</tbody>
 								   </table>
-								</div> 
+								</div>
 							</div>
-						</div>  
+						</div>
 
-						
+
 
 						<div class="panel panel-info">
 							<div class="panel-heading">Remarks</div>
@@ -388,9 +389,9 @@
 										</div>
 									</div>
 								</div>
-							</div> 
-						</div>  
-						
+							</div>
+						</div>
+
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
@@ -411,18 +412,18 @@
 $(document).ready(function(){
     var previous;
      $(".myselectbox").on("focus click",function () {
-        previous = this.value; // Old vaue 
+        previous = this.value; // Old vaue
 
     }).change(function(e) {
 
-    	var before_gross = $('#new_gross').val(); 
+    	var before_gross = $('#new_gross').val();
     	var value =  this.value; // New Value
     	var colheader = e.target.id;
     	var new_prev = previous;
-      	
+
 
 		$.ajax({
-		url: "qa/api/crm/getquestion", 
+		url: "qa/api/crm/getquestion",
 		type: 'GET',
 		data: {'colheader':colheader},
 		success: function(result){
@@ -435,11 +436,11 @@ $(document).ready(function(){
 				$('#new_gross').val(new_gross_amount);
 			}
 			else if(new_prev =! "" && value == "" || value == "No" | value == "Reject")
-			{	
+			{
 				var new_gross_amount = parseFloat(before_gross) - parseFloat(costperlead);
 				$('#new_gross').val(new_gross_amount);
 			}
-			
+
 		}});
     });
 
@@ -448,38 +449,38 @@ $(document).ready(function(){
 $("#verified_status").change(function() {
 	if($("#verified_status").val() == "Passed-With Changes")
 	{
-		$('#passwithchanges_status').prop("disabled", false); 
+		$('#passwithchanges_status').prop("disabled", false);
 	}
 	else
 	{
-		$('#passwithchanges_status').prop("disabled", true); 
+		$('#passwithchanges_status').prop("disabled", true);
 	}
 
 	if($("#verified_status").val() == "Reject A")
 	{
-		$('#reject_a_status').prop("disabled", false); 
+		$('#reject_a_status').prop("disabled", false);
 	}
 	else
 	{
-		$('#reject_a_status').prop("disabled", true); 
+		$('#reject_a_status').prop("disabled", true);
 	}
 
 	if($("#verified_status").val() == "Reject B")
 	{
-		$('#reject_b_status').prop("disabled", false); 
+		$('#reject_b_status').prop("disabled", false);
 	}
 	else
 	{
-		$('#reject_b_status').prop("disabled", true); 
+		$('#reject_b_status').prop("disabled", true);
 	}
 
 	if($("#verified_status").val() == "Reject C")
 	{
-		$('#reject_c_status').prop("disabled", false); 
+		$('#reject_c_status').prop("disabled", false);
 	}
 	else
 	{
-		$('#reject_c_status').prop("disabled", true); 
+		$('#reject_c_status').prop("disabled", true);
 	}
 
 });
