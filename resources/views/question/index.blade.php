@@ -7,7 +7,6 @@
 			<div class="panel panel-success">
 				<div class="panel-heading">Question List</div>
 				<div class="panel-body">
-					<div class="loading-progress" id="progressbar" style="padding-left: 2px; padding-right: 2px; padding-top: 2px"></div>
                     <table id="QuestionList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -97,17 +96,7 @@ $.ajax({
             // }
 
         });
-    }}).error(function(){
-          progress.progressTimer('error', {
-          errorText:'ERROR!',
-          onFinish:function(){
-            alert('There was an error processing your information!');
-          }
-        });
-    }).done(function(){
-            progress.progressTimer('complete');
-            $( "#progressbar" ).fadeOut( "slow" );
-    });
+    }});
 
 
 var sortSequence = [];

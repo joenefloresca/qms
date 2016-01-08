@@ -85,6 +85,14 @@
 									<li><a href="{{ url('customer-upload') }}">Upload Customer</a></li>
 								</ul>
 							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="	glyphicon glyphicon-remove-sign"></i> Suppressions <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="{{ url('suppression') }}">Suppression List</a></li>
+									<li><a href="{{ url('suppression/create') }}">Add Suppression</a></li>
+									<li><a href="{{ url('suppression-upload') }}">Upload Suppression</a></li>
+								</ul>
+							</li>
 							<!-- <li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
@@ -255,5 +263,6 @@
 	@yield('questioncreate')
 	@yield('customer')
 	@yield('detailedsummary')
+	@yield('suppression')
 </body>
 </html>

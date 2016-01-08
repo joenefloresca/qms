@@ -38,7 +38,7 @@ class QaController extends Controller {
         {
             return Response::view('errors.404', array(), 404);
         }
-        
+
     }
 
     public function getCrmList()
@@ -52,21 +52,21 @@ class QaController extends Controller {
          * Copyright: 2010 - Allan Jardine
          * License:   GPL v2 or BSD (3-point)
          */
-         
+
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * Easy set variables
          */
-         
+
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
         $aColumns = array(
-            'crmid', 
-            'name', 
-            //'a.title', 
-            //'a.firstname', 
-            'customer', 
-            'disposition', 
+            'crmid',
+            'name',
+            //'a.title',
+            //'a.firstname',
+            'customer',
+            'disposition',
             'gross',
             'phone_num',
             'created_at'
@@ -76,9 +76,9 @@ class QaController extends Controller {
         $sIndexColumn = "crmid";
 
         /* DB table to use */
-        $sTable = "( 
+        $sTable = "(
                  SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at
-              FROM forms a 
+              FROM forms a
               INNER JOIN users b ON a.agent_id = b.id WHERE isverified = 0
             ) as q";
 
@@ -96,7 +96,7 @@ class QaController extends Controller {
          * If you just want to use the basic configuration for DataTables with PHP server-side, there is
          * no need to edit below this line
          */
-         
+
         /*
          * DB connection
          */
@@ -130,7 +130,7 @@ class QaController extends Controller {
                         ".($_GET['sSortDir_'.$i]==='asc' ? 'asc' : 'desc').", ";
                 }
             }
-             
+
             $sOrder = substr_replace( $sOrder, "", -2 );
             if ( $sOrder == "ORDER BY" )
             {
@@ -197,7 +197,7 @@ class QaController extends Controller {
         $rResultTotal = pg_query( $gaSql['link'], $sQuery ) or die(pg_last_error());
         $iTotal = pg_num_rows($rResultTotal);
         pg_free_result( $rResultTotal );
-         
+
         if ( $sWhere != "" )
         {
             $sQuery = "
@@ -213,7 +213,7 @@ class QaController extends Controller {
         {
             $iFilteredTotal = $iTotal;
         }
-         
+
         /*
          * Output
          */
@@ -223,7 +223,7 @@ class QaController extends Controller {
             "iTotalDisplayRecords" => $iFilteredTotal,
             "aaData" => array()
         );
-         
+
         while ( $aRow = pg_fetch_array($rResult, null, PGSQL_ASSOC) )
         {
             $row = array();
@@ -242,12 +242,12 @@ class QaController extends Controller {
             }
             $output['aaData'][] = $row;
         }
-         
+
         echo json_encode( $output );
-         
+
         // Free resultset
         pg_free_result( $rResult );
-         
+
         // Closing connection
         pg_close( $gaSql['link'] );
 
@@ -259,8 +259,8 @@ class QaController extends Controller {
         $to =   Input::get("to");
 
         $query = "SELECT a.id AS crmid, b.name, concat(a.firstname, ' ', a.surname) as customer, a.disposition, a.gross, a.phone_num, a.created_at, a.isverified, a.verify_status
-            FROM forms a 
-            INNER JOIN users b ON a.agent_id = b.id 
+            FROM forms a
+            INNER JOIN users b ON a.agent_id = b.id
             WHERE a.created_at >= '$from' AND a.created_at <= '$to' AND a.isverified = 0
             ORDER BY a.id DESC";
         $data = DB::connection('pgsql')->select($query);
@@ -269,7 +269,7 @@ class QaController extends Controller {
 
     public function showVerifyForm($crmid)
     {
-        
+
 
         if(Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 3 || Auth::user()->isAdmin == 4)
         {
@@ -278,7 +278,7 @@ class QaController extends Controller {
             $verifer = Auth::user()->name;
 
             if($checkCrmAssigned->assigned_verifier == '' && $checkCrmAssigned->verify_status == 0)
-            {   
+            {
                 Crm::where('id', '=', $crmid)->update(['verify_status' => 1, 'assigned_verifier' => $verifer]);
 
                 $crm = Crm::find($crmid);
@@ -294,24 +294,23 @@ class QaController extends Controller {
                 return View::make('qa.verifyform')->with(array('crm' => $crm, 'responses' => $responses->getResponsesByCrmId($crmid), 'agent_name' => $agent_name->name));
             }
             else
-            {   
+            {
                 Session::flash('alert-danger', 'This record is already opened for '.$checkCrmAssigned->assigned_verifier);
                 return Redirect::to('qa/verifylist');
             }
 
 
-            
+
         }
         else
         {
             return Response::view('errors.404', array(), 404);
         }
-        
+
     }
 
     public function postVerify($id)
     {
-
 
         $rules = array(
             'disposition'    => 'required',
@@ -334,16 +333,16 @@ class QaController extends Controller {
             'marital_status' => 'required',
             'orig_crm_id'    => 'required|unique:qa_forms',
         );
-        
+
         $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) 
+        if ($validator->fails())
         {
             return Redirect::to('qa/verify/'.$id)->withErrors($validator);
         }
         else
         {
-            
+
             $formid                 = $id;
             $gross                  = Input::get("gross");
             $rev                    = Input::get("new_gross");
@@ -450,10 +449,10 @@ class QaController extends Controller {
                 /* END For 248 Insertion */
 
                 $questions = new QaResponse();
-              
-                foreach ($questions->getResponsesByCrm(intval($id)) as $key => $value) 
+
+                foreach ($questions->getResponsesByCrm(intval($id)) as $key => $value)
                 {
-                    $columnheader = $value->columnheader; 
+                    $columnheader = $value->columnheader;
                     $id_question = Question::where('columnheader', '=', $columnheader)->get();
 
                     $qa_response = new QaResponse();
@@ -524,7 +523,7 @@ class QaController extends Controller {
         {
             return Response::view('errors.404', array(), 404);
         }
-        
+
     }
 
     public function postReVerify($id)
@@ -552,7 +551,7 @@ class QaController extends Controller {
 
         $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) 
+        if ($validator->fails())
         {
             return Redirect::to('qa/reverify/'.$id)->withErrors($validator);
         }
@@ -652,10 +651,10 @@ class QaController extends Controller {
                 /* END For 248 update */
 
                 $questions = new QaResponse();
-              
-                foreach ($questions->getQaResponsesByCrmId(intval($id)) as $key => $value) 
+
+                foreach ($questions->getQaResponsesByCrmId(intval($id)) as $key => $value)
                 {
-                    $columnheader = $value->columnheader; 
+                    $columnheader = $value->columnheader;
                     $id_question = Question::where('columnheader', '=', $columnheader)->get();
                     $qa_response = QaResponse::find($value->id);
                     $qa_response->response = Input::get($columnheader);

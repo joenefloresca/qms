@@ -173,8 +173,8 @@ class QuestionController extends Controller {
                 if($question->save())
                 {
                     /*Add new column header to 248 SatCRM Telesurvey*/
-                    $query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
-                    $data = DB::connection('sqlsrv')->update($query);
+                    //$query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
+                    //$data = DB::connection('sqlsrv')->update($query);
                 }
 
                 Session::flash('alert-success', 'Form Submitted Successfully.');
@@ -211,8 +211,8 @@ class QuestionController extends Controller {
                 if($question->save())
                 {
                     /*Add new column header to 248 SatCRM Telesurvey*/
-                    $query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
-                    $data = DB::connection('sqlsrv')->update($query);
+                    //$query = "ALTER TABLE TelesurveyMaster ADD ".Input::get('ColumnHeader')." varchar(MAX) NULL";
+                    //$data = DB::connection('sqlsrv')->update($query);
                 }
 
 
@@ -240,8 +240,8 @@ class QuestionController extends Controller {
                     if($question_sort->save())
                     {
                         /*Add new column header to 248 SatCRM Telesurvey*/
-                        $query = "ALTER TABLE TelesurveyMaster ADD ".$colheader." varchar(MAX) NULL";
-                        $data = DB::connection('sqlsrv')->update($query);
+                       // $query = "ALTER TABLE TelesurveyMaster ADD ".$colheader." varchar(MAX) NULL";
+                       // $data = DB::connection('sqlsrv')->update($query);
                     }
                 }
 

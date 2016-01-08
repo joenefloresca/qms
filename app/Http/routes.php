@@ -22,7 +22,7 @@ Route::get('/home', function () {
 /* Questions Resource Route*/
 Route::resource('question', 'QuestionController');
 
-/* Questions Ajax Calls */
+/* Questions / CRM Create Ajax Calls */
 Route::get('api/question/all', 'QuestionController@apiGetQuestions');
 
 Route::get('api/sort/questions', 'QuestionController@apiSortQuestions');
@@ -66,7 +66,6 @@ Route::post('customer-upload', 'CustomerController@postUploadCsv');
 Route::get('api/customer/all', 'CustomerController@apiGetCustomers');
 Route::get('crm/api/customer/number', 'CustomerController@apiGetByNumber');
 
-
 /* Reports Routes */
 Route::get('reports/detailedsummary', 'ReportController@showDetailedSummary');
 Route::get('reports/agentperformance', 'ReportController@showAgentPerformance');
@@ -94,7 +93,6 @@ Route::get('reports/api/crm/qasummary2', 'ReportController@apiqasummary2');
 Route::get('reports/api/crm/getqaresponses/{qaform_id}', 'ReportController@apigetqaresponses');
 Route::get('api/crm/charityresponsesall', 'ReportController@apicharityresponsesall');
 
-
 /* QA Tools / Modules Routes*/
 Route::get('qa/verifylist', 'QaController@verifylist');
 Route::get('qa/verify/{crmid}', 'QaController@showVerifyForm');
@@ -102,7 +100,6 @@ Route::post('qa/postverify/{crmid}', 'QaController@postVerify');
 Route::get('qa/reverify/{crmid}', 'QaController@showReVerifyForm');
 Route::get('qa/reverifylist', 'QaController@updateVerifiedForms');
 Route::post('qa/postreverify/{crmid}', 'QaController@postReVerify');
-
 
 /* QA Ajax Calls */
 Route::get('qa/api/crm/all', 'QaController@getCrmList');
@@ -118,6 +115,12 @@ Route::get('crm/api/agent/loginhourslive', 'UserController@getAgentLoginHoursLiv
 Route::get('crm/api/agent/daygross', 'UserController@getAgentDayGross');
 Route::get('crm/api/agent/completedsurvey', 'UserController@getAgentCompletedSurvey');
 Route::get('crm/api/agent/partialsurvey', 'UserController@getAgentPartialSurvey');
+
+/* Suppression resource route */
+Route::resource('suppression', 'SuppressionController');
+
+/* Suppression ajax route */
+Route::get('api/suppression/all', 'SuppressionController@apiGetSuppressions');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

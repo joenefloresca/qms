@@ -138,6 +138,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Yajra\Datatables\DatatablesServiceProvider',
 
         /*
          * Application Service Providers...

@@ -1,11 +1,10 @@
 @extends('app')
-
 @section('content')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-success">
-				<div class="panel-heading">Customer List</div>
+				<div class="panel-heading">Suppression List</div>
 				<div class="panel-body">
                         @foreach (['danger', 'warning', 'success', 'info'] as $msg)
                           @if(Session::has('alert-' . $msg))
@@ -13,20 +12,17 @@
                           @endif
                         @endforeach
                     </div>
-                    <table id="CustomerList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <table id="SuppressionList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                            	<th colspan="7"> <center>Customer Information<center></th>
+                            	<th colspan="4"> <center>Suppression Information<center></th>
                                 <th colspan="1"> <center>Actions<center></th>
                             </tr>
                             <tr>
                                 <th>ID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Gender</th>
-                                <th>Phone Number</th>
-                                <th>Country</th>
-                                <th>Postcode</th>
+                                <th>Phone</th>
+                                <th>Column Header</th>
+                                <th>Date Added</th>
                                 <th>Edit</th>
                             <!--     <th>Edit</th>
                                 <th>Delete</th> -->
@@ -41,24 +37,22 @@
 	</div>
 </div>
 @endsection
-@section('customer')
+@section('suppression')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#CustomerList').DataTable({
+        $('#SuppressionList').DataTable({
             processing: true,
             serverSide: true,
-            ajax: 'api/customer/all',
+            ajax: 'api/suppression/all',
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'firstname', name: 'firstname'},
-                {data: 'lastname', name: 'lastname'},
-                {data: 'gender', name: 'gender'},
-                {data: 'phone_num', name: 'phone_num'},
-                {data: 'country', name: 'country'},
-                {data: 'postcode', name: 'postcode'},
+                {data: 'phone', name: 'phone'},
+                {data: 'column_header', name: 'column_header'},
+                {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
     });
 </script>
 @endsection
+

@@ -31,9 +31,20 @@ class CrmController extends Controller {
 
 	public function create()
 	{
+		$phone = Input::get("customer_number"); // Get phone number from URL
+		$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
+		// Remove questions that is on the suppression table matching the phone number
+		foreach ($questions as $key => $value) {
+			$count = DB::table('suppressions')->where('phone', '=', $phone)->where('column_header', '=', $value->columnheader)->count();
+			if($count >= 1)
+			{
+				unset($questions[$key]);
+			}
+			
+		}
+
 		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
-			$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
 			return view('crm.create')->with(array('questions' => $questions));
 		}
 		else

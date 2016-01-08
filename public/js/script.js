@@ -69,25 +69,16 @@ $('#cbkTimeLocalTz').timepicker();
 $('#cbkTimeCustomerTz').timepicker();
 
 /* Date picker for All */
-jQuery('#fromDateAll').datetimepicker({
+jQuery('#fromDateAll, #toDateAll').datetimepicker({
   format:'Y-m-d',
   timepicker:false,
 });
 
-jQuery('#toDateAll').datetimepicker({
-  format:'Y-m-d',
-  timepicker:false,
-});
 
 /* Datetime picker for All */
-jQuery('#fromDatetimeAll').datetimepicker({
+jQuery('#fromDatetimeAll, #toDatetimeAll').datetimepicker({
   format:'Y-m-d H:i:s',
 });
-
-jQuery('#toDatetimeAll').datetimepicker({
-  format:'Y-m-d H:i:s',
-});
-
 
 jQuery('#birthdate').datetimepicker({
   format:'Y-m-d',
@@ -98,33 +89,6 @@ jQuery('.time-input').datetimepicker({
   format:'Y-m-d H:i:s',
 });
 
-// $.ajax({
-// 	url: "api/column/all", 
-// 	type: 'GET',
-// 	success: function(result){
-// 	var myObj = $.parseJSON(result);
-//     	$.each(myObj, function(key,value) {
-//     		var t = $('#columnList').DataTable();
-
-//     		t.row.add( [
-// 	            value.id,
-// 	            value.column_header,
-// 	            value.database,
-// 	            value.method,
-//         	] ).draw();
-    		
-// 		});
-// 	}}).error(function(){
-// 		  progress.progressTimer('error', {
-// 		  errorText:'ERROR!',
-// 		  onFinish:function(){
-// 		    alert('There was an error processing your information!');
-// 		  }
-// 		});
-// 	}).done(function(){
-// 			progress.progressTimer('complete');
-// 			$( "#progressbar" ).fadeOut( "slow" );
-// 	});
 
 $("#btnYesterday").click(function() {
 	var yesterday = moment().subtract(1, 'days').format("YYYY-MM-DD");
