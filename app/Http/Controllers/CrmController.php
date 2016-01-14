@@ -8,6 +8,7 @@ use View;
 use \App\Http\Models\Question;
 use \App\Http\Models\Crm;
 use \App\Http\Models\Response;
+use \App\Http\Models\Mutual;
 use DB;
 use Request;
 use Auth;
@@ -33,14 +34,48 @@ class CrmController extends Controller {
 	{
 		$phone = Input::get("customer_number"); // Get phone number from URL
 		$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
+		$mutuals = Mutual::all();
+		
+
+		
+		// var_dump($mutuals[0]['id']); 
+		// var_dump($mutuals[0]['question_id_1']); 
+		// var_dump($mutuals[0]['question_id_2']);
+
+
+		//var_dump($questions->all()); 
+
+		var_dump(count($questions));
+
+		foreach ($questions as $key => $value) 
+		{
+			$mutuals = Mutual::where('question_id_1', '=', $value->id)->orWhere('question_id_2', '=', $value->id)->first();
+			if(count($mutuals) >= 1)
+			{
+				echo "Matched->";
+				$mutual_arr = array($mutuals->question_id_1, $mutuals->question_id_2);
+				$k = array_rand($mutual_arr);
+				$v = $mutual_arr[$k];
+				var_dump($v); 
+
+				// $questions = $questions->reject(function ($questions) use ($value)  {
+    // 				return $questions->id == $value->id;
+				// });
+			}
+		}
+
+		var_dump(count($questions)); 
+
+		exit;
+
 		// Remove questions that is on the suppression table matching the phone number
-		foreach ($questions as $key => $value) {
+		foreach ($questions as $key => $value) 
+		{
 			$count = DB::table('suppressions')->where('phone', '=', $phone)->where('column_header', '=', $value->columnheader)->count();
 			if($count >= 1)
 			{
 				unset($questions[$key]);
 			}
-			
 		}
 
 		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)

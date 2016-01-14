@@ -11,6 +11,9 @@ use Validator;
 use Session;
 use Redirect;
 use Datatables;
+use Excel;
+use Symfony\Component\Console\Helper\ProgressBar;
+use DB;
 
 class SuppressionController extends Controller
 {
@@ -127,5 +130,45 @@ class SuppressionController extends Controller
             })
             ->editColumn('id', 'ID: {{$id}}')
             ->make(true);
+    }
+
+    public function getSuppUploadCsv()
+    {
+        $question_options = array('' => 'Choose One') + DB::table('questions')->lists('columnheader','columnheader');
+        return view('suppression.suppression-upload')->with(array('question_options' => $question_options));
+    }
+
+    public function postSuppUploadCsv()
+    {
+        $rules = array(
+            'file'             => 'required|mimes:xlsx,xls',
+            'question_options' => 'required',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+        // process the form
+        if ($validator->fails()) 
+        {
+            return Redirect::to('suppression-upload')->withErrors($validator);
+        }
+        else
+        { 
+            $file          = Input::file('file');
+            $column_header = Input::get('question_options');
+            Excel::load($file, function($reader) use ($column_header) {
+                // Getting all results
+                $results = $reader->get()->toArray();
+                foreach ($results as $key => $value) {
+                     $suppression = new Suppression();
+                     $suppression->phone         = $value['phone'];
+                     $suppression->column_header = $column_header;
+                     $suppression->save();
+                 }
+
+            });
+
+            Session::flash('alert-success', 'Data Uploaded Successfully!');
+            return Redirect::to('suppression-upload');
+        }
     }
 }

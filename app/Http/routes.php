@@ -122,6 +122,10 @@ Route::resource('suppression', 'SuppressionController');
 /* Suppression ajax route */
 Route::get('api/suppression/all', 'SuppressionController@apiGetSuppressions');
 
+/* Suppression Upload CSV Route*/
+Route::get('suppression-upload', 'SuppressionController@getSuppUploadCsv');
+Route::post('suppression-upload', 'SuppressionController@postSuppUploadCsv');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
