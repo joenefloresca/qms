@@ -86,13 +86,18 @@
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="	glyphicon glyphicon-remove-sign"></i> Suppressions <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="	glyphicon glyphicon-remove-sign"></i> Suppression & Mutuals <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="{{ url('suppression') }}">Suppression List</a></li>
 									<li><a href="{{ url('suppression/create') }}">Add Suppression</a></li>
 									<li><a href="{{ url('suppression-upload') }}">Upload Suppression</a></li>
+
+									<li><a href="{{ url('mutual') }}">Mutual Exlusion List</a></li>
+									<li><a href="{{ url('mutual/create') }}">Add Mutual Exlusion</a></li>
 								</ul>
+
 							</li>
+							
 							<!-- <li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-time"></i> Login Hours <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
@@ -264,5 +269,6 @@
 	@yield('customer')
 	@yield('detailedsummary')
 	@yield('suppression')
+	@yield('mutual')
 </body>
 </html>

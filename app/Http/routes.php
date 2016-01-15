@@ -126,6 +126,12 @@ Route::get('api/suppression/all', 'SuppressionController@apiGetSuppressions');
 Route::get('suppression-upload', 'SuppressionController@getSuppUploadCsv');
 Route::post('suppression-upload', 'SuppressionController@postSuppUploadCsv');
 
+/* Mutual Restriction resource route */
+Route::resource('mutual', 'MutualController');
+
+/* Mutual Restriction ajax route */
+Route::get('api/mutual/all', 'MutualController@apiGetMutualExclusives');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

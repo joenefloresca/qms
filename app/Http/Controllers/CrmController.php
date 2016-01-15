@@ -35,38 +35,48 @@ class CrmController extends Controller {
 		$phone = Input::get("customer_number"); // Get phone number from URL
 		$questions = Question::where('isenabled', '=', 'Yes')->orderBy('sortorder', 'asc')->get();
 		$mutuals = Mutual::all();
+		$remove_arr = array();
+		$remove_arr_2 = array();
 		
-
-		
-		// var_dump($mutuals[0]['id']); 
-		// var_dump($mutuals[0]['question_id_1']); 
-		// var_dump($mutuals[0]['question_id_2']);
-
-
-		//var_dump($questions->all()); 
-
-		var_dump(count($questions));
 
 		foreach ($questions as $key => $value) 
 		{
 			$mutuals = Mutual::where('question_id_1', '=', $value->id)->orWhere('question_id_2', '=', $value->id)->first();
 			if(count($mutuals) >= 1)
 			{
-				echo "Matched->";
 				$mutual_arr = array($mutuals->question_id_1, $mutuals->question_id_2);
 				$k = array_rand($mutual_arr);
 				$v = $mutual_arr[$k];
-				var_dump($v); 
-
-				// $questions = $questions->reject(function ($questions) use ($value)  {
-    // 				return $questions->id == $value->id;
-				// });
+				array_push($remove_arr, array($mutuals->question_id_1, $mutuals->question_id_2));
 			}
 		}
 
-		var_dump(count($questions)); 
 
-		exit;
+		for($i = count($remove_arr)-1; $i >= 0 ; $i--) {
+		   $j = $i-1; 
+		   while ($j >= 0) { 
+		      if (count(array_intersect($remove_arr[$i],$remove_arr[$j])) == count($remove_arr[$i]))
+		           { unset($remove_arr[$i]); break; }
+		       else $j--;
+		   }
+		}
+
+		foreach ($remove_arr as $key => $value) {
+			$mutual_arr = array($value[0], $value[1]);
+			$k = array_rand($mutual_arr);
+			$v = $mutual_arr[$k];
+			array_push($remove_arr_2, $v);
+		}
+
+		foreach ($remove_arr_2 as $key => $value) {
+			$questions = $questions->reject(function ($questions) use ($value)  {
+				return $questions->id == $value;
+			});
+		}
+
+		// var_dump(count($questions)); 
+		// var_dump($questions->all()); 
+		// exit;
 
 		// Remove questions that is on the suppression table matching the phone number
 		foreach ($questions as $key => $value) 
