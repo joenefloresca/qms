@@ -66,10 +66,10 @@ return [
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => 'qdfcrm.cloudapp.net',
-            'database' => 'qdf-b',
-            'username' => 'joene',
-            'password' => 'CheRambil27',
+            'host'     => 'localhost',
+            'database' => 'qms',
+            'username' => 'postgres',
+            'password' => 'postgres',
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
