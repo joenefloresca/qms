@@ -159,6 +159,10 @@ class QuestionController extends Controller {
                 $question->ownhomeoptions       = Input::get('OwnHomeOptions');
                 $question->telephonerestriction = Input::get('TelephoneRestriction');
                 $question->telephoneoptions     = Input::get('TelephoneOptions');
+                $question->work_restriction     = Input::get('WorkRestriction');
+                $question->work_option          = Input::get('WorkOptions');
+                $question->marital_restriction  = Input::get('MaritalRestriction');
+                $question->marital_option       = Input::get('MaritalOptions');
                 $question->costperlead          = Input::get('CostPerLead');
                 $question->columnheader         = Input::get('ColumnHeader');
                 $question->deliveryassignment   = Input::get('DeliveryAssignment');
@@ -198,6 +202,10 @@ class QuestionController extends Controller {
                 $question->ownhomeoptions        = Input::get('OwnHomeOptions');
                 $question->telephonerestriction  = Input::get('TelephoneRestriction');
                 $question->telephoneoptions      = Input::get('TelephoneOptions');
+                $question->work_restriction     = Input::get('WorkRestriction');
+                $question->work_option          = Input::get('WorkOptions');
+                $question->marital_restriction  = Input::get('MaritalRestriction');
+                $question->marital_option       = Input::get('MaritalOptions');
                 $question->costperlead           = Input::get('CostPerLead');
                 $question->columnheader          = Input::get('ColumnHeader');
                 $question->deliveryassignment    = Input::get('DeliveryAssignment');

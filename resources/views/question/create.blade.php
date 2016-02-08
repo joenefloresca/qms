@@ -102,13 +102,6 @@
 						<div class="form-group" id="DivOwnHomeOptions" style="display: none">
 							<label class="col-md-4 control-label">Own Home Options</label>
 							<div class="col-md-6">
-								<!-- <select name="OwnHomeOptions" id="OwnHomeOptions" class="form-control">
-									<option value="">Choose One</option>
-									<option value="Own Home">Own Home</option>
-									<option value="Renting">Renting</option>
-									<option value="Living with Family/Friend">Living with Family/Friend</option>
-									<option value="Not Answered">Not Answered</option>
-								</select> -->
 								<div class="checkbox">
  					 				<label><input type="checkbox" name="OwnHome" id="OwnHome" value="Own Home">Own Home</label>
 								</div>
@@ -146,6 +139,77 @@
 									<option value="Mobile">Mobile</option>
 								
 								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Employment Restriction</label>
+							<div class="col-md-6">
+								<select name="WorkRestriction" id="WorkRestriction" class="form-control">
+									<option value="">Choose One</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group" id="DivWorkOptions" style="display: none">
+							<label class="col-md-4 control-label">Employment Rules</label>
+							<div class="col-md-6">
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Employed" id="Employed" value="Employed">Employed</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Self-Employed" id="Self-Employed" value="Self-Employed">Self-Employed</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Retired" id="Retired" value="Retired">Retired</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Company_Director" id="Company_Director" value="Company Director">Company Director</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Other_Work" id="Other_Work" value="Other">Other</label>
+								</div>
+								
+								<div class="text" style="padding-top: 4px"><input type="text" class="form-control" name="WorkOptions" id="WorkOptions"></div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Marital Status Restriction</label>
+							<div class="col-md-6">
+								<select name="MaritalRestriction" id="MaritalRestriction" class="form-control">
+									<option value="">Choose One</option>
+									<option value="Yes">Yes</option>
+									<option value="No">No</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group" id="DivMaritalOptions" style="display: none">
+							<label class="col-md-4 control-label">Marital Status Rules</label>
+							<div class="col-md-6">
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="MarriedCoHabbiting" id="MarriedCoHabbiting" value="Married or Co-Habiting">Married or Co-Habiting</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="SingleNeverMarried" id="SingleNeverMarried" value="Single or Never Married">Single or Never Married</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Widowed" id="Widowed" value="Widowed">Widowed</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Divorced" id="Divorced" value="Divorced">Divorced</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Separated" id="Separated" value="Other">Separated</label>
+								</div>
+								<div class="checkbox">
+ 					 				<label><input type="checkbox" name="Other_Marital" id="Other_Marital" value="Other">Others</label>
+								</div>
+								
+								<div class="text" style="padding-top: 4px"><input type="text" class="form-control" name="MaritalOptions" id="MaritalOptions"></div>
 							</div>
 						</div>
 
@@ -310,6 +374,25 @@ $("#AgeRestriction").change(function() {
 	  	
 });
 
+$("#TelephoneRestriction").change(function() {
+
+	var choosen = $("#TelephoneRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivTelephoneOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivTelephoneOptions").css("display","none");
+	}
+	  	
+});
+
 $("#OwnHomeRestriction").change(function() {
 
 	var choosen = $("#OwnHomeRestriction").val();
@@ -329,24 +412,6 @@ $("#OwnHomeRestriction").change(function() {
 	  	
 });
 
-$("#TelephoneRestriction").change(function() {
-
-	var choosen = $("#TelephoneRestriction").val();
-
-	if(choosen == "Yes")
-	{
-		$("#DivTelephoneOptions").css("display","block");
-	}
-	else if(choosen == "No")
-	{
-		$("#DivTelephoneOptions").css("display","none");
-	}
-	else
-	{
-		$("#DivTelephoneOptions").css("display","none");
-	}
-	  	
-});
 
 $("#OwnHome").click(function() {
 	var value = $("#OwnHome").val();
@@ -375,6 +440,140 @@ $("#NotAns").click(function() {
      	return val + (!val ? '' : ',') + value;
 	});
 });
+
+
+$("#WorkRestriction").change(function() {
+
+	var choosen = $("#WorkRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivWorkOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivWorkOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivWorkOptions").css("display","none");
+	}
+	  	
+});
+
+
+$("#Employed").click(function() {
+	var value = $("#Employed").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Self-Employed").click(function() {
+	var value = $("#Self-Employed").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Retired").click(function() {
+	var value = $("#Retired").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Retired").click(function() {
+	var value = $("#Retired").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Company_Director").click(function() {
+	var value = $("#Company_Director").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Other_Work").click(function() {
+	var value = $("#Other_Work").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});				
+
+$("#Separated").click(function() {
+	var value = $("#Other_Work").val();
+	$('#WorkOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#MaritalRestriction").change(function() {
+
+	var choosen = $("#MaritalRestriction").val();
+
+	if(choosen == "Yes")
+	{
+		$("#DivMaritalOptions").css("display","block");
+	}
+	else if(choosen == "No")
+	{
+		$("#DivMaritalOptions").css("display","none");
+	}
+	else
+	{
+		$("#DivMaritalOptions").css("display","none");
+	}
+	  	
+});
+
+$("#MarriedCoHabbiting").click(function() {
+	var value = $("#MarriedCoHabbiting").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#SingleNeverMarried").click(function() {
+	var value = $("#SingleNeverMarried").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Widowed").click(function() {
+	var value = $("#Widowed").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Divorced").click(function() {
+	var value = $("#Divorced").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Separated").click(function() {
+	var value = $("#Separated").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+$("#Other_Marital").click(function() {
+	var value = $("#Other_Marital").val();
+	$('#MaritalOptions').val(function(i,val) { 
+     	return val + (!val ? '' : ',') + value;
+    }); 	
+});
+
+
+
 </script>
 @endsection
 

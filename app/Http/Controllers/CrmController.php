@@ -37,7 +37,7 @@ class CrmController extends Controller {
 		$mutuals = Mutual::all();
 		$remove_arr = array();
 		$remove_arr_2 = array();
-		
+
 
 		foreach ($questions as $key => $value) 
 		{
@@ -90,6 +90,7 @@ class CrmController extends Controller {
 
 		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
+	
 			return view('crm.create')->with(array('questions' => $questions));
 		}
 		else

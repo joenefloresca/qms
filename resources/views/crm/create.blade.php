@@ -159,7 +159,7 @@
 					<p>Hi, this is from <strong>Lifestyle Survey.com</strong>. We are calling on behalf of some of the UK’s largest charities, organizations and brands to conduct a brief marketing questionnaire to gauge your potential interest in their causes, products and services. This won’t take long. </p>
 
 					<p><strong>Opt-in Statement:</strong></p>
-					<p>MyCharitySurvey.com, our charity partners, the charities and organizations named in this questionnaire may wish to contact you by phone, SMS or e-mail, regarding your potential interest to support good causes and give you more information about their products and services. You can opt out anytime by visiting our website, www.mycharitysurvey.com. </p>
+					<p>Lifestyle-survey.com, our charity partners, the charities and organizations named in this questionnaire may wish to contact you by phone, SMS or e-mail, regarding your potential interest to support good causes and give you more information about their products and services. You can opt out anytime by visiting our website, http://www.lifestyle-survey.com/ </p>
 
 					<div class="form-horizontal">
 						<div class="form-group">
@@ -340,7 +340,6 @@
 									<option value="Mobile">Mobile</option>
 								</select>
 							</div>
-							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
@@ -348,7 +347,6 @@
 							<div class="col-md-4">
 								<input type="text" class="form-control" name="phone_num" id="CRMTelephoneNo" placeholder="Phone No.">
 							</div>
-							<div class="text-danger"><label class="control-label">* Required</label></div>
 						</div>
 
 						<div class="form-group">
@@ -356,13 +354,19 @@
 							<div class="col-md-4">
 								<select name="CrmAge" id="CrmAge" class="form-control">
 									<option value="">Choose One</option>
-									<option value="18-29">18-29</option>
-			  						<option value="30-39">30-39</option>
-			  						<option value="40-49">40-49</option>
-			  						<option value="50-59">50-59</option>
+									<option value="18-24">18-24</option>
+			  						<option value="25-29">25-29</option>
+			  						<option value="30-34">30-34</option>
+			  						<option value="35-39">35-39</option>
+			  						<option value="40-44">40-44</option>
+			  						<option value="45-49">45-49</option>
+			  						<option value="50-54">50-54</option>
+			  						<option value="55-59">55-59</option>
 			  						<option value="60-64">60-64</option>
-			  						<option value="65-75">65-75</option>
-			  						<option value="75+">75+</option>
+			  						<option value="65-69">65-69</option>
+			  						<option value="70-74">70-74</option>
+			  						<option value="75-79">75-79</option>
+			  						<option value="80+">80+</option>
 								 </select>
 							</div>
 							<div class="text-danger"><label class="control-label">* Required</label></div>
@@ -413,7 +417,6 @@
 								  <option value="">Choose One</option>
 								  <option value="Married or Co-Habiting">Married or Co-Habiting</option>
 					              <option value="Single or Never Married">Single or Never Married</option>
-					              <option value="Married or Co-Habiting">Married or Co-habiting</option>
 					              <option value="Widowed">Widowed</option>
 					              <option value="Divorced">Divorced</option>
 					              <option value="Separated">Separated</option>
@@ -474,7 +477,7 @@
 
                                         		//var_dump($options[0]);
                                         	?>
-		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
+		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" >
 		                                        		<option value=""></option>
 			                                        	<?php
 			                                        	
@@ -520,19 +523,19 @@
                             </tbody>
                             <tfoot>
                             	<tr>
-                            		<th colspan="2" class="text-primary">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, www.mycharitysurvey.com. Have a great day!
+                            		<th colspan="2" class="text-primary">Mr. , that’s the end of the questionnaire. Thank you so much for sharing your valuable time to participate. Let me share with you that we are not a charitable institution. We have been given authority by our charity partners, the charities and organizations named in this questionnaire, to gauge your interests in their causes, and to tell you about their products or services. By undertaking this marketing questionnaire, they may contact you in the future. To check our privacy policy, please visit our website, http://www.lifestyle-survey.com/. Have a great day!
                             		</th>
                             	</tr>
                             </tfoot>
                         </table> 
 
-						<div class="form-group" id="DispositionDiv" style="display: block">
+						<div class="form-group" id="DispositionDiv" style="display: none">
 							<label class="col-md-4 control-label"><small class="text-danger">Set Disposition</small></label>
 							<div class="col-md-4">
 								<select name="CrmDisposition" id="CrmDisposition" class="form-control">
 									<option value="">Choose One</option>
 									<option value="Completed Survey">Completed Survey</option> 
-									<option value="Partial Survey">Partial Survey</option> 
+									<option value="MCS Survey">MCS Survey</option> 
 									<!-- <option value="MCS Record">MCS Record</option>  -->
 								 </select>
 							</div>
@@ -597,11 +600,20 @@ $(document).ready(function() {
 	                updated_at: value.updated_at,
 	                parent_enable_response: value.parent_enable_response,
 	                child_lead_respponse: value.child_lead_respponse,
+	                work_restriction: value.work_restriction,
+	                work_option: value.work_option,
+	                marital_restriction: value.marital_restriction,
+	                marital_option: value.marital_option,
 				});
 			});
+
 			
 		}});
 });
+
+
+
+
 
 function get_response(id)
 {
@@ -819,8 +831,9 @@ var ageBracket = $('#CrmAge').val();
 var workStatus = $('#CRMWorkStatus').val();	
 var homeStatus = $('#CRMOwnHomeOptions').val();	
 var civilStatus = $('#CRMMaritalStatus').val();
+$("#DispositionDiv").css("display","block");	
 
-if(phoneType == "" || ageBracket == "" || workStatus == "" || homeStatus == "" || civilStatus == "")
+if(ageBracket == "" || workStatus == "" || homeStatus == "" || civilStatus == "")
 {
 	alert("Please select answer on the required fields.");
 }
@@ -831,6 +844,8 @@ var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
 var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
+
+console.log(data);
 
 	$.each(data, function(key,value) {
 		// Make an array variable where you will store the Restriction Name and Loop thru it
@@ -875,8 +890,16 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 				count++;
 				getRestrictions.push("telephoneoptions");
 			}
-             
-           
+			if(value.work_restriction == "Yes")
+			{
+				count++;
+				getRestrictions.push("work_restriction");
+			}
+			if(value.work_restriction == "Yes")
+			{
+				count++;
+				getRestrictions.push("marital_restriction");
+			}
 
 			if(getRestrictions.length == 0) // If has no restriction then enable the question
 			{
@@ -894,11 +917,9 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						var QuesAge = value.agebracket.split('-');
 						var minQuesAge = QuesAge[0];
 						var maxQuesAge = QuesAge[1];
-
 						var CustomerAge = age.split('-');
 						var minCusAge = CustomerAge[0];
 						var maxCusAge = CustomerAge[1];
-
 						
 						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
 						{
@@ -918,6 +939,47 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 							if(flag == count)
 							{
 								$('#'+value.columnheader).prop("disabled", false);
+							}
+						}
+					}
+					if(value2 == "work_restriction")
+					{
+						var work_options = value.work_option;
+						var work_arr = work_options.split(",");
+						var work_status = $("#CRMWorkStatus").val();
+						var search_work = jQuery.inArray(work_status, work_arr); // If -1 not found
+						console.log(search_work);
+
+						if(search_work == -1)
+						{
+							flag++;
+							console.log("Work Res");
+							console.log(flag);
+							console.log(count);
+							if(flag == count)
+							{
+								console.log("Disable");
+								$('#'+value.columnheader).prop("disabled", true);
+							}
+						}
+
+						flag++;
+					}
+					if(value2 == "marital_restriction")
+					{
+						var marital_options = value.marital_option;
+						var marital_arr = marital_options.split(",");
+						var marital_status = $("#CRMMaritalStatus").val();
+						var search_marital = jQuery.inArray(marital_status, marital_arr); // If -1 not found		
+
+						if(search_marital == -1)
+						{
+							flag++;
+							
+							if(flag == count)
+							{
+								console.log("Disable");
+								$('#'+value.columnheader).prop("disabled", true);
 							}
 						}
 					}
