@@ -477,7 +477,7 @@
 
                                         		//var_dump($options[0]);
                                         	?>
-		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" >
+		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
 		                                        		<option value=""></option>
 			                                        	<?php
 			                                        	
