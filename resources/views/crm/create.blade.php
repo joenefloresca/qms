@@ -156,7 +156,7 @@
 				<div class="panel-heading">CRM</div>
 				<div class="panel-body">
 					<p><strong>Introduction:</strong></p>
-					<p>Hi, this is from <strong>MyCharitySurvey.com</strong>. We are calling on behalf of some of the UK’s largest charities, organizations and brands to conduct a brief marketing questionnaire to gauge your potential interest in their causes, products and services. This won’t take long. </p>
+					<p>Hi, this is from <strong>Lifestyle Survey.com</strong>. We are calling on behalf of some of the UK’s largest charities, organizations and brands to conduct a brief marketing questionnaire to gauge your potential interest in their causes, products and services. This won’t take long. </p>
 
 					<p><strong>Opt-in Statement:</strong></p>
 					<p>MyCharitySurvey.com, our charity partners, the charities and organizations named in this questionnaire may wish to contact you by phone, SMS or e-mail, regarding your potential interest to support good causes and give you more information about their products and services. You can opt out anytime by visiting our website, www.mycharitysurvey.com. </p>
