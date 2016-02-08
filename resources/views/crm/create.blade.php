@@ -477,7 +477,7 @@
 
                                         		//var_dump($options[0]);
                                         	?>
-		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);" disabled>
+		                                        	<select class="form-control" name="{{ $value->columnheader }}" id="{{ $value->columnheader }}" value="{{ $value->costperlead }}" onchange="return get_response(this), enable_next(this);">
 		                                        		<option value=""></option>
 			                                        	<?php
 			                                        	
@@ -920,15 +920,34 @@ console.log(data);
 						var CustomerAge = age.split('-');
 						var minCusAge = CustomerAge[0];
 						var maxCusAge = CustomerAge[1];
+
+						// console.log(minQuesAge);
+						// console.log(maxQuesAge);
+
+						// console.log(minCusAge);
+						// console.log(maxCusAge);
+
+
+						// console.log("Age is up");
 						
 						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
 						{
 							flag++;
 							if(flag == count)
 							{
+								console.log("Disabled by age");
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
+						// if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
+						// {
+						// 	flag++;
+						// 	if(flag == count)
+						// 	{
+						// 		console.log("Disabled by age "+value.columnheader);
+						// 		$('#'+value.columnheader).prop("disabled", false);
+						// 	}
+						// }
 
 					}
 					if(value2 == "telephoneoptions")
