@@ -839,13 +839,11 @@ if(ageBracket == "" || workStatus == "" || homeStatus == "" || civilStatus == ""
 }
 else
 {
-	$("#CRMTable").css("display","block");		
+$("#CRMTable").css("display","block");		
 var age = $("#CrmAge").val();
 var CRMPostcode = $("#CRMPostcode").val();
 var CRMTelephoneOptions = $("#CRMTelephoneOptions").val();
 var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
-
-console.log(data);
 
 	$.each(data, function(key,value) {
 		// Make an array variable where you will store the Restriction Name and Loop thru it
@@ -929,16 +927,25 @@ console.log(data);
 
 
 						// console.log("Age is up");
-						
-						if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
+						if(!(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge)))
 						{
-							flag++;
+						     flag++;
 							if(flag == count)
 							{
 								console.log("Disabled by age");
 								$('#'+value.columnheader).prop("disabled", false);
-							}
+							}                   
 						}
+						
+						// if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
+						// {
+						// 	flag++;
+						// 	if(flag == count)
+						// 	{
+						// 		console.log("Disabled by age");
+						// 		$('#'+value.columnheader).prop("disabled", false);
+						// 	}
+						// }
 						// if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
 						// {
 						// 	flag++;
@@ -957,6 +964,7 @@ console.log(data);
 							flag++;
 							if(flag == count)
 							{
+								console.log("Disabled by telephoneoptions");
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
@@ -977,7 +985,7 @@ console.log(data);
 							console.log(count);
 							if(flag == count)
 							{
-								console.log("Disable");
+								console.log("Disabled by work_restriction");
 								$('#'+value.columnheader).prop("disabled", true);
 							}
 						}
@@ -987,20 +995,27 @@ console.log(data);
 					if(value2 == "marital_restriction")
 					{
 						var marital_options = value.marital_option;
-						var marital_arr = marital_options.split(",");
-						var marital_status = $("#CRMMaritalStatus").val();
-						var search_marital = jQuery.inArray(marital_status, marital_arr); // If -1 not found		
 
-						if(search_marital == -1)
+						if(marital_options != null)
 						{
-							flag++;
-							
-							if(flag == count)
+							var marital_arr = marital_options.split(",");
+							var marital_status = $("#CRMMaritalStatus").val();
+							var search_marital = jQuery.inArray(marital_status, marital_arr); // If -1 not found
+
+							if(search_marital == -1)
 							{
-								console.log("Disable");
-								$('#'+value.columnheader).prop("disabled", true);
+								flag++;
+								
+								if(flag == count)
+								{
+									console.log("Disabled by marital_restriction");
+									$('#'+value.columnheader).prop("disabled", true);
+								}
 							}
 						}
+								
+
+						
 					}
 					if(value2 == "ownhomeoptions")
 					{	
@@ -1013,7 +1028,6 @@ console.log(data);
 							flag++;
 							if(flag == count)
 							{
-								
 								$('#'+value.columnheader).prop("disabled", false);
 							}
 						}
@@ -1063,6 +1077,7 @@ console.log(data);
 					    }
 					    else
 					    {	
+					    	console.log("Disabled by postcodeinclusion");
 							$('#'+value.columnheader).prop("disabled", true);
 
 					    }
@@ -1108,6 +1123,7 @@ console.log(data);
 
 						if(numMatches2 > 0)
 					    {
+					    	console.log("Disabled by postcodeexclusion");
 					    	$('#'+value.columnheader).prop("disabled", true);
 					    }
 					    else
