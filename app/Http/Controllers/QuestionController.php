@@ -6,7 +6,7 @@ use Redirect;
 use Session;
 use View;
 use \App\Http\Models\Question;
-use \App\Http\Models\Telesurveymaster;
+//use \App\Http\Models\Telesurveymaster;
 use App;
 use Auth;
 use Response;

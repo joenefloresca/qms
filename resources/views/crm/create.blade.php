@@ -899,6 +899,9 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 				getRestrictions.push("marital_restriction");
 			}
 
+			console.log(getRestrictions);
+			console.log(count);
+
 			if(getRestrictions.length == 0) // If has no restriction then enable the question
 			{
 				$('#'+value.columnheader).prop("disabled", false);
@@ -919,54 +922,30 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 						var minCusAge = CustomerAge[0];
 						var maxCusAge = CustomerAge[1];
 
-						// console.log(minQuesAge);
-						// console.log(maxQuesAge);
-
-						// console.log(minCusAge);
-						// console.log(maxCusAge);
-
-
-						// console.log("Age is up");
 						if(!(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge)))
 						{
-						     flag++;
-							if(flag == count)
-							{
-								console.log("Disabled by age");
-								$('#'+value.columnheader).prop("disabled", false);
-							}                   
+							console.log("Disabled by age");
+							$('#'+value.columnheader).prop("disabled", true);
+						 //     flag++;
+							// if(flag == count)
+							// {
+							// 	console.log("Disabled by age");
+							// 	$('#'+value.columnheader).prop("disabled", false);
+							// }                   
 						}
-						
-						// if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
-						// {
-						// 	flag++;
-						// 	if(flag == count)
-						// 	{
-						// 		console.log("Disabled by age");
-						// 		$('#'+value.columnheader).prop("disabled", false);
-						// 	}
-						// }
-						// if(parseInt(minCusAge) >= parseInt(minQuesAge) && parseInt(maxCusAge) <= parseInt(maxQuesAge))
-						// {
-						// 	flag++;
-						// 	if(flag == count)
-						// 	{
-						// 		console.log("Disabled by age "+value.columnheader);
-						// 		$('#'+value.columnheader).prop("disabled", false);
-						// 	}
-						// }
 
 					}
 					if(value2 == "telephoneoptions")
 					{
 						if(value.telephoneoptions == CRMTelephoneOptions)
 						{
-							flag++;
-							if(flag == count)
-							{
-								console.log("Disabled by telephoneoptions");
-								$('#'+value.columnheader).prop("disabled", false);
-							}
+							$('#'+value.columnheader).prop("disabled", false);
+							// flag++;
+							// if(flag == count)
+							// {
+							// 	console.log("Disabled by telephoneoptions");
+							// 	$('#'+value.columnheader).prop("disabled", false);
+							// }
 						}
 					}
 					if(value2 == "work_restriction")
@@ -979,18 +958,19 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 
 						if(search_work == -1)
 						{
-							flag++;
-							console.log("Work Res");
-							console.log(flag);
-							console.log(count);
-							if(flag == count)
-							{
-								console.log("Disabled by work_restriction");
-								$('#'+value.columnheader).prop("disabled", true);
-							}
+							// flag++;
+							// console.log("Work Res");
+							// console.log(flag);
+							// console.log(count);
+							// if(flag == count)
+							// {
+							// 	console.log("Disabled by work_restriction");
+							// 	$('#'+value.columnheader).prop("disabled", true);
+							// }
+							$('#'+value.columnheader).prop("disabled", true);
 						}
 
-						flag++;
+						
 					}
 					if(value2 == "marital_restriction")
 					{
@@ -1004,13 +984,15 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 
 							if(search_marital == -1)
 							{
-								flag++;
+								// flag++;
 								
-								if(flag == count)
-								{
-									console.log("Disabled by marital_restriction");
-									$('#'+value.columnheader).prop("disabled", true);
-								}
+								// if(flag == count)
+								// {
+								// 	console.log("Disabled by marital_restriction");
+								// 	$('#'+value.columnheader).prop("disabled", true);
+								// }
+
+								$('#'+value.columnheader).prop("disabled", true);
 							}
 						}
 								
@@ -1020,16 +1002,16 @@ var CRMOwnHomeOptions = $("#CRMOwnHomeOptions").val();
 					if(value2 == "ownhomeoptions")
 					{	
 						var ownHomeRestrictions = value.ownhomeoptions.split(',');
-						var find = $.inArray(CRMOwnHomeOptions, ownHomeRestrictions);
+						var find = jQuery.inArray(CRMOwnHomeOptions, ownHomeRestrictions);
 
-						if(find >= 0)
+						if(find == -1)
 						{
-							
-							flag++;
-							if(flag == count)
-							{
-								$('#'+value.columnheader).prop("disabled", false);
-							}
+							$('#'+value.columnheader).prop("disabled", true);
+							// flag++;
+							// if(flag == count)
+							// {
+							// 	$('#'+value.columnheader).prop("disabled", false);
+							// }
 						}
 					}
 					if(value2 == "postcodeinclusion")
