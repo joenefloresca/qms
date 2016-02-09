@@ -21,15 +21,7 @@
 	<link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.datetimepicker.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/dataTables.tableTools.css') }}" rel="stylesheet">
-	
 
-
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
 </head>
 <body>
 	<nav class="navbar navbar-inverse">
@@ -49,13 +41,7 @@
 					@if (Auth::check())
 					    @if(Auth::user()->isAdmin == 1) <!-- Admin -->
 					    	<li><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-							<!-- <li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-list"></i> Column Header <span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="{{ url('column') }}">Column Header List</a></li>
-									<li><a href="{{ url('column/create') }}">Add/Delete Column Header</a></li>
-								</ul>
-							</li> -->
+							
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> QA Tools <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">

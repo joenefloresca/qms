@@ -90,7 +90,7 @@ class CrmController extends Controller {
 
 		if(Auth::user()->isAdmin == 0 || Auth::user()->isAdmin == 1 || Auth::user()->isAdmin == 2 || Auth::user()->isAdmin == 4)
 		{
-	
+
 			return view('crm.create')->with(array('questions' => $questions));
 		}
 		else
@@ -103,7 +103,6 @@ class CrmController extends Controller {
 	{
 		$rules = array(
             'CrmDisposition'           => 'required',
-            'CrmIsUKPermanentResident' => 'required',
             'CrmIsUKPermanentResident' => 'required',
 			'phone_num' 		       => 'required|unique:forms'           
         );
